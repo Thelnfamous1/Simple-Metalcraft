@@ -1,0 +1,36 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "tag": "minecraft:copper_ores"
+    },
+    {
+      "tag": "minecraft:copper_ores"
+    },
+    {
+      "tag": "minecraft:copper_ores"
+    },
+    {
+      "tag": "minecraft:copper_ores"
+    },
+    {
+      "tag": "minecraft:copper_ores"
+    },
+    {
+      "tag": "minecraft:copper_ores"
+    },
+    {
+      "tag": "minecraft:copper_ores"
+    },
+    {
+      "tag": "minecraft:copper_ores"
+    },
+    {
+      "tag": "simple_metalcraft:tin_ores"
+    }
+  ],
+  "result": {
+    "item": "simple_metalcraft:bronze_blend",
+    "count": 9
+  }
+}

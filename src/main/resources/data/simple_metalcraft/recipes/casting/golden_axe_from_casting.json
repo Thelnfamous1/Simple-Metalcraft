@@ -1,0 +1,21 @@
+{
+  "type": "simple_metalcraft:casting",
+  "ingredients": [
+    {
+      "value": {
+        "item": "minecraft:gold_ingot"
+      },
+      "count": 3
+    },
+    {
+      "value": {
+        "item": "minecraft:stick"
+      },
+      "count": 2
+    }
+  ],
+  "levelRequirement": 10,
+  "xpCost": 0,
+  "result": "minecraft:golden_axe",
+  "count": 1
+}

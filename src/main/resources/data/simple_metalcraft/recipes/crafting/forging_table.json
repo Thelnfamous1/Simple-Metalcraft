@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "III",
+    "III",
+    "X#X"
+  ],
+  "key": {
+    "I": {
+      "item": "minecraft:iron_ingot"
+    },
+    "X": {
+      "tag": "minecraft:stone_crafting_materials"
+    },
+    "#": {
+      "item": "minecraft:furnace"
+    }
+  },
+  "result": {
+    "item": "simple_metalcraft:forging_table"
+  }
+}

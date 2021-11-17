@@ -1,0 +1,12 @@
+{
+  "replace": false,
+  "values": [
+    "simple_metalcraft:tin_ore",
+    "simple_metalcraft:deepslate_tin_ore",
+    "simple_metalcraft:nether_pig_iron_ore",
+    "simple_metalcraft:mithril_ore",
+    "simple_metalcraft:deepslate_mithril_ore",
+    "simple_metalcraft:adamantine_ore",
+    "simple_metalcraft:deepslate_adamantine_ore"
+  ]
+}

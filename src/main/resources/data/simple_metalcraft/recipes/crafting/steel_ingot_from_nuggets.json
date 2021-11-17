@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "group": "steel_ingot",
+  "pattern": [
+    "###",
+    "###",
+    "###"
+  ],
+  "key": {
+    "#": {
+      "item": "simple_metalcraft:steel_nugget"
+    }
+  },
+  "result": {
+    "item": "simple_metalcraft:steel_ingot"
+  }
+}

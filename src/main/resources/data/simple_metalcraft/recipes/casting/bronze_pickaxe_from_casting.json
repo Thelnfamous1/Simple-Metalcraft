@@ -1,0 +1,21 @@
+{
+  "type": "simple_metalcraft:casting",
+  "ingredients": [
+    {
+      "value": {
+        "item": "simple_metalcraft:bronze_ingot"
+      },
+      "count": 3
+    },
+    {
+      "value": {
+        "item": "minecraft:stick"
+      },
+      "count": 2
+    }
+  ],
+  "levelRequirement": 20,
+  "xpCost": 0,
+  "result": "simple_metalcraft:bronze_pickaxe",
+  "count": 1
+}

@@ -1,0 +1,21 @@
+{
+  "type": "simple_metalcraft:forging",
+  "ingredients": [
+    {
+      "value": {
+        "item": "minecraft:iron_ingot"
+      },
+      "count": 3
+    },
+    {
+      "value": {
+        "item": "minecraft:stick"
+      },
+      "count": 2
+    }
+  ],
+  "levelRequirement": 30,
+  "xpCost": 0,
+  "result": "minecraft:iron_axe",
+  "count": 1
+}

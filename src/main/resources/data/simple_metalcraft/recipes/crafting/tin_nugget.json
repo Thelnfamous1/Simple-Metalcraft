@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "simple_metalcraft:tin_ingot"
+    }
+  ],
+  "result": {
+    "item": "simple_metalcraft:tin_nugget",
+    "count": 9
+  }
+}

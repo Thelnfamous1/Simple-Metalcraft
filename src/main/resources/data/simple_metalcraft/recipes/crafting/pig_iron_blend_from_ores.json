@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "tag": "minecraft:iron_ores"
+    },
+    {
+      "tag": "minecraft:coals"
+    },
+    {
+      "tag": "simple_metalcraft:flux"
+    }
+  ],
+  "result": {
+    "item": "simple_metalcraft:pig_iron_blend"
+  }
+}

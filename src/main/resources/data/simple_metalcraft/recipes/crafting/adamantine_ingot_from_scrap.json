@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "group": "adamantine_ingot",
+  "pattern": [
+    "##",
+    "##"
+  ],
+  "key": {
+    "#": {
+      "item": "simple_metalcraft:adamantine_scrap"
+    }
+  },
+  "result": {
+    "item": "simple_metalcraft:adamantine_ingot"
+  }
+}

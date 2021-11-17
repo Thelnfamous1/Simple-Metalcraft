@@ -1,0 +1,15 @@
+{
+  "required": true,
+  "package": "com.infamous.simple_metalcraft.mixin",
+  "compatibilityLevel": "JAVA_16",
+  "refmap": "simple_metalcraft.refmap.json",
+  "mixins": [
+    "AbstractFurnaceBlockEntityAccessor",
+    "MobMixin",
+    "UpgradeRecipeAccessor"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  },
+  "minVersion": "0.8.4"
+}

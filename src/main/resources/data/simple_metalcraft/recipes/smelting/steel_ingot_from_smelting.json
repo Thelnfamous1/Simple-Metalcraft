@@ -1,0 +1,10 @@
+{
+  "type": "minecraft:smelting",
+  "group": "steel_ingot",
+  "ingredient": {
+    "item": "simple_metalcraft:steel_blend"
+  },
+  "result": "simple_metalcraft:steel_ingot",
+  "experience": 0.9,
+  "cookingtime": 1600
+}

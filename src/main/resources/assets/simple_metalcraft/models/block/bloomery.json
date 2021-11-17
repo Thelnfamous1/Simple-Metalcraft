@@ -1,0 +1,10 @@
+{
+  "parent": "simple_metalcraft:block/orientable_with_bottom_and_back",
+  "textures": {
+    "top": "simple_metalcraft:block/bloomery_top",
+    "bottom": "simple_metalcraft:block/bloomery_bottom",
+    "front": "simple_metalcraft:block/bloomery_front",
+    "back": "simple_metalcraft:block/bloomery_back",
+    "side": "simple_metalcraft:block/bloomery_side"
+  }
+}

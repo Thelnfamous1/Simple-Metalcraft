@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "group": "copper_ingot",
+  "pattern": [
+    "##",
+    "##"
+  ],
+  "key": {
+    "#": {
+      "item": "simple_metalcraft:copper_scrap"
+    }
+  },
+  "result": {
+    "item": "minecraft:copper_ingot"
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "type": "simple_metalcraft:forging",
+  "ingredients": [
+    {
+      "value": {
+        "item": "simple_metalcraft:adamantine_ingot"
+      },
+      "count": 5
+    }
+  ],
+  "levelRequirement": 70,
+  "xpCost": 0,
+  "result": "simple_metalcraft:adamantine_helmet",
+  "count": 1
+}

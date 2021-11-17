@@ -1,0 +1,15 @@
+{
+  "type": "simple_metalcraft:casting",
+  "ingredients": [
+    {
+      "value": {
+        "item": "minecraft:gold_ingot"
+      },
+      "count": 4
+    }
+  ],
+  "levelRequirement": 10,
+  "xpCost": 0,
+  "result": "minecraft:golden_boots",
+  "count": 1
+}

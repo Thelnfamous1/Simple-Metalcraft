@@ -1,0 +1,21 @@
+{
+  "type": "simple_metalcraft:upgrading",
+  "base": {
+    "item": "minecraft:iron_axe"
+  },
+  "addition": {
+    "item": "minecraft:emerald"
+  },
+  "result": {
+    "item": "minecraft:iron_axe",
+    "nbt": {
+      "Enchantments":[{"id":"minecraft:efficiency","lvl":1}]
+    }
+  },
+  "operations": [
+    {
+      "tag":"Enchantments",
+      "operation": "merge"
+    }
+  ]
+}

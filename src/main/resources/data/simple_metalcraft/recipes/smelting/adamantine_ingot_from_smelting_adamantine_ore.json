@@ -1,0 +1,10 @@
+{
+  "type": "minecraft:smelting",
+  "group": "adamantine_ingot",
+  "ingredient": {
+    "tag": "simple_metalcraft:adamantine_ores"
+  },
+  "result": "simple_metalcraft:adamantine_ingot",
+  "experience": 2.0,
+  "cookingtime": 200
+}
