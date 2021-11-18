@@ -12,14 +12,10 @@ public class SMTags {
     public static final Tags.IOptionalNamedTag<Block> NEEDS_COPPER_TOOL = tagBlockForge("needs_copper_tool");
     public static final Tags.IOptionalNamedTag<Block> NEEDS_BRONZE_TOOL = tagBlockForge("needs_bronze_tool");
     public static final Tags.IOptionalNamedTag<Block> NEEDS_STEEL_TOOL = tagBlockForge("needs_steel_tool");
-    public static final Tags.IOptionalNamedTag<Block> NEEDS_MITHRIL_TOOL = tagBlockForge("needs_mithril_tool");
-    public static final Tags.IOptionalNamedTag<Block> NEEDS_ADAMANTINE_TOOL = tagBlockForge("needs_adamantine_tool");
 
     public static final Tags.IOptionalNamedTag<Item> INGOTS_COPPER = tagItemForge("ingots/copper");
     public static final Tags.IOptionalNamedTag<Item> INGOTS_BRONZE = tagItemForge("ingots/bronze");
     public static final Tags.IOptionalNamedTag<Item> INGOTS_STEEL = tagItemForge("ingots/steel");
-    public static final Tags.IOptionalNamedTag<Item> INGOTS_MITHRIL = tagItemForge("ingots/mithril");
-    public static final Tags.IOptionalNamedTag<Item> INGOTS_ADAMANTINE = tagItemForge("ingots/adamantine");
 
     private static Tags.IOptionalNamedTag<Item> tagItem(String name)
     {

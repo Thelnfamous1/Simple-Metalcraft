@@ -32,18 +32,6 @@ public class SMBlocks {
     public static final RegistryObject<Block> NETHER_PIG_IRON_ORE = BLOCKS.register("nether_pig_iron_ore",
             SMBlocks::buildNetherOreBlock);
 
-    public static final RegistryObject<Block> MITHRIL_ORE = BLOCKS.register("mithril_ore",
-            SMBlocks::buildMetalOreBlock);
-
-    public static final RegistryObject<Block> DEEPSLATE_MITHRIL_ORE = BLOCKS.register("deepslate_mithril_ore",
-            SMBlocks::buildDeepslateMetalOreBlock);
-
-    public static final RegistryObject<Block> ADAMANTINE_ORE = BLOCKS.register("adamantine_ore",
-            SMBlocks::buildMetalOreBlock);
-
-    public static final RegistryObject<Block> DEEPSLATE_ADAMANTINE_ORE = BLOCKS.register("deepslate_adamantine_ore",
-            SMBlocks::buildDeepslateMetalOreBlock);
-
     public static final RegistryObject<Block> CASTING_TABLE = BLOCKS.register("casting_table",
             () -> new CastingTableBlock(craftingTableProperties()));
 

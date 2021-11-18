@@ -19,34 +19,24 @@ public class SMArmorMaterials implements ArmorMaterial {
                     20, SoundEvents.ARMOR_EQUIP_GOLD, 0.0F, 0.0F,
                     () -> Ingredient.of(SMTags.INGOTS_COPPER));
 
+    public static final SMArmorMaterials BRONZE =
+            new SMArmorMaterials("bronze", 13, new int[]{2, 5, 6, 2},
+                    18, SoundEvents.ARMOR_EQUIP_IRON, 0.0F, 0.0F,
+                    () -> Ingredient.of(SMTags.INGOTS_BRONZE));
+
     /*
         IRON("iron", 15, new int[]{2, 5, 6, 2}, 9, SoundEvents.ARMOR_EQUIP_IRON, 0.0F, 0.0F, () -> Ingredient.of(Items.IRON_INGOT))
      */
 
-    public static final SMArmorMaterials BRONZE =
-            new SMArmorMaterials("bronze", 20, new int[]{2, 5, 7, 2},
-                    18, SoundEvents.ARMOR_EQUIP_IRON, 0.0F, 0.0F,
-                    () -> Ingredient.of(SMTags.INGOTS_BRONZE));
 
     public static final SMArmorMaterials STEEL =
             new SMArmorMaterials("steel", 25, new int[]{2, 6, 7, 3},
                     8, SoundEvents.ARMOR_EQUIP_DIAMOND, 1.0F, 0.0F,
                     () -> Ingredient.of(SMTags.INGOTS_STEEL));
 
-    public static final SMArmorMaterials MITHRIL =
-            new SMArmorMaterials("mithril", 30, new int[]{3, 6, 8, 3},
-                    14, SoundEvents.ARMOR_EQUIP_DIAMOND, 1.5F, 0.0F,
-                    () -> Ingredient.of(SMTags.INGOTS_MITHRIL));
-
     /*
         DIAMOND("diamond", 33, new int[]{3, 6, 8, 3}, 10, SoundEvents.ARMOR_EQUIP_DIAMOND, 2.0F, 0.0F, () -> Ingredient.of(Items.DIAMOND))
      */
-
-    public static final SMArmorMaterials ADAMANTINE =
-            new SMArmorMaterials("adamantine", 35, new int[]{3, 6, 8, 3},
-                    12, SoundEvents.ARMOR_EQUIP_DIAMOND, 2.5F, 0.0F,
-                    () -> Ingredient.of(SMTags.INGOTS_ADAMANTINE));
-
     /*
         NETHERITE("netherite", 37, new int[]{3, 6, 8, 3}, 15, SoundEvents.ARMOR_EQUIP_NETHERITE, 3.0F, 0.1F, () -> Ingredient.of(Items.NETHERITE_INGOT);
      */

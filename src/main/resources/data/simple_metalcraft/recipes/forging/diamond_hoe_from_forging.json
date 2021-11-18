@@ -1,0 +1,21 @@
+{
+  "type": "simple_metalcraft:forging",
+  "ingredients": [
+    {
+      "value": {
+        "item": "minecraft:diamond_ingot"
+      },
+      "count": 2
+    },
+    {
+      "value": {
+        "item": "minecraft:stick"
+      },
+      "count": 2
+    }
+  ],
+  "levelRequirement": 50,
+  "xpCost": 0,
+  "result": "minecraft:diamond_hoe",
+  "count": 1
+}

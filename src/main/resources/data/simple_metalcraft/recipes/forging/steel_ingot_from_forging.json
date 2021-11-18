@@ -9,7 +9,7 @@
     }
   ],
   "levelRequirement": 40,
-  "xpCost": 3,
+  "xpCost": 1,
   "result": "simple_metalcraft:steel_ingot",
   "count": 1
 }

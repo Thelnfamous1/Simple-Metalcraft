@@ -39,12 +39,6 @@ public class SMForgeEvents {
                 && category != Biome.BiomeCategory.NETHER){
             SimpleMetalcraft.LOGGER.info("Adding tin ore to biome: " + biomeName);
             undergroundOreFeatures.add(() -> SMModEvents.ORE_TIN);
-
-            SimpleMetalcraft.LOGGER.info("Adding mithril ore to biome: " + biomeName);
-            undergroundOreFeatures.add(() -> SMModEvents.ORE_MITHRIL);
-
-            SimpleMetalcraft.LOGGER.info("Adding adamantine ore to biome: " + biomeName);
-            undergroundOreFeatures.add(() -> SMModEvents.ORE_ADAMANTINE);
         }
         if(category == Biome.BiomeCategory.NETHER){
             SimpleMetalcraft.LOGGER.info("Adding nether pig iron ore to biome: " + biomeName);

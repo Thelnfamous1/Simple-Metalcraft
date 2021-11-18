@@ -54,16 +54,12 @@ public class SMModEvents {
      */
 
     public static ConfiguredFeature<?, ?> ORE_TIN;
-    public static ConfiguredFeature<?, ?> ORE_MITHRIL;
-    public static ConfiguredFeature<?, ?> ORE_ADAMANTINE;
 
     public static RecipeType<ForgingRecipe> FORGING;
     public static RecipeType<CastingRecipe> CASTING;
     public static RecipeType<BloomingRecipe> BLOOMING;
 
     private static ImmutableList<OreConfiguration.TargetBlockState> ORE_TIN_TARGET_LIST;
-    private static ImmutableList<OreConfiguration.TargetBlockState> ORE_MITHRIL_TARGET_LIST;
-    private static ImmutableList<OreConfiguration.TargetBlockState> ORE_ADAMANTINE_TARGET_LIST;
 
     public static ConfiguredFeature<?, ?> ORE_PIG_IRON_DELTAS;
     public static ConfiguredFeature<?, ?> ORE_PIG_IRON_NETHER;
@@ -86,39 +82,12 @@ public class SMModEvents {
                         OreConfiguration
                         .target(OreConfiguration.Predicates.DEEPSLATE_ORE_REPLACEABLES, SMBlocks.DEEPSLATE_TIN_ORE.get().defaultBlockState())
                 );
-        ORE_MITHRIL_TARGET_LIST =
-                ImmutableList.of(
-                        OreConfiguration
-                                .target(OreConfiguration.Predicates.STONE_ORE_REPLACEABLES, SMBlocks.MITHRIL_ORE.get().defaultBlockState()),
-                        OreConfiguration
-                                .target(OreConfiguration.Predicates.DEEPSLATE_ORE_REPLACEABLES, SMBlocks.DEEPSLATE_MITHRIL_ORE.get().defaultBlockState())
-                );
-        ORE_ADAMANTINE_TARGET_LIST =
-                ImmutableList.of(
-                        OreConfiguration
-                                .target(OreConfiguration.Predicates.STONE_ORE_REPLACEABLES, SMBlocks.ADAMANTINE_ORE.get().defaultBlockState()),
-                        OreConfiguration
-                                .target(OreConfiguration.Predicates.DEEPSLATE_ORE_REPLACEABLES, SMBlocks.DEEPSLATE_ADAMANTINE_ORE.get().defaultBlockState())
-                );
         ORE_TIN = registerFeature("ore_tin",
                 Feature.ORE
                         .configured(new OreConfiguration(ORE_TIN_TARGET_LIST, TIN_ORE_VEIN_SIZE))
                         .rangeTriangle(VerticalAnchor.absolute(TIN_ORE_MIN_HEIGHT), VerticalAnchor.absolute(TIN_ORE_MAX_HEIGHT))
                         .squared()
                         .count(TIN_ORE_VEINS_PER_CHUNK));
-
-        ORE_MITHRIL = registerFeature("ore_mithril",
-                Feature.ORE
-                        .configured(new OreConfiguration(ORE_MITHRIL_TARGET_LIST, MITHRIL_ORE_VEIN_SIZE))
-                        .rangeTriangle(VerticalAnchor.bottom(), VerticalAnchor.absolute(MITHRIL_ORE_MAX_HEIGHT))
-                        .squared()
-                        .count(MITHRIL_ORE_VEINS_PER_CHUNK));
-
-        ORE_ADAMANTINE = registerFeature("ore_adamantine",
-                Feature.SCATTERED_ORE
-                        .configured(new OreConfiguration(ORE_ADAMANTINE_TARGET_LIST, ADAMANTINE_ORE_VEIN_SIZE, 1.0F))
-                        .rangeTriangle(VerticalAnchor.bottom(), VerticalAnchor.aboveBottom(ADAMANTINE_ORE_ABOVE_BOTTOM_AMOUNT))
-                        .squared());
 
         ORE_PIG_IRON_DELTAS = registerFeature("ore_pig_iron_deltas",
                 Feature.ORE
