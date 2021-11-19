@@ -23,6 +23,8 @@
   "block.simple_metalcraft.deepslate_tin_ore" : "Deepslate Tin Ore",
   "block.simple_metalcraft.nether_pig_iron_ore" : "Nether Pig Iron Ore",
 
+  "item.simple_metalcraft.bow_drill" : "Bow Drill",
+
   "item.simple_metalcraft.tin_ore" : "Tin Ore",
   "item.simple_metalcraft.deepslate_tin_ore": "Deepslate Tin Ore",
   "item.simple_metalcraft.raw_tin" : "Raw Tin",

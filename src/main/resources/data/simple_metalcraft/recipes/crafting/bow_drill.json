@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "minecraft:bow"
+    },
+    {
+      "item": "minecraft:stick"
+    },
+    {
+      "tag": "minecraft:wooden_slabs"
+    }
+  ],
+  "result": {
+    "item": "simple_metalcraft:bow_drill"
+  }
+}

@@ -11,7 +11,12 @@ import java.util.function.Supplier;
 public class SMArmorMaterials implements ArmorMaterial {
 
     /*
+        LEATHER("leather", 5, new int[]{1, 2, 3, 1}, 15, SoundEvents.ARMOR_EQUIP_LEATHER, 0.0F, 0.0F, () -> Ingredient.of(Items.LEATHER))
+
         GOLD("gold", 7, new int[]{1, 3, 5, 2}, 25, SoundEvents.ARMOR_EQUIP_GOLD, 0.0F, 0.0F, () -> Ingredient.of(Items.GOLD_INGOT))
+
+        CHAIN("chainmail", 15, new int[]{1, 4, 5, 2}, 12, SoundEvents.ARMOR_EQUIP_CHAIN, 0.0F, 0.0F, () -> Ingredient.of(Items.IRON_INGOT))
+
      */
 
     public static final SMArmorMaterials COPPER =
@@ -20,7 +25,7 @@ public class SMArmorMaterials implements ArmorMaterial {
                     () -> Ingredient.of(SMTags.INGOTS_COPPER));
 
     public static final SMArmorMaterials BRONZE =
-            new SMArmorMaterials("bronze", 13, new int[]{2, 5, 6, 2},
+            new SMArmorMaterials("bronze", 12, new int[]{2, 5, 6, 2},
                     18, SoundEvents.ARMOR_EQUIP_IRON, 0.0F, 0.0F,
                     () -> Ingredient.of(SMTags.INGOTS_BRONZE));
 
@@ -30,14 +35,15 @@ public class SMArmorMaterials implements ArmorMaterial {
 
 
     public static final SMArmorMaterials STEEL =
-            new SMArmorMaterials("steel", 25, new int[]{2, 6, 7, 3},
+            new SMArmorMaterials("steel", 21, new int[]{2, 6, 7, 3},
                     8, SoundEvents.ARMOR_EQUIP_DIAMOND, 1.0F, 0.0F,
                     () -> Ingredient.of(SMTags.INGOTS_STEEL));
 
+    // Another tier, with a durability multiplier of 27?
+
     /*
         DIAMOND("diamond", 33, new int[]{3, 6, 8, 3}, 10, SoundEvents.ARMOR_EQUIP_DIAMOND, 2.0F, 0.0F, () -> Ingredient.of(Items.DIAMOND))
-     */
-    /*
+
         NETHERITE("netherite", 37, new int[]{3, 6, 8, 3}, 15, SoundEvents.ARMOR_EQUIP_NETHERITE, 3.0F, 0.1F, () -> Ingredient.of(Items.NETHERITE_INGOT);
      */
 

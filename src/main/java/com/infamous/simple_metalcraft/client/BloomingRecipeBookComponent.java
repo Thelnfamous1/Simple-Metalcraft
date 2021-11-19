@@ -22,4 +22,5 @@ public class BloomingRecipeBookComponent extends AbstractFurnaceRecipeBookCompon
    protected Set<Item> getFuelItems() {
       return AbstractFurnaceBlockEntity.getFuel().keySet();
    }
+
 }

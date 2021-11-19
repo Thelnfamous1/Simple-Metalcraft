@@ -8,6 +8,10 @@
     "MobMixin",
     "UpgradeRecipeAccessor"
   ],
+  "client": [
+    "ClientRecipeBookMixin",
+    "RecipeBookComponentMixin"
+  ],
   "injectors": {
     "defaultRequire": 1
   },

@@ -3,6 +3,7 @@ package com.infamous.simple_metalcraft.registry;
 import com.infamous.simple_metalcraft.SMArmorMaterials;
 import com.infamous.simple_metalcraft.SMTiers;
 import com.infamous.simple_metalcraft.SimpleMetalcraft;
+import com.infamous.simple_metalcraft.crafting.BowDrillItem;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.item.*;
 import net.minecraft.world.level.block.Block;
@@ -15,6 +16,10 @@ public class SMItems {
     private SMItems(){};
 
     public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, SimpleMetalcraft.MOD_ID);
+
+    // SPECIALTY
+
+    public static final RegistryObject<Item> BOW_DRILL = ITEMS.register("bow_drill", () -> new BowDrillItem((new Item.Properties()).durability(64).tab(CreativeModeTab.TAB_TOOLS)));
 
     // METALWORKING BLOCKS
 
@@ -213,19 +218,19 @@ public class SMItems {
     }
 
     private static ShovelItem buildShovel(Tier tier, float baseAttackDamage, float attackSpeed){
-        return new ShovelItem(tier, baseAttackDamage, attackSpeed, (new Item.Properties()).tab(CreativeModeTab.TAB_COMBAT));
+        return new ShovelItem(tier, baseAttackDamage, attackSpeed, (new Item.Properties()).tab(CreativeModeTab.TAB_TOOLS));
     }
 
     private static PickaxeItem buildPickaxe(Tier tier, int baseAttackDamage, float attackSpeed){
-        return new PickaxeItem(tier, baseAttackDamage, attackSpeed, (new Item.Properties()).tab(CreativeModeTab.TAB_COMBAT));
+        return new PickaxeItem(tier, baseAttackDamage, attackSpeed, (new Item.Properties()).tab(CreativeModeTab.TAB_TOOLS));
     }
 
     private static AxeItem buildAxe(Tier tier, float baseAttackDamage, float attackSpeed){
-        return new AxeItem(tier, baseAttackDamage, attackSpeed, (new Item.Properties()).tab(CreativeModeTab.TAB_COMBAT));
+        return new AxeItem(tier, baseAttackDamage, attackSpeed, (new Item.Properties()).tab(CreativeModeTab.TAB_TOOLS));
     }
 
     private static HoeItem buildHoe(Tier tier, int baseAttackDamage, float attackSpeed){
-        return new HoeItem(tier, baseAttackDamage, attackSpeed, (new Item.Properties()).tab(CreativeModeTab.TAB_COMBAT));
+        return new HoeItem(tier, baseAttackDamage, attackSpeed, (new Item.Properties()).tab(CreativeModeTab.TAB_TOOLS));
     }
 
     private static ArmorItem buildHelmet(ArmorMaterial armorMaterial){

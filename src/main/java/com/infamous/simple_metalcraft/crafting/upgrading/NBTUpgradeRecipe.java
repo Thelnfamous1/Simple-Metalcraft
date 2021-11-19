@@ -57,7 +57,8 @@ public class NBTUpgradeRecipe extends UpgradeRecipe implements NBTOperatorRecipe
             CompoundTag newResultTag = baseTag.copy();
             if(this.nbtOperator.isPresent()){
                 //SimpleMetalcraft.LOGGER.info("Operating on assembled result for recipe {}", this.id);
-                resultCopy.setTag(this.nbtOperator.get().operate(newResultTag, originalResultTag.copy()));
+                CompoundTag operatedResultTag = this.nbtOperator.get().operate(newResultTag, originalResultTag.copy());
+                resultCopy.setTag(operatedResultTag);
             } else{
                 resultCopy.setTag(newResultTag); // vanilla behavior
             }

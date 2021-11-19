@@ -70,7 +70,7 @@ public abstract class MobMixin extends LivingEntity {
                 if (newArmorGrade == 0) {
                     chosenEquipment = Items.LEATHER_CHESTPLATE;
                 } else if (newArmorGrade == 1) {
-                    chosenEquipment = SMItems.COPPER_CHESTPLATE.get();
+                    chosenEquipment = Items.GOLDEN_CHESTPLATE;
                 } else if (newArmorGrade == 2) {
                     chosenEquipment = SMItems.COPPER_CHESTPLATE.get();
                 } else if (newArmorGrade == 3) {
@@ -86,7 +86,7 @@ public abstract class MobMixin extends LivingEntity {
                 if (newArmorGrade == 0) {
                     chosenEquipment = Items.LEATHER_LEGGINGS;
                 } else if (newArmorGrade == 1) {
-                    chosenEquipment = SMItems.COPPER_LEGGINGS.get();
+                    chosenEquipment = Items.GOLDEN_LEGGINGS;
                 } else if (newArmorGrade == 2) {
                     chosenEquipment = SMItems.COPPER_LEGGINGS.get();
                 } else if (newArmorGrade == 3) {
@@ -102,7 +102,7 @@ public abstract class MobMixin extends LivingEntity {
                 if (newArmorGrade == 0) {
                     chosenEquipment = Items.LEATHER_BOOTS;
                 } else if (newArmorGrade == 1) {
-                    chosenEquipment = SMItems.COPPER_BOOTS.get();
+                    chosenEquipment = Items.GOLDEN_BOOTS;
                 } else if (newArmorGrade == 2) {
                     chosenEquipment = SMItems.COPPER_BOOTS.get();
                 } else if (newArmorGrade == 3) {

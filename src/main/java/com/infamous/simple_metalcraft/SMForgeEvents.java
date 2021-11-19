@@ -205,6 +205,33 @@ public class SMForgeEvents {
 
             }
         }
+
+        else if(tradeResult.is(Items.IRON_BOOTS)){
+            replacementTrade = Optional.of(new VillagerTradesHelper.ItemsForEmeralds(new ItemStack(Items.CHAINMAIL_BOOTS), 1, 1, 12, 1, 0.2F));
+        }
+        else if(tradeResult.is(Items.IRON_CHESTPLATE)){
+            replacementTrade = Optional.of(new VillagerTradesHelper.ItemsForEmeralds(new ItemStack(Items.CHAINMAIL_CHESTPLATE), 4, 1, 12, 1, 0.2F));
+        }
+        else if(tradeResult.is(Items.IRON_HELMET)){
+            replacementTrade = Optional.of(new VillagerTradesHelper.ItemsForEmeralds(new ItemStack(Items.CHAINMAIL_HELMET), 1, 1, 12, 1, 0.2F));
+        }
+        else if(tradeResult.is(Items.IRON_LEGGINGS)){
+            replacementTrade = Optional.of(new VillagerTradesHelper.ItemsForEmeralds(new ItemStack(Items.CHAINMAIL_BOOTS), 3, 1, 12, 1, 0.2F));
+        }
+
+        else if(tradeResult.is(Items.CHAINMAIL_BOOTS)){
+            replacementTrade = Optional.of(new VillagerTradesHelper.ItemsForEmeralds(new ItemStack(Items.IRON_BOOTS), 4, 1, 12, 5, 0.2F));
+        }
+        else if(tradeResult.is(Items.CHAINMAIL_CHESTPLATE)){
+            replacementTrade = Optional.of(new VillagerTradesHelper.ItemsForEmeralds(new ItemStack(Items.IRON_CHESTPLATE), 9, 1, 12, 10, 0.2F));
+        }
+        else if(tradeResult.is(Items.CHAINMAIL_HELMET)){
+            replacementTrade = Optional.of(new VillagerTradesHelper.ItemsForEmeralds(new ItemStack(Items.IRON_HELMET), 5, 1, 12, 10, 0.2F));
+        }
+        else if(tradeResult.is(Items.CHAINMAIL_LEGGINGS)){
+            replacementTrade = Optional.of(new VillagerTradesHelper.ItemsForEmeralds(new ItemStack(Items.IRON_BOOTS), 7, 1, 12, 5, 0.2F));
+        }
+
         else if(tradeResult.is(Items.DIAMOND_AXE)){
             replacementTrade = Optional.of(new VillagerTradesHelper.EnchantedItemForEmeralds(SMItems.STEEL_AXE.get(), 12, 3, 15, 0.2F));
         } else if(tradeResult.is(Items.DIAMOND_BOOTS)){
