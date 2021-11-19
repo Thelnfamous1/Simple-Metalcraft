@@ -1,7 +1,7 @@
 package com.infamous.simple_metalcraft.registry;
 
 import com.infamous.simple_metalcraft.SimpleMetalcraft;
-import com.infamous.simple_metalcraft.crafting.MultipleItemSerializer;
+import com.infamous.simple_metalcraft.crafting.MetalworkingSerializer;
 import com.infamous.simple_metalcraft.crafting.blooming.BloomingRecipe;
 import com.infamous.simple_metalcraft.crafting.blooming.BloomingSerializer;
 import com.infamous.simple_metalcraft.crafting.casting.CastingRecipe;
@@ -17,10 +17,10 @@ public class SMRecipes {
     public static DeferredRegister<RecipeSerializer<?>> RECIPE_SERIALIZERS = DeferredRegister.create(ForgeRegistries.RECIPE_SERIALIZERS, SimpleMetalcraft.MOD_ID);
 
     public static RegistryObject<RecipeSerializer<?>> CASTING = RECIPE_SERIALIZERS.register(
-            "casting", () -> new MultipleItemSerializer<>(CastingRecipe::new));
+            "casting", () -> new MetalworkingSerializer<>(CastingRecipe::new));
 
     public static RegistryObject<RecipeSerializer<?>> FORGING = RECIPE_SERIALIZERS.register(
-            "forging", () -> new MultipleItemSerializer<>(ForgingRecipe::new));
+            "forging", () -> new MetalworkingSerializer<>(ForgingRecipe::new));
 
     public static RegistryObject<RecipeSerializer<?>> BLOOMING = RECIPE_SERIALIZERS.register(
             "blooming", () -> new BloomingSerializer<>(BloomingRecipe::new, 200));

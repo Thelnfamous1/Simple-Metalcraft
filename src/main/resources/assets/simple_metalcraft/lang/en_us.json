@@ -14,10 +14,12 @@
   "block.simple_metalcraft.casting_table" : "Casting Table",
   "block.simple_metalcraft.forging_table" : "Forging Table",
   "block.simple_metalcraft.bloomery" : "Bloomery",
+  "block.simple_metalcraft.bellows" : "Bellows",
 
   "item.simple_metalcraft.casting_table" : "Casting Table",
   "item.simple_metalcraft.forging_table" : "Forging Table",
   "item.simple_metalcraft.bloomery" : "Bloomery",
+  "item.simple_metalcraft.bellows" : "Bellows",
 
   "block.simple_metalcraft.tin_ore" : "Tin Ore",
   "block.simple_metalcraft.deepslate_tin_ore" : "Deepslate Tin Ore",

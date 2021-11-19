@@ -42,7 +42,7 @@ public class MetalworkingResultSlot extends Slot {
         this.menu.resultContainer.awardUsedRecipes(player);
 
         // Have to consume the correct amount of input items on take
-        MultipleItemRecipe recipe = this.menu.getRecipes().get(menu.getSelectedRecipeIndex());
+        MetalworkingRecipe recipe = this.menu.getRecipes().get(menu.getSelectedRecipeIndex());
         Map<Ingredient, Integer> ingredientCounts = recipe.getIngredientMap();
         this.consumeInputs(ingredientCounts, this.menu.inputContainer);
       /*

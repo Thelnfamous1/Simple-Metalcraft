@@ -1,6 +1,7 @@
 package com.infamous.simple_metalcraft.registry;
 
 import com.infamous.simple_metalcraft.SimpleMetalcraft;
+import com.infamous.simple_metalcraft.crafting.bellows.BellowsBlock;
 import com.infamous.simple_metalcraft.crafting.blooming.BloomeryBlock;
 import com.infamous.simple_metalcraft.crafting.casting.CastingTableBlock;
 import com.infamous.simple_metalcraft.crafting.forging.ForgingTableBlock;
@@ -42,6 +43,8 @@ public class SMBlocks {
 
     public static final RegistryObject<Block> BLOOMERY = BLOCKS.register("bloomery",
             () -> new BloomeryBlock(furnaceProperties()));
+
+    public static final RegistryObject<Block> BELLOWS = BLOCKS.register("bellows", () -> new BellowsBlock(BlockBehaviour.Properties.of(Material.DECORATION).noCollission().strength(0.5F)));
 
     private static BlockBehaviour.Properties furnaceProperties(){
         return BlockBehaviour.Properties.of(Material.STONE)

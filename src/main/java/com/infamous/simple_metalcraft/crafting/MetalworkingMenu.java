@@ -35,7 +35,7 @@ public abstract class MetalworkingMenu extends AbstractContainerMenu {
    private final DataSlot levelRequirement = DataSlot.standalone();
    private final DataSlot xpCost = DataSlot.standalone();
    private final Level level;
-   private List<? extends MultipleItemRecipe> recipes = Lists.newArrayList();
+   private List<? extends MetalworkingRecipe> recipes = Lists.newArrayList();
    //private ItemStack input = ItemStack.EMPTY;
    long lastSoundTime;
    final Slot inputSlot1;
@@ -104,7 +104,7 @@ public abstract class MetalworkingMenu extends AbstractContainerMenu {
       return this.selectedRecipeIndex.get();
    }
 
-   public List<? extends MultipleItemRecipe> getRecipes() {
+   public List<? extends MetalworkingRecipe> getRecipes() {
       return this.recipes;
    }
 
@@ -153,11 +153,11 @@ public abstract class MetalworkingMenu extends AbstractContainerMenu {
 
    void setupResultSlot() {
       if (!this.recipes.isEmpty() && this.isValidRecipeIndex(this.selectedRecipeIndex.get())) {
-         MultipleItemRecipe multipleItemRecipe = this.recipes.get(this.selectedRecipeIndex.get());
-         this.resultContainer.setRecipeUsed(multipleItemRecipe);
-         this.resultSlot.set(multipleItemRecipe.assemble(this.inputContainer));
-         this.levelRequirement.set(multipleItemRecipe.levelRequirement);
-         this.xpCost.set(multipleItemRecipe.xpCost);
+         MetalworkingRecipe metalworkingRecipe = this.recipes.get(this.selectedRecipeIndex.get());
+         this.resultContainer.setRecipeUsed(metalworkingRecipe);
+         this.resultSlot.set(metalworkingRecipe.assemble(this.inputContainer));
+         this.levelRequirement.set(metalworkingRecipe.levelRequirement);
+         this.xpCost.set(metalworkingRecipe.xpCost);
       } else {
          this.resultSlot.set(ItemStack.EMPTY);
          this.levelRequirement.set(0);
@@ -235,7 +235,7 @@ public abstract class MetalworkingMenu extends AbstractContainerMenu {
       return testContainer;
    }
 
-   protected abstract RecipeType<? extends MultipleItemRecipe> getRecipeType();
+   protected abstract RecipeType<? extends MetalworkingRecipe> getRecipeType();
 
    @Override
    public void removed(Player player) {

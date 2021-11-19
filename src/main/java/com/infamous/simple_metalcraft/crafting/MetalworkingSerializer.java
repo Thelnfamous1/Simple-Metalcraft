@@ -13,10 +13,10 @@ import net.minecraftforge.registries.ForgeRegistries;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-public class MultipleItemSerializer<T extends MultipleItemRecipe> extends net.minecraftforge.registries.ForgeRegistryEntry<RecipeSerializer<?>> implements RecipeSerializer<T> {
+public class MetalworkingSerializer<T extends MetalworkingRecipe> extends net.minecraftforge.registries.ForgeRegistryEntry<RecipeSerializer<?>> implements RecipeSerializer<T> {
     final Factory<T> factory;
 
-    public MultipleItemSerializer(Factory<T> recipeFactory) {
+    public MetalworkingSerializer(Factory<T> recipeFactory) {
         this.factory = recipeFactory;
     }
 
@@ -80,7 +80,7 @@ public class MultipleItemSerializer<T extends MultipleItemRecipe> extends net.mi
         packetBuffer.writeItem(recipe.getResultItem()); // result
     }
 
-    public interface Factory<T2 extends MultipleItemRecipe> {
+    public interface Factory<T2 extends MetalworkingRecipe> {
         T2 create(ResourceLocation resourceLocation, String group, Map<Ingredient, Integer> ingredient, int levelRequirement, int xpCost, ItemStack resultStack);
     }
 }

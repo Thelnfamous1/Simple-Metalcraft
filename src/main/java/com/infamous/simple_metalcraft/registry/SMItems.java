@@ -7,6 +7,7 @@ import com.infamous.simple_metalcraft.crafting.BowDrillItem;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.item.*;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraftforge.fmllegacy.RegistryObject;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -34,6 +35,11 @@ public class SMItems {
     public static final RegistryObject<Item> BLOOMERY =
             ITEMS.register("bloomery",
                     () -> buildDecorationBlock(SMBlocks.BLOOMERY.get()));
+
+    public static final RegistryObject<Item> BELLOWS =
+            ITEMS.register("bellows",
+                    () -> buildRedstoneBlock(SMBlocks.BELLOWS.get()));
+
     // TIN
 
     public static final RegistryObject<Item> TIN_ORE =
@@ -256,7 +262,12 @@ public class SMItems {
     private static BlockItem buildBuildingBlock(Block block) {
         return new BlockItem(block, (new Item.Properties()).tab(CreativeModeTab.TAB_BUILDING_BLOCKS));
     }
+
     private static BlockItem buildDecorationBlock(Block block) {
         return new BlockItem(block, (new Item.Properties()).tab(CreativeModeTab.TAB_DECORATIONS));
+    }
+
+    private static BlockItem buildRedstoneBlock(Block block) {
+        return new BlockItem(block, (new Item.Properties()).tab(CreativeModeTab.TAB_REDSTONE));
     }
 }

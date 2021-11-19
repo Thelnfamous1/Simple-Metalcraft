@@ -1,7 +1,7 @@
 package com.infamous.simple_metalcraft.client;
 
 import com.infamous.simple_metalcraft.crafting.MetalworkingMenu;
-import com.infamous.simple_metalcraft.crafting.MultipleItemRecipe;
+import com.infamous.simple_metalcraft.crafting.MetalworkingRecipe;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.Minecraft;
@@ -79,7 +79,7 @@ public abstract class MetalworkingScreen extends AbstractContainerScreen<Metalwo
          int i = this.leftPos + RECIPES_X;
          int j = this.topPos + RECIPES_Y;
          int k = this.startIndex + SCROLLER_WIDTH;
-         List<? extends MultipleItemRecipe> list = this.menu.getRecipes();
+         List<? extends MetalworkingRecipe> list = this.menu.getRecipes();
 
          for(int l = this.startIndex; l < k && l < this.menu.getNumRecipes(); ++l) {
             int i1 = l - this.startIndex;
@@ -112,7 +112,7 @@ public abstract class MetalworkingScreen extends AbstractContainerScreen<Metalwo
    }
 
    private void renderRecipes(int p_99349_, int p_99350_, int p_99351_) {
-      List<? extends MultipleItemRecipe> list = this.menu.getRecipes();
+      List<? extends MetalworkingRecipe> list = this.menu.getRecipes();
 
       for(int i = this.startIndex; i < p_99351_ && i < this.menu.getNumRecipes(); ++i) {
          int j = i - this.startIndex;

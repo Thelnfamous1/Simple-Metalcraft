@@ -22,7 +22,7 @@ import java.util.Map;
 /**
  * The multiple ingredient handling logic was shamelessly copied from SilentChaos512's "Silent Mechanisms" project
  */
-public abstract class MultipleItemRecipe implements Recipe<Container> {
+public abstract class MetalworkingRecipe implements Recipe<Container> {
    protected final Map<Ingredient, Integer> ingredients;
    protected final ItemStack result;
    private final RecipeType<?> type;
@@ -32,7 +32,7 @@ public abstract class MultipleItemRecipe implements Recipe<Container> {
    protected final int xpCost;
    protected final String group;
 
-    public MultipleItemRecipe(RecipeType<?> recipeType, RecipeSerializer<?> recipeSerializer, ResourceLocation resourceLocation, String groupIn, Map<Ingredient, Integer> ingredientsIn, int levelRequirementIn, int xpCostIn, ItemStack resultIn) {
+    public MetalworkingRecipe(RecipeType<?> recipeType, RecipeSerializer<?> recipeSerializer, ResourceLocation resourceLocation, String groupIn, Map<Ingredient, Integer> ingredientsIn, int levelRequirementIn, int xpCostIn, ItemStack resultIn) {
       this.type = recipeType;
       this.serializer = recipeSerializer;
       this.id = resourceLocation;
