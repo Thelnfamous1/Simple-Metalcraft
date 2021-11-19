@@ -70,13 +70,18 @@ public class BellowsBlock extends FaceAttachedHorizontalDirectionalBlock {
     private void boostConnectedFurnace(BlockState blockState, Level level, BlockPos blockPos) {
         BlockPos connectedPos = blockPos.relative(getConnectedDirection(blockState).getOpposite());
         BlockEntity blockEntity = level.getBlockEntity(connectedPos);
-        if(blockEntity != null) SimpleMetalcraft.LOGGER.info("Found a {} at {}!", blockEntity.getType(), blockPos);
         if(!level.isClientSide && blockEntity instanceof AbstractFurnaceBlockEntity furnaceBE){
-            SimpleMetalcraft.LOGGER.info("Found a furnace at {}!", blockPos);
             AbstractFurnaceBlockEntityAccessor accessor = (AbstractFurnaceBlockEntityAccessor)furnaceBE;
             int cookingProgress = accessor.getCookingProgress();
-            if(accessor.callIsLit() && cookingProgress > 0){
-                accessor.setCookingProgress(Mth.clamp(cookingProgress + this.getCookingBoost(), 0, accessor.getCookingTotalTime() - 1));
+            int cookingTotalTime = accessor.getCookingTotalTime();
+            int litTime = accessor.getLitTime();
+
+            boolean canDecreaseLitTime = litTime > this.getCookingBoost() + 1; // litTime > 21, so it gets decreased from 22 to 2
+            boolean canIncreaseCookingProgress = cookingProgress < cookingTotalTime - this.getCookingBoost(); // cookingProgress < 180, so it gets increased from 179 to 199
+
+            if(canDecreaseLitTime && canIncreaseCookingProgress){
+                accessor.setLitTime(litTime - this.getCookingBoost());
+                accessor.setCookingProgress(cookingProgress + this.getCookingBoost());
             }
         }
     }
