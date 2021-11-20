@@ -114,6 +114,8 @@ public abstract class MobMixin extends LivingEntity {
                 } else if (newArmorGrade == 6) {
                     chosenEquipment = Items.DIAMOND_BOOTS;
                 }
+            default:
+                cir.setReturnValue(null);
         }
         cir.setReturnValue(chosenEquipment);
     }
