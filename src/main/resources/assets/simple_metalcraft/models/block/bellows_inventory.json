@@ -1,17 +1,89 @@
-{   "parent": "block/block",
+{
+  "parent": "minecraft:block/block",
+  "credit": "Made with Blockbench",
+  "texture_size": [32, 32],
   "textures": {
-    "particle": "#texture"
+    "0": "simple_metalcraft:block/bellows_tops",
+    "1": "simple_metalcraft:block/bellows_bag",
+    "particle": "simple_metalcraft:block/bellows_tops"
   },
   "elements": [
-    {   "from": [ 5, 6, 6 ],
-      "to": [ 11, 10, 10 ],
+    {
+      "name": "bottom",
+      "from": [0, 0, 0],
+      "to": [16, 3, 16],
       "faces": {
-        "down":  { "uv": [ 5, 6, 11, 10 ], "texture": "#texture" },
-        "up":    { "uv": [ 5, 10, 11, 6 ], "texture": "#texture" },
-        "north": { "uv": [ 5, 12, 11, 16 ], "texture": "#texture" },
-        "south": { "uv": [ 5, 12, 11, 16 ], "texture": "#texture" },
-        "west":  { "uv": [ 6, 12, 10, 16 ], "texture": "#texture" },
-        "east":  { "uv": [ 6, 12, 10, 16 ], "texture": "#texture" }
+        "north": {"uv": [0, 0, 8, 1.5], "texture": "#0"},
+        "east": {"uv": [0, 0, 8, 1.5], "texture": "#0"},
+        "south": {"uv": [0, 0, 8, 1.5], "texture": "#0"},
+        "west": {"uv": [0, 0, 8, 1.5], "texture": "#0"},
+        "up": {"uv": [0, 8, 8, 16], "texture": "#0"},
+        "down": {"uv": [0, 8, 8, 16], "texture": "#0"}
+      }
+    },
+    {
+      "name": "top",
+      "from": [0, 13, 0],
+      "to": [16, 16, 16],
+      "faces": {
+        "north": {"uv": [0, 0, 8, 1.5], "texture": "#0"},
+        "east": {"uv": [0, 0, 8, 1.5], "texture": "#0"},
+        "south": {"uv": [0, 0, 8, 1.5], "texture": "#0"},
+        "west": {"uv": [0, 0, 8, 1.5], "texture": "#0"},
+        "up": {"uv": [0, 8, 8, 16], "texture": "#0"},
+        "down": {"uv": [0, 8, 8, 16], "texture": "#0"}
+      }
+    },
+    {
+      "name": "bag",
+      "from": [2, 3, 2],
+      "to": [14, 13, 14],
+      "faces": {
+        "north": {"uv": [0, 0, 6, 5], "texture": "#1"},
+        "east": {"uv": [0, 0, 6, 5], "texture": "#1"},
+        "south": {"uv": [0, 0, 6, 5], "texture": "#1"},
+        "west": {"uv": [0, 0, 6, 5], "texture": "#1"},
+        "up": {"uv": [0, 5, 6, 11], "texture": "#1"},
+        "down": {"uv": [0, 5, 6, 11], "texture": "#1"}
+      }
+    },
+    {
+      "name": "nozzle",
+      "from": [6, 6, 0],
+      "to": [10, 10, 2],
+      "faces": {
+        "north": {"uv": [6, 0, 8, 2], "texture": "#1"},
+        "east": {"uv": [6, 2, 7, 4], "texture": "#1"},
+        "south": {"uv": [6, 0, 8, 2], "texture": "#1"},
+        "west": {"uv": [6, 2, 7, 4], "texture": "#1"},
+        "up": {"uv": [6, 4, 8, 5], "texture": "#1"},
+        "down": {"uv": [6, 4, 8, 5], "texture": "#1"}
+      }
+    },
+    {
+      "name": "bagFramerTop",
+      "from": [1, 10, 1],
+      "to": [15, 11, 15],
+      "faces": {
+        "north": {"uv": [0, 15.5, 7, 16], "texture": "#1"},
+        "east": {"uv": [0, 15.5, 7, 16], "texture": "#1"},
+        "south": {"uv": [0, 15.5, 7, 16], "texture": "#1"},
+        "west": {"uv": [0, 15.5, 7, 16], "texture": "#1"},
+        "up": {"uv": [9, 9, 16, 16], "texture": "#1"},
+        "down": {"uv": [9, 9, 16, 16], "texture": "#1"}
+      }
+    },
+    {
+      "name": "bagFramerBottom",
+      "from": [1, 5, 1],
+      "to": [15, 6, 15],
+      "faces": {
+        "north": {"uv": [0, 15.5, 7, 16], "texture": "#1"},
+        "east": {"uv": [0, 15.5, 7, 16], "texture": "#1"},
+        "south": {"uv": [0, 15.5, 7, 16], "texture": "#1"},
+        "west": {"uv": [0, 15.5, 7, 16], "texture": "#1"},
+        "up": {"uv": [9, 9, 16, 16], "texture": "#1"},
+        "down": {"uv": [9, 9, 16, 16], "texture": "#1"}
       }
     }
   ]

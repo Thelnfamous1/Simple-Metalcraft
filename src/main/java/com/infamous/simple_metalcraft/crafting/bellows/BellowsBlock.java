@@ -32,7 +32,7 @@ import java.util.Random;
 
 public class BellowsBlock extends FaceAttachedHorizontalDirectionalBlock {
     public static final BooleanProperty POWERED = BlockStateProperties.POWERED;
-    public static final int DEFAULT_PRESS_DURATION = 20;
+    public static final int DEFAULT_PRESS_DURATION = 10;
     public static final int DEFAULT_COOKING_BOOST = 20;
 
     public BellowsBlock(Properties properties) {
@@ -91,7 +91,7 @@ public class BellowsBlock extends FaceAttachedHorizontalDirectionalBlock {
     }
 
     protected SoundEvent getSound(boolean on) {
-        return on ? SoundEvents.STONE_BUTTON_CLICK_ON : SoundEvents.STONE_BUTTON_CLICK_OFF;
+        return on ? SoundEvents.PISTON_CONTRACT : SoundEvents.PISTON_EXTEND;
     }
 
     @Override
