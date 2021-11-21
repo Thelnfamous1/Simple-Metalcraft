@@ -27,6 +27,19 @@
 
   "item.simple_metalcraft.bow_drill" : "Bow Drill",
 
+  "item.simple_metalcraft.cow_hide" : "Cow Hide",
+  "item.simple_metalcraft.donkey_hide" : "Donkey Hide",
+  "item.simple_metalcraft.fox_hide" : "Fox Hide",
+  "item.simple_metalcraft.goat_hide" : "Goat Hide",
+  "item.simple_metalcraft.horse_hide" : "Horse Hide",
+  "item.simple_metalcraft.llama_hide" : "Llama Hide",
+  "item.simple_metalcraft.mooshroom_hide" : "Mooshroom Hide",
+  "item.simple_metalcraft.mule_hide" : "Mule Hide",
+  "item.simple_metalcraft.pig_hide" : "Pig Hide",
+  "item.simple_metalcraft.polar_bear_hide" : "Polar Bear Hide",
+  "item.simple_metalcraft.sheep_hide" : "Sheep Hide",
+  "item.simple_metalcraft.wolf_hide" : "Wolf Hide",
+
   "item.simple_metalcraft.tin_ore" : "Tin Ore",
   "item.simple_metalcraft.deepslate_tin_ore": "Deepslate Tin Ore",
   "item.simple_metalcraft.raw_tin" : "Raw Tin",

@@ -1,0 +1,12 @@
+{
+  "replace": false,
+  "values": [
+    "simple_metalcraft:cow_hide",
+    "simple_metalcraft:donkey_hide",
+    "simple_metalcraft:horse_hide",
+    "simple_metalcraft:llama_hide",
+    "simple_metalcraft:mooshroom_hide",
+    "simple_metalcraft:mule_hide",
+    "simple_metalcraft:polar_bear_hide"
+  ]
+}

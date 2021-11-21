@@ -22,6 +22,19 @@ public class SMItems {
 
     public static final RegistryObject<Item> BOW_DRILL = ITEMS.register("bow_drill", () -> new BowDrillItem((new Item.Properties()).durability(64).tab(CreativeModeTab.TAB_TOOLS)));
 
+    public static final RegistryObject<Item> COW_HIDE = registerHide("cow");
+    public static final RegistryObject<Item> DONKEY_HIDE = registerHide("donkey");
+    public static final RegistryObject<Item> FOX_HIDE = registerHide("fox");
+    public static final RegistryObject<Item> GOAT_HIDE = registerHide("goat");
+    public static final RegistryObject<Item> HORSE_HIDE = registerHide("horse");
+    public static final RegistryObject<Item> LLAMA_HIDE = registerHide("llama");
+    public static final RegistryObject<Item> MOOSHROOM_HIDE = registerHide("mooshroom");
+    public static final RegistryObject<Item> MULE_HIDE = registerHide("mule");
+    public static final RegistryObject<Item> PIG_HIDE = registerHide("pig");
+    public static final RegistryObject<Item> POLAR_BEAR_HIDE = registerHide("polar_bear");
+    public static final RegistryObject<Item> SHEEP_HIDE = registerHide("sheep");
+    public static final RegistryObject<Item> WOLF_HIDE = registerHide("wolf");
+
     // METALWORKING BLOCKS
 
     public static final RegistryObject<Item> CASTING_TABLE =
@@ -269,5 +282,9 @@ public class SMItems {
 
     private static BlockItem buildRedstoneBlock(Block block) {
         return new BlockItem(block, (new Item.Properties()).tab(CreativeModeTab.TAB_REDSTONE));
+    }
+
+    private static RegistryObject<Item> registerHide(String animalName) {
+        return ITEMS.register(animalName + "_hide", SMItems::buildMaterial);
     }
 }

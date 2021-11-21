@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "tag": "simple_metalcraft:small_hides"
+    },
+    {
+      "tag": "simple_metalcraft:small_hides"
+    },
+    {
+      "tag": "simple_metalcraft:small_hides"
+    },
+    {
+      "tag": "simple_metalcraft:small_hides"
+    }
+  ],
+  "result": {
+    "item": "minecraft:leather",
+    "count": 1
+  }
+}
