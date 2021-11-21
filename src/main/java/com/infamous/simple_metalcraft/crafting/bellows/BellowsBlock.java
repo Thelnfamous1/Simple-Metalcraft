@@ -1,24 +1,25 @@
 package com.infamous.simple_metalcraft.crafting.bellows;
 
-import com.infamous.simple_metalcraft.SimpleMetalcraft;
-import com.infamous.simple_metalcraft.mixin.AbstractFurnaceBlockEntityAccessor;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
-import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.FaceAttachedHorizontalDirectionalBlock;
 import net.minecraft.world.level.block.entity.AbstractFurnaceBlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.AttachFace;
@@ -60,28 +61,30 @@ public class BellowsBlock extends FaceAttachedHorizontalDirectionalBlock {
         }
     }
 
+    @Override
+    public boolean canSurvive(BlockState p_53186_, LevelReader p_53187_, BlockPos p_53188_) {
+        return true;
+    }
+
     public void press(BlockState blockState, Level level, BlockPos blockPos) {
         level.setBlock(blockPos, blockState.setValue(POWERED, Boolean.valueOf(true)), 3);
         this.updateNeighbours(blockState, level, blockPos);
         level.getBlockTicks().scheduleTick(blockPos, this, this.getPressDuration());
-        this.boostConnectedFurnace(blockState, level, blockPos);
+        this.tickConnectedFurnace(blockState, level, blockPos);
     }
 
-    private void boostConnectedFurnace(BlockState blockState, Level level, BlockPos blockPos) {
-        BlockPos connectedPos = blockPos.relative(getConnectedDirection(blockState).getOpposite());
-        BlockEntity blockEntity = level.getBlockEntity(connectedPos);
-        if(!level.isClientSide && blockEntity instanceof AbstractFurnaceBlockEntity furnaceBE){
-            AbstractFurnaceBlockEntityAccessor accessor = (AbstractFurnaceBlockEntityAccessor)furnaceBE;
-            int cookingProgress = accessor.getCookingProgress();
-            int cookingTotalTime = accessor.getCookingTotalTime();
-            int litTime = accessor.getLitTime();
+    @SuppressWarnings("unchecked")
+    private <T extends BlockEntity> void tickConnectedFurnace(BlockState blockState, Level level, BlockPos blockPos) {
+        BlockPos connectedPos = getConnectedPos(blockState, blockPos);
+        BlockState connectedBS = level.getBlockState(connectedPos);
+        BlockEntity connectedBE = level.getBlockEntity(connectedPos);
 
-            boolean canDecreaseLitTime = litTime > this.getCookingBoost() + 1; // litTime > 21, so it gets decreased from 22 to 2
-            boolean canIncreaseCookingProgress = cookingProgress < cookingTotalTime - this.getCookingBoost(); // cookingProgress < 180, so it gets increased from 179 to 199
-
-            if(canDecreaseLitTime && canIncreaseCookingProgress){
-                accessor.setLitTime(litTime - this.getCookingBoost());
-                accessor.setCookingProgress(cookingProgress + this.getCookingBoost());
+        if (connectedBE instanceof AbstractFurnaceBlockEntity) { // TODO: To hardcode or not to hardcode?
+            BlockEntityTicker<T> ticker = (BlockEntityTicker<T>) blockState.getTicker(level, connectedBE.getType());
+            if(ticker != null){
+                for(int i = 0; i < this.getCookingBoost(); i++){
+                    ticker.tick(level, connectedPos, connectedBS, (T) connectedBE);
+                }
             }
         }
     }
@@ -133,11 +136,15 @@ public class BellowsBlock extends FaceAttachedHorizontalDirectionalBlock {
 
     private void updateNeighbours(BlockState blockState, Level level, BlockPos blockPos) {
         level.updateNeighborsAt(blockPos, this);
-        level.updateNeighborsAt(blockPos.relative(getConnectedDirection(blockState).getOpposite()), this);
+        level.updateNeighborsAt(this.getConnectedPos(blockState, blockPos), this);
     }
 
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> stateBuilder) {
         stateBuilder.add(FACING, POWERED, FACE);
+    }
+
+    private BlockPos getConnectedPos(BlockState blockState, BlockPos blockPos) {
+        return blockPos.relative(getConnectedDirection(blockState).getOpposite());
     }
 }

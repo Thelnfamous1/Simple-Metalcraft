@@ -5,6 +5,7 @@ import com.infamous.simple_metalcraft.crafting.blooming.BloomingRecipe;
 import com.infamous.simple_metalcraft.crafting.casting.CastingRecipe;
 import com.infamous.simple_metalcraft.crafting.forging.ForgingRecipe;
 import com.infamous.simple_metalcraft.registry.SMBlocks;
+import com.infamous.simple_metalcraft.registry.SMRecipes;
 import net.minecraft.core.Registry;
 import net.minecraft.data.BuiltinRegistries;
 import net.minecraft.data.worldgen.Features;
@@ -104,9 +105,9 @@ public class SMModEvents {
     }
 
     private static void registerRecipeTypes() {
-        CASTING = registerRecipeType("casting");
-        FORGING = registerRecipeType("forging");
-        BLOOMING = registerRecipeType("blooming");
+        CASTING = registerRecipeType(SMRecipes.CASTING_NAME);
+        FORGING = registerRecipeType(SMRecipes.FORGING_NAME);
+        BLOOMING = registerRecipeType(SMRecipes.BLOOMING_NAME);
     }
 
     private static <FC extends FeatureConfiguration> ConfiguredFeature<FC, ?> registerFeature(String name, ConfiguredFeature<FC, ?> feature) {

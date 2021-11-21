@@ -44,7 +44,8 @@ public class SMBlocks {
     public static final RegistryObject<Block> BLOOMERY = BLOCKS.register("bloomery",
             () -> new BloomeryBlock(furnaceProperties()));
 
-    public static final RegistryObject<Block> BELLOWS = BLOCKS.register("bellows", () -> new BellowsBlock(BlockBehaviour.Properties.of(Material.DECORATION).noCollission().strength(0.5F)));
+    public static final RegistryObject<Block> BELLOWS = BLOCKS.register("bellows",
+            () -> new BellowsBlock(BlockBehaviour.Properties.of(Material.WOOD).strength(0.5F).sound(SoundType.WOOD)));
 
     private static BlockBehaviour.Properties furnaceProperties(){
         return BlockBehaviour.Properties.of(Material.STONE)

@@ -26,6 +26,7 @@ public class BloomeryBlock extends AbstractFurnaceBlock {
       super(properties);
    }
 
+   @Override
    public BlockEntity newBlockEntity(BlockPos blockPos, BlockState blockState) {
       return new BloomeryBlockEntity(blockPos, blockState);
    }
@@ -40,6 +41,7 @@ public class BloomeryBlock extends AbstractFurnaceBlock {
       return level.isClientSide ? null : createTickerHelper(blockEntityType, furnaceEntityType, BloomeryBlockEntity::bloomeryServerTick);
    }
 
+   @Override
    protected void openContainer(Level level, BlockPos blockPos, Player player) {
       BlockEntity blockentity = level.getBlockEntity(blockPos);
       if (blockentity instanceof BloomeryBlockEntity) {
@@ -49,24 +51,17 @@ public class BloomeryBlock extends AbstractFurnaceBlock {
 
    }
 
+   @Override
    public void animateTick(BlockState blockState, Level level, BlockPos blockPos, Random random) {
-      if (blockState.getValue(AbstractFurnaceBlock.LIT)) {
+      if (blockState.getValue(LIT)) {
          double xPos = (double)blockPos.getX() + 0.5D;
          double yPos = (double)blockPos.getY();
          double zPos = (double)blockPos.getZ() + 0.5D;
          if (random.nextDouble() < 0.1D) {
-            level.playLocalSound(xPos, yPos, zPos, SoundEvents.FURNACE_FIRE_CRACKLE, SoundSource.BLOCKS, 1.0F, 1.0F, false);
+            level.playLocalSound(xPos, yPos, zPos, SoundEvents.SMOKER_SMOKE, SoundSource.BLOCKS, 1.0F, 1.0F, false);
          }
 
-         Direction facing = blockState.getValue(AbstractFurnaceBlock.FACING);
-         Direction.Axis facingAxis = facing.getAxis();
-         double stepScale = 0.52D;
-         double defaultDelta = random.nextDouble() * 0.6D - 0.3D;
-         double xDelta = facingAxis == Direction.Axis.X ? (double)facing.getStepX() * stepScale : defaultDelta;
-         double yDelta = random.nextDouble() * 6.0D / 16.0D;
-         double zDelta = facingAxis == Direction.Axis.Z ? (double)facing.getStepZ() * stepScale : defaultDelta;
-         level.addParticle(ParticleTypes.SMOKE, xPos + xDelta, yPos + yDelta, zPos + zDelta, 0.0D, 0.0D, 0.0D);
-         level.addParticle(ParticleTypes.FLAME, xPos + xDelta, yPos + yDelta, zPos + zDelta, 0.0D, 0.0D, 0.0D);
+         level.addParticle(ParticleTypes.SMOKE, xPos, yPos + 1.1D, zPos, 0.0D, 0.0D, 0.0D);
       }
    }
 }

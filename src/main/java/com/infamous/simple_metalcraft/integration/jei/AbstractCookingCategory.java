@@ -22,6 +22,7 @@ import net.minecraft.network.chat.TranslatableComponent;
 /**
  * Copied directly from JEI source code - it's not a part of the API, and I see no need to reinvent
  * a perfectly working wheel
+ * @author mezz
  * @param <T>
  */
 public abstract class AbstractCookingCategory<T extends AbstractCookingRecipe> extends FurnaceVariantCategory<T> {
@@ -117,8 +118,8 @@ public abstract class AbstractCookingCategory<T extends AbstractCookingRecipe> e
 	public void setRecipe(IRecipeLayout recipeLayout, T recipe, IIngredients ingredients) {
 		IGuiItemStackGroup guiItemStacks = recipeLayout.getItemStacks();
 
-		guiItemStacks.init(inputSlot, true, 0, 0);
-		guiItemStacks.init(outputSlot, false, 60, 18);
+		guiItemStacks.init(INPUT_SLOT, true, 0, 0);
+		guiItemStacks.init(OUTPUT_SLOT, false, 60, 18);
 
 		guiItemStacks.set(ingredients);
 	}
