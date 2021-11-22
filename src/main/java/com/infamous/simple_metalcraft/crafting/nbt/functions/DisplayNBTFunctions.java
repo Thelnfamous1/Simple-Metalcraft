@@ -5,9 +5,10 @@ import com.infamous.simple_metalcraft.crafting.nbt.NBTFunction;
 import com.infamous.simple_metalcraft.crafting.nbt.NBTOperator;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
+import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
-import net.minecraft.network.chat.TextComponent;
+import net.minecraft.world.item.ItemStack;
 
 import javax.annotation.Nullable;
 import java.awt.*;
@@ -23,9 +24,9 @@ public class DisplayNBTFunctions {
         throw new IllegalStateException("Utility class");
     }
 
-    public static final String COLOR_TAG_NAME = "color";
-    public static final String LORE_TAG_NAME = "Lore";
-    public static final String NAME_TAG_NAME = "Name";
+    public static final String COLOR_TAG_NAME = ItemStack.TAG_COLOR;
+    public static final String LORE_TAG_NAME = ItemStack.TAG_LORE;
+    public static final String NAME_TAG_NAME = ItemStack.TAG_LORE;
     public static final NBTFunction APPEND_TO_BASE
             = (baseTag, additiveTag) ->
             {
@@ -34,9 +35,9 @@ public class DisplayNBTFunctions {
                 CompoundTag baseDisplay = baseTag.getCompound(NBTOperator.DISPLAY_TAG_NAME);
                 CompoundTag additiveDisplay = additiveTag.getCompound(NBTOperator.DISPLAY_TAG_NAME);
 
-                combineNames(baseDisplay, additiveDisplay);
+                combineNames(baseDisplay, additiveDisplay, true);
                 combineColors(baseDisplay, additiveDisplay, true);
-                combineLore(baseDisplay, additiveDisplay);
+                combineLore(baseDisplay, additiveDisplay, true);
 
                 return baseTag;
             };
@@ -49,9 +50,9 @@ public class DisplayNBTFunctions {
                 CompoundTag baseDisplay = baseTag.getCompound(NBTOperator.DISPLAY_TAG_NAME);
                 CompoundTag additiveDisplay = additiveTag.getCompound(NBTOperator.DISPLAY_TAG_NAME);
 
-                combineNames(baseDisplay, additiveDisplay);
+                combineNames(baseDisplay, additiveDisplay, false);
                 combineColors(baseDisplay, additiveDisplay, false);
-                combineLore(baseDisplay, additiveDisplay);
+                combineLore(baseDisplay, additiveDisplay, false);
                 return baseTag;
             };
 
@@ -76,10 +77,10 @@ public class DisplayNBTFunctions {
         }
     }
 
-    private static void combineNames(CompoundTag baseDisplay, CompoundTag additiveDisplay) {
+    private static void combineNames(CompoundTag baseDisplay, CompoundTag additiveDisplay, boolean addTogether) {
         List<MutableComponent> namesList = new ArrayList<>();
-        tryAddNameToList(baseDisplay, namesList);
-        tryAddNameToList(additiveDisplay, namesList);
+        tryAddNameToList(baseDisplay, namesList, true);
+        tryAddNameToList(additiveDisplay, namesList, addTogether);
         if(!namesList.isEmpty()){
             MutableComponent newNameComponent = namesList.get(0);
             for(int i = 1; i < namesList.size(); i++){
@@ -89,12 +90,13 @@ public class DisplayNBTFunctions {
         }
     }
 
-    private static void tryAddNameToList(CompoundTag displayTag, List<MutableComponent> namesList) {
+    private static void tryAddNameToList(CompoundTag displayTag, List<MutableComponent> namesList, boolean addTogether) {
         if (displayTag.contains(NAME_TAG_NAME, 8)) {
             Component nameComponent = readNameComponent(displayTag);
-            if (nameComponent != null) {
-                MutableComponent baseText = (new TextComponent("")).append(nameComponent);
-                namesList.add(baseText);
+            if (nameComponent instanceof MutableComponent mutableComponent) {
+                if(!namesList.contains(nameComponent) || addTogether){
+                    namesList.add(mutableComponent);
+                }
             }
         }
     }
@@ -161,7 +163,7 @@ public class DisplayNBTFunctions {
         return sum;
     }
 
-    private static void combineLore(CompoundTag baseDisplay, CompoundTag additiveDisplay) {
+    private static void combineLore(CompoundTag baseDisplay, CompoundTag additiveDisplay, boolean addTogether) {
         ListTag combinedLoreList = new ListTag();
         if (baseDisplay.getTagType(LORE_TAG_NAME) == 9) {
             ListTag baseLoreList = baseDisplay.getList(LORE_TAG_NAME, 8);
@@ -169,7 +171,15 @@ public class DisplayNBTFunctions {
         }
         if (additiveDisplay.getTagType(LORE_TAG_NAME) == 9) {
             ListTag additiveLoreList = additiveDisplay.getList(LORE_TAG_NAME, 8);
-            combinedLoreList.addAll(additiveLoreList);
+            if(addTogether){
+                combinedLoreList.addAll(additiveLoreList);
+            } else{ // avoiding duplicates of existing lore
+                for(Tag tag : additiveLoreList){
+                    if(!combinedLoreList.contains(tag)){
+                        combinedLoreList.add(tag);
+                    }
+                }
+            }
         }
         if(!combinedLoreList.isEmpty()){
             baseDisplay.put(LORE_TAG_NAME, combinedLoreList);

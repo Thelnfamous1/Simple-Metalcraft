@@ -1,11 +1,13 @@
 package com.infamous.simple_metalcraft.crafting.nbt;
 
 import com.google.gson.JsonObject;
+import com.infamous.simple_metalcraft.crafting.nbt.functions.AttributeModifiersFunctions;
 import com.infamous.simple_metalcraft.crafting.nbt.functions.DisplayNBTFunctions;
 import com.infamous.simple_metalcraft.crafting.nbt.functions.EnchantmentNBTFunctions;
 import com.infamous.simple_metalcraft.crafting.nbt.functions.EnchantmentValueNBTFunctions;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.GsonHelper;
+import net.minecraft.world.item.ItemStack;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -14,9 +16,10 @@ import java.util.concurrent.ConcurrentHashMap;
 public class NBTOperator {
 
     public static final NBTFunction NONE = ((baseTag, additiveTag) -> baseTag);
-    public static final String ENCHANTMENTS_TAG_NAME = "Enchantments";
+    public static final String ENCHANTMENTS_TAG_NAME = ItemStack.TAG_ENCH;
     public static final String ENCHANTMENT_VALUE_BONUS_TAG_NAME = "EnchantmentValueBonus";
-    public static final String DISPLAY_TAG_NAME = "display";
+    public static final String DISPLAY_TAG_NAME = ItemStack.TAG_DISPLAY;
+    public static final String ATTRIBUTE_MODIFIERS_TAG_NAME = "AttributeModifiers";
     private static final Map<String, Map<Operation, NBTFunction>> FUNCTIONS = new ConcurrentHashMap<>();
 
     public static final String JSON_OPERATION_LIST_KEY = "operations";
@@ -29,6 +32,7 @@ public class NBTOperator {
         buildEnchantmentsFunctions();
         buildEnchantmentValueFunctions();
         buildDisplayFunctions();
+        buildAttributeModifiersFunctions();
     }
 
     private static void buildEnchantmentsFunctions() {
@@ -50,6 +54,13 @@ public class NBTOperator {
         displayFunctions.put(Operation.APPEND, DisplayNBTFunctions.APPEND_TO_BASE);
         displayFunctions.put(Operation.REPLACE, DisplayNBTFunctions.REPLACE_WITH_ADDITIVE);
         displayFunctions.put(Operation.MERGE, DisplayNBTFunctions.MERGE_TO_BASE);
+    }
+
+    private static void buildAttributeModifiersFunctions() {
+        Map<Operation, NBTFunction> attributeModifiersFunctions = getOrCreateFunctions(ATTRIBUTE_MODIFIERS_TAG_NAME);
+        attributeModifiersFunctions.put(Operation.APPEND, AttributeModifiersFunctions.APPEND_TO_BASE);
+        attributeModifiersFunctions.put(Operation.REPLACE, AttributeModifiersFunctions.REPLACE_WITH_ADDITIVE);
+        attributeModifiersFunctions.put(Operation.MERGE, AttributeModifiersFunctions.MERGE_TO_BASE);
     }
 
     public static Map<Operation, NBTFunction> getOrCreateFunctions(String tagName){

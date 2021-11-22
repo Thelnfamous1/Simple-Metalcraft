@@ -11,11 +11,11 @@
     "nbt": {
       "EnchantmentValueBonus": 5,
       "display":{
-        "Name":"{\"text\":\"Glistering Axe\"}",
+        "Name":"{\"text\":\"Glistering Axe\", \"color\":\"gold\"}",
         "color": 16777045,
         "Lore":[
-          "{\"text\":\"Gilded\"}",
-          "{\"text\":\"Piglin-Approved\"}"
+          "{\"text\":\"Gilded\", \"color\":\"yellow\"}",
+          "{\"text\":\"Piglin-Approved\", \"color\":\"pink\"}"
         ]
       }
 }
