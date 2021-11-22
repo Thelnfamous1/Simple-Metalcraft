@@ -36,16 +36,10 @@ public class SMModEvents {
     public static final int TIN_ORE_MIN_HEIGHT = 0;
     public static final int TIN_ORE_MAX_HEIGHT = 63;
 
-    public static final int MITHRIL_ORE_VEIN_SIZE = 8;
-    public static final int MITHRIL_ORE_VEINS_PER_CHUNK = 2;
-    public static final int MITHRIL_ORE_MAX_HEIGHT = 31;
-
     public static final int PIG_IRON_ORE_VEIN_SIZE_DELTAS = 10;
     public static final int PIG_IRON_ORE_VEIN_SIZE_NETHER = 10;
     public static final int PIG_IRON_ORE_VEINS_PER_CHUNK_DELTAS = 26;
     public static final int PIG_IRON_ORE_VEIN_SIZE_PER_CHUNK_NETHER = 13;
-    public static final int ADAMANTINE_ORE_VEIN_SIZE = 5;
-    public static final int ADAMANTINE_ORE_ABOVE_BOTTOM_AMOUNT = 16;
 
     /*
         public static final ConfiguredFeature<?, ?> ORE_GOLD_DELTAS = register("ore_gold_deltas", Feature.ORE.configured(new OreConfiguration(OreConfiguration.Predicates.NETHERRACK, Features.States.NETHER_GOLD_ORE, 10)).range(Features.Decorators.RANGE_10_10).squared().count(20));

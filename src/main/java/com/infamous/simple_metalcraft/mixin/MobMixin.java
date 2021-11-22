@@ -27,7 +27,6 @@ public abstract class MobMixin extends LivingEntity {
 
     @Inject(at = @At("HEAD"), method = "getEquipmentForSlot", cancellable = true)
     private static void recalculateEquipment(EquipmentSlot slot, int oldArmorGrade, CallbackInfoReturnable<Item> cir){
-        SimpleMetalcraft.LOGGER.info("Recalculating equipment for for mobs that use vanilla armoring logic!");
         /*
             int i = this.random.nextInt(2);
             if (this.random.nextFloat() < 0.095F) { // 9.5% chance to go up a tier
@@ -114,9 +113,12 @@ public abstract class MobMixin extends LivingEntity {
                 } else if (newArmorGrade == 6) {
                     chosenEquipment = Items.DIAMOND_BOOTS;
                 }
-            default:
-                cir.setReturnValue(null);
         }
+
+        if(chosenEquipment != null){
+            SimpleMetalcraft.LOGGER.info("Put {} in slot {}", chosenEquipment, slot);
+        }
+
         cir.setReturnValue(chosenEquipment);
     }
     

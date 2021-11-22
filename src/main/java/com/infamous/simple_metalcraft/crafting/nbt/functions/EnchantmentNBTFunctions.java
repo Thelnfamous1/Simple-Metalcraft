@@ -15,15 +15,15 @@ public class EnchantmentNBTFunctions {
         throw new IllegalStateException("Utility class");
     }
 
-    public static final NBTFunction APPEND_TO_BASE_ENCHANTMENTS
+    public static final NBTFunction APPEND_TO_BASE
             = (baseTag, additiveTag) ->
             combineEnchantmentTags(baseTag, additiveTag, true);
 
-    public static final NBTFunction MERGE_TO_BASE_ENCHANTMENTS
+    public static final NBTFunction MERGE_TO_BASE
             = (baseTag, additiveTag) ->
             combineEnchantmentTags(baseTag, additiveTag, false);
 
-    public static final NBTFunction REPLACE_WITH_ADDITIVE_ENCHANTMENTS
+    public static final NBTFunction REPLACE_WITH_ADDITIVE
             = (baseTag, additiveTag) ->
             {
                 ListTag additiveEnchantsTag = getEnchantments(additiveTag);

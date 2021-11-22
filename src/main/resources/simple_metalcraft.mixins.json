@@ -5,6 +5,7 @@
   "refmap": "simple_metalcraft.refmap.json",
   "mixins": [
     "AbstractFurnaceBlockEntityAccessor",
+    "EnchantmentHelperMixin",
     "MobMixin",
     "UpgradeRecipeAccessor"
   ],

@@ -25,6 +25,7 @@ public class BloomingSerializer<T extends BloomingRecipe> extends net.minecraftf
    public static final String WEIGHT_NAME = "weight";
    public static final String EXPERIENCE_NAME = "experience";
    public static final String COOKINGTIME_NAME = "cookingtime";
+   public static final String RESULT_NAME = "result";
    private final int defaultCookingTime;
    private final BloomingFactory<T> factory;
 
@@ -54,7 +55,7 @@ public class BloomingSerializer<T extends BloomingRecipe> extends net.minecraftf
       Map<ItemStack, UniformInt> ranges = new LinkedHashMap<>();
       GsonHelper.getAsJsonArray(jsonObject, RESULTS_NAME).forEach(element -> {
          JsonObject elementAsObject = element.getAsJsonObject();
-         ItemStack result = ShapedRecipe.itemStackFromJson(GsonHelper.getAsJsonObject(elementAsObject, "result"));
+         ItemStack result = ShapedRecipe.itemStackFromJson(GsonHelper.getAsJsonObject(elementAsObject, RESULT_NAME));
          if(elementAsObject.has(RANGE_NAME)){
             JsonObject rangeObject = elementAsObject.getAsJsonObject(RANGE_NAME);
             int min = GsonHelper.getAsInt(rangeObject, MIN_NAME, result.getCount());

@@ -70,7 +70,7 @@ public class BloomingRecipe extends AbstractCookingRecipe {
     public ItemStack assembleRandomResult() {
         Optional<WeightedEntry.Wrapper<ItemStack>> randomResultWrapper = this.resultsAsWRL.getRandom(RANDOM);
         ItemStack randomResult = randomResultWrapper.map(WeightedEntry.Wrapper::getData).orElse(this.cachedBestResult);
-        if(randomResult != cachedBestResult && this.ranges.containsKey(randomResult)){
+        if(randomResult != this.cachedBestResult && this.ranges.containsKey(randomResult)){
             UniformInt uniformInt = this.ranges.get(randomResult);
             randomResult = randomResult.copy();
             randomResult.setCount(uniformInt.sample(RANDOM));
