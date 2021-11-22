@@ -63,19 +63,13 @@ public class EnchantmentNBTFunctions {
                         If we are appending, then enchantment levels of the same enchantment
                         get added together.
                             ~ Can end up past the max enchantment level if the appending level is positive.
-                        If we are merging, then if the enchantment levels are equal,
-                        the resulting level is incremented by 1, otherwise the maximum of
-                        the two levels is used.
-                            ~ Merging uses the same logic as the Anvil.
+                        If we are merging, then the maximum of the two levels is used.
+                            ~ Merging uses the same logic as the Anvil, minus the equivalency bonus.
                      */
                     if(addTogether){
                         lvl += additiveLvl;
                     } else{
-                        if(lvl == additiveLvl){
-                            lvl += 1;
-                        } else{
-                            lvl = Math.max(lvl, additiveLvl);
-                        }
+                        lvl = Math.max(lvl, additiveLvl);
                     }
                 }
                 enchantmentsTag.add(storeEnchantment(enchantment, lvl));
