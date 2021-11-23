@@ -1,6 +1,7 @@
 package com.infamous.simple_metalcraft;
 
 import com.infamous.simple_metalcraft.registry.SMItems;
+import com.infamous.simple_metalcraft.util.VillagerTradesHelper;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.npc.VillagerProfession;

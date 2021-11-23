@@ -1,5 +1,6 @@
 package com.infamous.simple_metalcraft.crafting.bellows;
 
+import com.infamous.simple_metalcraft.SimpleMetalcraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
@@ -81,8 +82,10 @@ public class BellowsBlock extends FaceAttachedHorizontalDirectionalBlock {
         BlockEntity connectedBE = level.getBlockEntity(connectedPos);
 
         if (connectedBE instanceof AbstractFurnaceBlockEntity) { // TODO: To hardcode or not to hardcode?
-            BlockEntityTicker<T> ticker = (BlockEntityTicker<T>) blockState.getTicker(level, connectedBE.getType());
+            SimpleMetalcraft.LOGGER.info("Connected to {}", connectedBE);
+            BlockEntityTicker<T> ticker = (BlockEntityTicker<T>) connectedBS.getTicker(level, connectedBE.getType());
             if(ticker != null){
+                SimpleMetalcraft.LOGGER.info("Boost ticking {}", connectedBE);
                 for(int i = 0; i < this.getCookingBoost(); i++){
                     ticker.tick(level, connectedPos, connectedBS, (T) connectedBE);
                 }

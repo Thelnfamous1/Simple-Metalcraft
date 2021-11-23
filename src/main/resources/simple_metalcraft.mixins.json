@@ -9,7 +9,8 @@
     "ItemStackMixin",
     "MobMixin",
     "NbtUtilsMixin",
-    "UpgradeRecipeAccessor"
+    "UpgradeRecipeAccessor",
+    "ZombieMixin"
   ],
   "client": [
     "ClientRecipeBookMixin",

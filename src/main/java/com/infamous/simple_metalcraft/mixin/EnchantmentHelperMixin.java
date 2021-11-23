@@ -13,7 +13,7 @@ import java.util.Random;
 @Mixin(EnchantmentHelper.class)
 public class EnchantmentHelperMixin {
 
-    @ModifyVariable(at = @At(value = "STORE", ordinal = 0), ordinal = 1, method = "getEnchantmentCost")
+    @ModifyVariable(at = @At(value = "STORE", ordinal = 0), ordinal = 2, method = "getEnchantmentCost")
     private static int getEnchantmentValueFromTagForCost(int defaultValue, Random p_44873_, int p_44874_, int p_44875_, ItemStack stack){
         return checkEnchantmentValueTag(defaultValue, stack);
     }

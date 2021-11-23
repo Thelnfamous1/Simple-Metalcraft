@@ -1,4 +1,4 @@
-package com.infamous.simple_metalcraft;
+package com.infamous.simple_metalcraft.util;
 
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.npc.VillagerTrades;
