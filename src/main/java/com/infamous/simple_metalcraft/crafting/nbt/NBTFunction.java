@@ -4,5 +4,5 @@ import net.minecraft.nbt.CompoundTag;
 
 public interface NBTFunction {
 
-    CompoundTag call(CompoundTag baseTag, CompoundTag additiveTag);
+    CompoundTag call(CompoundTag baseTag, CompoundTag additiveTag, String tagName);
 }

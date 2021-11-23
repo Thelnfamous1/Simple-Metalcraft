@@ -1,0 +1,30 @@
+{
+  "type": "simple_metalcraft:upgrading",
+  "base": {
+    "item": "minecraft:iron_axe"
+  },
+  "addition": {
+    "item": "minecraft:netherite_ingot"
+  },
+  "result": {
+    "item": "minecraft:iron_axe",
+    "nbt": {
+      "AttributeModifiers": [
+        {
+          "AttributeName": "generic.attack_damage",
+          "Slot": "mainhand",
+          "Name": "Attack Damage Upgrade",
+          "Amount": 8,
+          "Operation": 0,
+          "UUID":[13243,1439,1767,44564]
+        }
+      ]
+    }
+  },
+  "operations": [
+    {
+      "tag":"AttributeModifiers",
+      "operation": "merge"
+    }
+  ]
+}

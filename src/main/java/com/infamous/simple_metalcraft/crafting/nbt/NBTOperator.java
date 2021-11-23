@@ -4,7 +4,7 @@ import com.google.gson.JsonObject;
 import com.infamous.simple_metalcraft.crafting.nbt.functions.AttributeModifiersFunctions;
 import com.infamous.simple_metalcraft.crafting.nbt.functions.DisplayNBTFunctions;
 import com.infamous.simple_metalcraft.crafting.nbt.functions.EnchantmentNBTFunctions;
-import com.infamous.simple_metalcraft.crafting.nbt.functions.EnchantmentValueNBTFunctions;
+import com.infamous.simple_metalcraft.crafting.nbt.functions.IntegerNBTFunctions;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.GsonHelper;
 import net.minecraft.world.item.ItemStack;
@@ -15,11 +15,12 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public class NBTOperator {
 
-    public static final NBTFunction NONE = ((baseTag, additiveTag) -> baseTag);
+    public static final NBTFunction NONE = ((baseTag, additiveTag, tagName) -> baseTag);
     public static final String ENCHANTMENTS_TAG_NAME = ItemStack.TAG_ENCH;
     public static final String ENCHANTMENT_VALUE_BONUS_TAG_NAME = "EnchantmentValueBonus";
     public static final String DISPLAY_TAG_NAME = ItemStack.TAG_DISPLAY;
     public static final String ATTRIBUTE_MODIFIERS_TAG_NAME = "AttributeModifiers";
+    public static final String MAX_DAMAGE_BONUS_TAG_NAME = "MaxDamageBonus";
     private static final Map<String, Map<Operation, NBTFunction>> FUNCTIONS = new ConcurrentHashMap<>();
 
     public static final String JSON_OPERATION_LIST_KEY = "operations";
@@ -33,6 +34,7 @@ public class NBTOperator {
         buildEnchantmentValueFunctions();
         buildDisplayFunctions();
         buildAttributeModifiersFunctions();
+        buildMaxDamageBonusFunctions();
     }
 
     private static void buildEnchantmentsFunctions() {
@@ -43,10 +45,10 @@ public class NBTOperator {
     }
 
     private static void buildEnchantmentValueFunctions() {
-        Map<Operation, NBTFunction> enchantmentValueFunctions = getOrCreateFunctions(ENCHANTMENT_VALUE_BONUS_TAG_NAME);
-        enchantmentValueFunctions.put(Operation.APPEND, EnchantmentValueNBTFunctions.APPEND_TO_BASE);
-        enchantmentValueFunctions.put(Operation.REPLACE, EnchantmentValueNBTFunctions.REPLACE_WITH_ADDITIVE);
-        enchantmentValueFunctions.put(Operation.MERGE, EnchantmentValueNBTFunctions.MERGE_TO_BASE);
+        Map<Operation, NBTFunction> enchantmentValueBonusFunctions = getOrCreateFunctions(ENCHANTMENT_VALUE_BONUS_TAG_NAME);
+        enchantmentValueBonusFunctions.put(Operation.APPEND, IntegerNBTFunctions.APPEND_TO_BASE);
+        enchantmentValueBonusFunctions.put(Operation.REPLACE, IntegerNBTFunctions.REPLACE_WITH_ADDITIVE);
+        enchantmentValueBonusFunctions.put(Operation.MERGE, IntegerNBTFunctions.MERGE_TO_BASE);
     }
 
     private static void buildDisplayFunctions() {
@@ -61,6 +63,13 @@ public class NBTOperator {
         attributeModifiersFunctions.put(Operation.APPEND, AttributeModifiersFunctions.APPEND_TO_BASE);
         attributeModifiersFunctions.put(Operation.REPLACE, AttributeModifiersFunctions.REPLACE_WITH_ADDITIVE);
         attributeModifiersFunctions.put(Operation.MERGE, AttributeModifiersFunctions.MERGE_TO_BASE);
+    }
+
+    private static void buildMaxDamageBonusFunctions() {
+        Map<Operation, NBTFunction> maxDamageBonusFunctions = getOrCreateFunctions(MAX_DAMAGE_BONUS_TAG_NAME);
+        maxDamageBonusFunctions.put(Operation.APPEND, IntegerNBTFunctions.APPEND_TO_BASE);
+        maxDamageBonusFunctions.put(Operation.REPLACE, IntegerNBTFunctions.REPLACE_WITH_ADDITIVE);
+        maxDamageBonusFunctions.put(Operation.MERGE, IntegerNBTFunctions.MERGE_TO_BASE);
     }
 
     public static Map<Operation, NBTFunction> getOrCreateFunctions(String tagName){
@@ -110,7 +119,7 @@ public class NBTOperator {
             //SimpleMetalcraft.LOGGER.info("Checking operation for tag {}", tagName);
             Operation operation = entry.getValue();
             //SimpleMetalcraft.LOGGER.info("Operating on tag {} with operation {}", tagName, operation);
-            getOrCreateFunctions(tagName).getOrDefault(operation, NONE).call(baseTag, additiveTag);
+            getOrCreateFunctions(tagName).getOrDefault(operation, NONE).call(baseTag, additiveTag, tagName);
         }
         return baseTag;
     }

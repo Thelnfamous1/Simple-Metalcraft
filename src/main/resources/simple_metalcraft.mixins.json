@@ -6,7 +6,9 @@
   "mixins": [
     "AbstractFurnaceBlockEntityAccessor",
     "EnchantmentHelperMixin",
+    "ItemStackMixin",
     "MobMixin",
+    "NbtUtilsMixin",
     "UpgradeRecipeAccessor"
   ],
   "client": [

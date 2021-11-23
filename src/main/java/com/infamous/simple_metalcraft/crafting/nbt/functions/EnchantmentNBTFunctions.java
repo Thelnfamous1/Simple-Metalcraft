@@ -4,6 +4,7 @@ import com.infamous.simple_metalcraft.crafting.nbt.NBTFunction;
 import com.infamous.simple_metalcraft.crafting.nbt.NBTOperator;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
+import net.minecraft.nbt.Tag;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 
@@ -16,15 +17,15 @@ public class EnchantmentNBTFunctions {
     }
 
     public static final NBTFunction APPEND_TO_BASE
-            = (baseTag, additiveTag) ->
+            = (baseTag, additiveTag, tagName) ->
             combineEnchantmentTags(baseTag, additiveTag, true);
 
     public static final NBTFunction MERGE_TO_BASE
-            = (baseTag, additiveTag) ->
+            = (baseTag, additiveTag, tagName) ->
             combineEnchantmentTags(baseTag, additiveTag, false);
 
     public static final NBTFunction REPLACE_WITH_ADDITIVE
-            = (baseTag, additiveTag) ->
+            = (baseTag, additiveTag, tagName) ->
             {
                 ListTag additiveEnchantsTag = getEnchantments(additiveTag);
                 setEnchantments(baseTag, additiveEnchantsTag);
@@ -42,7 +43,7 @@ public class EnchantmentNBTFunctions {
     }
 
     private static ListTag getEnchantments(CompoundTag baseTag) {
-        return baseTag.getList(NBTOperator.ENCHANTMENTS_TAG_NAME, 10);
+        return baseTag.getList(NBTOperator.ENCHANTMENTS_TAG_NAME, Tag.TAG_COMPOUND);
     }
 
     private static void setEnchantments(CompoundTag baseTag, ListTag enchantmentsTag){

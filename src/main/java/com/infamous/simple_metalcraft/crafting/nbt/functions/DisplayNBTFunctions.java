@@ -24,11 +24,12 @@ public class DisplayNBTFunctions {
         throw new IllegalStateException("Utility class");
     }
 
+    public static final String NAME_TAG_NAME = ItemStack.TAG_DISPLAY_NAME;
     public static final String COLOR_TAG_NAME = ItemStack.TAG_COLOR;
     public static final String LORE_TAG_NAME = ItemStack.TAG_LORE;
-    public static final String NAME_TAG_NAME = ItemStack.TAG_LORE;
+
     public static final NBTFunction APPEND_TO_BASE
-            = (baseTag, additiveTag) ->
+            = (baseTag, additiveTag, tagName) ->
             {
                 makeDisplayTagsIfNeeded(baseTag, additiveTag);
 
@@ -43,7 +44,7 @@ public class DisplayNBTFunctions {
             };
 
     public static final NBTFunction MERGE_TO_BASE
-            = (baseTag, additiveTag) ->
+            = (baseTag, additiveTag, tagName) ->
             {
                 makeDisplayTagsIfNeeded(baseTag, additiveTag);
 
@@ -57,7 +58,7 @@ public class DisplayNBTFunctions {
             };
 
     public static final NBTFunction REPLACE_WITH_ADDITIVE
-            = (baseTag, additiveTag) ->
+            = (baseTag, additiveTag, tagName) ->
             {
                 makeDisplayTagsIfNeeded(baseTag, additiveTag);
 
@@ -69,10 +70,10 @@ public class DisplayNBTFunctions {
             };
 
     private static void makeDisplayTagsIfNeeded(CompoundTag baseTag, CompoundTag additiveTag) {
-        if(!baseTag.contains(NBTOperator.DISPLAY_TAG_NAME, 10)){
+        if(!baseTag.contains(NBTOperator.DISPLAY_TAG_NAME, Tag.TAG_COMPOUND)){
             baseTag.put(NBTOperator.DISPLAY_TAG_NAME, new CompoundTag());
         }
-        if(!additiveTag.contains(NBTOperator.DISPLAY_TAG_NAME, 10)){
+        if(!additiveTag.contains(NBTOperator.DISPLAY_TAG_NAME, Tag.TAG_COMPOUND)){
             additiveTag.put(NBTOperator.DISPLAY_TAG_NAME, new CompoundTag());
         }
     }
@@ -91,7 +92,7 @@ public class DisplayNBTFunctions {
     }
 
     private static void tryAddNameToList(CompoundTag displayTag, List<MutableComponent> namesList, boolean addTogether) {
-        if (displayTag.contains(NAME_TAG_NAME, 8)) {
+        if (displayTag.contains(NAME_TAG_NAME, Tag.TAG_STRING)) {
             Component nameComponent = readNameComponent(displayTag);
             if (nameComponent instanceof MutableComponent mutableComponent) {
                 if(!namesList.contains(nameComponent) || addTogether){
@@ -122,7 +123,7 @@ public class DisplayNBTFunctions {
     }
 
     private static void tryAddColorToList(CompoundTag displayTag, List<Color> colorList) {
-        if (displayTag.contains(COLOR_TAG_NAME, 99)) {
+        if (displayTag.contains(COLOR_TAG_NAME, Tag.TAG_ANY_NUMERIC)) {
             int rgb = displayTag.getInt(COLOR_TAG_NAME);
             Color baseColorObj = new Color(rgb);
             colorList.add(baseColorObj);
@@ -165,12 +166,12 @@ public class DisplayNBTFunctions {
 
     private static void combineLore(CompoundTag baseDisplay, CompoundTag additiveDisplay, boolean addTogether) {
         ListTag combinedLoreList = new ListTag();
-        if (baseDisplay.getTagType(LORE_TAG_NAME) == 9) {
-            ListTag baseLoreList = baseDisplay.getList(LORE_TAG_NAME, 8);
+        if (baseDisplay.getTagType(LORE_TAG_NAME) == Tag.TAG_LIST) {
+            ListTag baseLoreList = baseDisplay.getList(LORE_TAG_NAME, Tag.TAG_STRING);
             combinedLoreList.addAll(baseLoreList);
         }
-        if (additiveDisplay.getTagType(LORE_TAG_NAME) == 9) {
-            ListTag additiveLoreList = additiveDisplay.getList(LORE_TAG_NAME, 8);
+        if (additiveDisplay.getTagType(LORE_TAG_NAME) == Tag.TAG_LIST) {
+            ListTag additiveLoreList = additiveDisplay.getList(LORE_TAG_NAME, Tag.TAG_STRING);
             if(addTogether){
                 combinedLoreList.addAll(additiveLoreList);
             } else{ // avoiding duplicates of existing lore

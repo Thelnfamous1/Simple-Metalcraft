@@ -4,25 +4,25 @@
     "item": "minecraft:iron_axe"
   },
   "addition": {
-    "item": "minecraft:gold_ingot"
+    "item": "minecraft:diamond"
   },
   "result": {
     "item": "minecraft:iron_axe",
     "nbt": {
-      "EnchantmentValueBonus": 5,
+      "MaxDamageBonus": 100,
       "display":{
-        "Name":"{\"text\":\"Glistering Axe\", \"color\":\"gold\"}",
+        "Name":"{\"text\":\"Reinforced Iron Axe\", \"color\":\"aqua\"}",
         "color": 16777045,
         "Lore":[
-          "{\"text\":\"Gilded\", \"color\":\"yellow\"}",
-          "{\"text\":\"Piglin-Approved\", \"color\":\"pink\"}"
+          "{\"text\":\"Adamant\", \"color\":\"blue\"}",
+          "{\"text\":\"Unbreakable\", \"color\":\"green\"}"
         ]
       }
     }
   },
   "operations": [
     {
-      "tag":"EnchantmentValueBonus",
+      "tag":"MaxDamageBonus",
       "operation": "merge"
     },
     {

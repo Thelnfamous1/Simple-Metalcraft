@@ -1,16 +1,10 @@
 package com.infamous.simple_metalcraft.crafting.nbt.functions;
 
-import com.google.common.collect.HashMultimap;
-import com.google.common.collect.Multimap;
 import com.infamous.simple_metalcraft.crafting.nbt.NBTFunction;
 import com.infamous.simple_metalcraft.crafting.nbt.NBTOperator;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.entity.EquipmentSlot;
-import net.minecraft.world.entity.ai.attributes.Attribute;
-import net.minecraft.world.entity.ai.attributes.AttributeModifier;
-import net.minecraftforge.registries.ForgeRegistries;
+import net.minecraft.nbt.Tag;
 
 // TODO: Finish implementing this
 public class AttributeModifiersFunctions {
@@ -23,42 +17,57 @@ public class AttributeModifiersFunctions {
     }
 
     public static final NBTFunction MERGE_TO_BASE =
-            ((baseTag, additiveTag) -> {
-
-
-
+            ((baseTag, additiveTag, tagName) -> {
+                makeModifierTagsIfNeeded(baseTag, additiveTag);
+                combineModifiers(baseTag, additiveTag, false);
                 return baseTag;
             });
     public static final NBTFunction APPEND_TO_BASE =
-            ((baseTag, additiveTag) -> {
+            ((baseTag, additiveTag, tagName) -> {
+                makeModifierTagsIfNeeded(baseTag, additiveTag);
+                combineModifiers(baseTag, additiveTag, true);
                 return baseTag;
             });
     public static final NBTFunction REPLACE_WITH_ADDITIVE =
-            ((baseTag, additiveTag) -> {
+            ((baseTag, additiveTag, tagName) -> {
+                makeModifierTagsIfNeeded(baseTag, additiveTag);
 
+                ListTag additiveModifiers = additiveTag.getList(NBTOperator.ATTRIBUTE_MODIFIERS_TAG_NAME, Tag.TAG_COMPOUND);
 
+                baseTag.put(NBTOperator.ATTRIBUTE_MODIFIERS_TAG_NAME, additiveModifiers);
 
                 return baseTag;
             });
 
-    private static Multimap<Attribute, AttributeModifier> getAttributesForSlot(CompoundTag tag, EquipmentSlot slot){
-        Multimap<Attribute, AttributeModifier> multimap = HashMultimap.create();
-        if (tag.contains(NBTOperator.ATTRIBUTE_MODIFIERS_TAG_NAME, 9)) {
-            ListTag modifiersTag = tag.getList(NBTOperator.ATTRIBUTE_MODIFIERS_TAG_NAME, 10);
+    private static void makeModifierTagsIfNeeded(CompoundTag baseTag, CompoundTag additiveTag) {
+        if(!baseTag.contains(NBTOperator.ATTRIBUTE_MODIFIERS_TAG_NAME, Tag.TAG_LIST)){
+            baseTag.put(NBTOperator.ATTRIBUTE_MODIFIERS_TAG_NAME, new ListTag());
+        }
+        if(!additiveTag.contains(NBTOperator.ATTRIBUTE_MODIFIERS_TAG_NAME, Tag.TAG_LIST)){
+            additiveTag.put(NBTOperator.ATTRIBUTE_MODIFIERS_TAG_NAME, new ListTag());
+        }
+    }
 
-            for(int i = 0; i < modifiersTag.size(); ++i) {
-                CompoundTag modifierTag = modifiersTag.getCompound(i);
-                if (!modifierTag.contains(SLOT_TAG_NAME, 8) || modifierTag.getString(SLOT_TAG_NAME).equals(slot.getName())) {
-                    Attribute attribute = ForgeRegistries.ATTRIBUTES.getValue(ResourceLocation.tryParse(modifierTag.getString(ATTRIBUTE_NAME_TAG_NAME)));
-                    if (attribute != null) {
-                        AttributeModifier modifier = AttributeModifier.load(modifierTag);
-                        if (modifier != null && modifier.getId().getLeastSignificantBits() != 0L && modifier.getId().getMostSignificantBits() != 0L) {
-                            multimap.put(attribute, modifier);
-                        }
+    private static void combineModifiers(CompoundTag baseTag, CompoundTag additiveTag, boolean addTogether) {
+        ListTag combinedModifierList = new ListTag();
+        if (baseTag.getTagType(NBTOperator.ATTRIBUTE_MODIFIERS_TAG_NAME) == Tag.TAG_LIST) {
+            ListTag baseModifierList = baseTag.getList(NBTOperator.ATTRIBUTE_MODIFIERS_TAG_NAME, Tag.TAG_COMPOUND);
+            combinedModifierList.addAll(baseModifierList);
+        }
+        if (additiveTag.getTagType(NBTOperator.ATTRIBUTE_MODIFIERS_TAG_NAME) == Tag.TAG_LIST) {
+            ListTag additiveModifierList = additiveTag.getList(NBTOperator.ATTRIBUTE_MODIFIERS_TAG_NAME, Tag.TAG_COMPOUND);
+            if(addTogether){
+                combinedModifierList.addAll(additiveModifierList);
+            } else{ // avoiding duplicates of existing modifiers
+                for(Tag tag : additiveModifierList){
+                    if(!combinedModifierList.contains(tag)){
+                        combinedModifierList.add(tag);
                     }
                 }
             }
         }
-        return multimap;
+        if(!combinedModifierList.isEmpty()){
+            baseTag.put(NBTOperator.ATTRIBUTE_MODIFIERS_TAG_NAME, combinedModifierList);
+        }
     }
 }
