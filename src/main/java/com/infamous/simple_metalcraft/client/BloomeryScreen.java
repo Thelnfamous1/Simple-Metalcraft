@@ -12,10 +12,10 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
-public class BloomeryScreen extends AbstractFurnaceScreen<BloomeryMenu> {
+public class BloomeryScreen extends SMFurnaceScreen<BloomeryMenu> {
    private static final ResourceLocation TEXTURE = new ResourceLocation(SimpleMetalcraft.MOD_ID, "textures/gui/container/bloomery.png");
 
    public BloomeryScreen(BloomeryMenu menu, Inventory inventory, Component component) {
-      super(menu, new BloomingRecipeBookComponent(), inventory, component, TEXTURE);
+      super(menu, inventory, component, TEXTURE);
    }
 }

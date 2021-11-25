@@ -1,0 +1,8 @@
+{
+  "replace": false,
+  "values": [
+    "simple_metalcraft:copper_pickaxe",
+    "simple_metalcraft:bronze_pickaxe",
+    "simple_metalcraft:steel_pickaxe"
+  ]
+}

@@ -15,7 +15,7 @@ import java.util.Random;
 
 public class VillagerTradesHelper {
 
-    static class EmeraldForItems implements VillagerTrades.ItemListing {
+    public static class EmeraldForItems implements VillagerTrades.ItemListing {
         private final Item item;
         private final int cost;
         private final int maxUses;
@@ -36,7 +36,7 @@ public class VillagerTradesHelper {
         }
     }
 
-    static class EnchantedItemForEmeralds implements VillagerTrades.ItemListing {
+    public static class EnchantedItemForEmeralds implements VillagerTrades.ItemListing {
         private final ItemStack result;
         private final int baseEmeraldCost;
         private final int maxUses;
@@ -95,7 +95,7 @@ public class VillagerTradesHelper {
         }
     }
 
-    static class ItemsForEmeralds implements VillagerTrades.ItemListing {
+    public static class ItemsForEmeralds implements VillagerTrades.ItemListing {
         private final ItemStack result;
         private final int emeraldCost;
         private final int numberOfItems;

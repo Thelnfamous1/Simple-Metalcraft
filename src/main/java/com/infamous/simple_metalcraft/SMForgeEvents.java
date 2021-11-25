@@ -1,17 +1,38 @@
 package com.infamous.simple_metalcraft;
 
+import com.infamous.simple_metalcraft.capability.EquipmentCapability;
+import com.infamous.simple_metalcraft.capability.EquipmentCapabilityProvider;
+import com.infamous.simple_metalcraft.crafting.anvil.TieredAnvilBlock;
+import com.infamous.simple_metalcraft.mixin.ItemCombinerMenuAccessor;
 import com.infamous.simple_metalcraft.registry.SMItems;
+import com.infamous.simple_metalcraft.util.ArmoringHelper;
 import com.infamous.simple_metalcraft.util.VillagerTradesHelper;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.screens.inventory.AnvilScreen;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.DifficultyInstance;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.npc.VillagerProfession;
 import net.minecraft.world.entity.npc.VillagerTrades;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.inventory.AnvilMenu;
+import net.minecraft.world.inventory.ContainerLevelAccess;
+import net.minecraft.world.inventory.ItemCombinerMenu;
 import net.minecraft.world.item.*;
 import net.minecraft.world.item.trading.MerchantOffer;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.levelgen.GenerationStep;
 import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
+import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.common.world.BiomeGenerationSettingsBuilder;
+import net.minecraftforge.event.AnvilUpdateEvent;
+import net.minecraftforge.event.AttachCapabilitiesEvent;
+import net.minecraftforge.event.entity.EntityJoinWorldEvent;
+import net.minecraftforge.event.entity.player.AnvilRepairEvent;
 import net.minecraftforge.event.village.VillagerTradesEvent;
 import net.minecraftforge.event.world.BiomeLoadingEvent;
 import net.minecraftforge.eventbus.api.EventPriority;
@@ -28,6 +49,77 @@ public class SMForgeEvents {
 
     public static final Random RANDOM = new Random();
 
+    @SubscribeEvent
+    public static void onAttachEntityCapabilities(AttachCapabilitiesEvent<Entity> event) {
+        EquipmentCapabilityProvider.attach(event);
+    }
+
+    @SubscribeEvent(priority = EventPriority.HIGHEST)
+    public static void onAnvilUpdate(AnvilUpdateEvent event){
+        if(event.isCanceled()) return;
+        ItemStack left = event.getLeft();
+        ItemStack right = event.getRight();
+        if(right.is(Items.FIRE_CHARGE) && right.getCount() >= left.getCount()){
+            if(left.is(SMItems.PIG_IRON_INGOT.get())){
+                event.setOutput(new ItemStack(Items.IRON_INGOT, left.getCount()));
+                event.setCost(left.getCount());
+                event.setMaterialCost(left.getCount());
+            }
+            else if(left.is(SMItems.BLISTER_STEEL_INGOT.get())){
+                event.setOutput(new ItemStack(SMItems.STEEL_INGOT.get(), left.getCount()));
+                event.setCost(left.getCount());
+                event.setMaterialCost(left.getCount());
+            }
+        }
+    }
+
+    @SubscribeEvent(priority = EventPriority.HIGHEST)
+    public static void onAnvilUpdate(AnvilRepairEvent event){
+        Player player = event.getPlayer();
+        AbstractContainerMenu menu = player.containerMenu;
+        if(menu instanceof AnvilMenu anvilMenu){
+            ContainerLevelAccess access = ((ItemCombinerMenuAccessor)anvilMenu).getAccess();
+            access.execute((level, blockPos) -> {
+                if(level.getBlockState(blockPos).getBlock() instanceof TieredAnvilBlock tieredAnvil){
+                    event.setBreakChance(tieredAnvil.getAnvilTier().getBreakChance());
+                }
+            });
+
+        }
+
+        ItemStack left = event.getItemInput();
+        ItemStack right = event.getIngredientInput();
+        if(right.is(Items.FIRE_CHARGE)){
+            if(left.is(SMItems.PIG_IRON_INGOT.get())){
+            }
+            else if(left.is(SMItems.BLISTER_STEEL_INGOT.get())){
+            }
+        }
+    }
+
+
+    @SubscribeEvent(priority = EventPriority.HIGHEST)
+    public static void onEntityJoinWorld(EntityJoinWorldEvent event){
+        Level level = event.getWorld();
+        if(!level.isClientSide){
+            Entity entity = event.getEntity();
+            if(entity instanceof Mob mob){
+                LazyOptional<EquipmentCapability> equipmentCap = EquipmentCapabilityProvider.get(mob);
+                equipmentCap.ifPresent(ec -> {
+                    if(!ec.getWasEquipped()){
+                        SimpleMetalcraft.LOGGER.info("Handling equipment for mob {}", mob);
+                        DifficultyInstance difficultyAt = level.getCurrentDifficultyAt(mob.getOnPos());
+                        boolean equipped = ArmoringHelper.populateDefaultEquipmentSlots(mob, difficultyAt, true);
+                        if(equipped){
+                            ArmoringHelper.populateDefaultEquipmentEnchantments(mob, difficultyAt);
+                        }
+                        ec.setWasEquipped(true);
+                    }
+                });
+            }
+        }
+    }
+
     @SubscribeEvent(priority = EventPriority.HIGH)
     public static void onBiomeLoading(BiomeLoadingEvent event){
         BiomeGenerationSettingsBuilder builder = event.getGeneration();
@@ -40,14 +132,6 @@ public class SMForgeEvents {
                 && category != Biome.BiomeCategory.NETHER){
             SimpleMetalcraft.LOGGER.info("Adding tin ore to biome: " + biomeName);
             undergroundOreFeatures.add(() -> SMModEvents.ORE_TIN);
-        }
-        if(category == Biome.BiomeCategory.NETHER){
-            SimpleMetalcraft.LOGGER.info("Adding nether pig iron ore to biome: " + biomeName);
-            if(biomeName != null && biomeName.toString().equals("minecraft:basalt_deltas")){
-                undergroundOreFeatures.add(() -> SMModEvents.ORE_PIG_IRON_DELTAS);
-            } else{
-                undergroundOreFeatures.add(() -> SMModEvents.ORE_PIG_IRON_NETHER);
-            }
         }
     }
 

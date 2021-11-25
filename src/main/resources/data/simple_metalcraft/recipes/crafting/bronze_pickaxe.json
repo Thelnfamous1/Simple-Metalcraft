@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "XXX",
+    " # ",
+    " # "
+  ],
+  "key": {
+    "#": {
+      "item": "minecraft:stick"
+    },
+    "X": {
+      "item": "simple_metalcraft:bronze_ingot"
+    }
+  },
+  "result": {
+    "item": "simple_metalcraft:bronze_pickaxe"
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "type": "simple_metalcraft:blooming",
+  "group": "steel_ingot",
+  "ingredient": {
+    "item": "simple_metalcraft:blister_steel_ingot"
+  },
+  "results": [
+    {
+      "result":{
+        "item": "simple_metalcraft:steel_nugget"
+      },
+      "range": {
+        "min": 1,
+        "max": 9
+      },
+      "weight": 1
+    }
+  ],
+  "experience": 0.7,
+  "cookingtime": 1600
+}

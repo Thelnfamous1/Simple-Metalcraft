@@ -5,16 +5,12 @@
   "refmap": "simple_metalcraft.refmap.json",
   "mixins": [
     "AbstractFurnaceBlockEntityAccessor",
-    "EnchantmentHelperMixin",
-    "ItemStackMixin",
-    "MobMixin",
-    "NbtUtilsMixin",
-    "UpgradeRecipeAccessor",
-    "ZombieMixin"
+    "ItemCombinerMenuAccessor",
+    "AnvilBlockMixin"
   ],
   "client": [
-    "ClientRecipeBookMixin",
-    "RecipeBookComponentMixin"
+    "AnvilScreenMixin",
+    "ClientRecipeBookMixin"
   ],
   "injectors": {
     "defaultRequire": 1

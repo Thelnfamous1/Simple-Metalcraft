@@ -14,8 +14,6 @@ public class SMClientModEvents {
     @SubscribeEvent
     public static void onClientSetup(FMLClientSetupEvent event){
         event.enqueueWork(() -> {
-            MenuScreens.register(SMMenuTypes.CASTING_TABLE.get(), CastingScreen::new);
-            MenuScreens.register(SMMenuTypes.FORGING_TABLE.get(), ForgingScreen::new);
             MenuScreens.register(SMMenuTypes.BLOOMERY.get(), BloomeryScreen::new);
         });
     }

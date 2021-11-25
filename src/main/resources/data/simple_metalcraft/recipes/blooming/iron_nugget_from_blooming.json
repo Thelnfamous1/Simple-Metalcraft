@@ -2,7 +2,7 @@
   "type": "simple_metalcraft:blooming",
   "group": "iron_ingot",
   "ingredient": {
-    "item": "simple_metalcraft:iron_blend"
+    "item": "minecraft:raw_iron"
   },
   "results": [
     {

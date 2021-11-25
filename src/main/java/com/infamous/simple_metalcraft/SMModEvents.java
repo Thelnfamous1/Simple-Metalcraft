@@ -1,9 +1,8 @@
 package com.infamous.simple_metalcraft;
 
 import com.google.common.collect.ImmutableList;
+import com.infamous.simple_metalcraft.capability.EquipmentCapabilityProvider;
 import com.infamous.simple_metalcraft.crafting.blooming.BloomingRecipe;
-import com.infamous.simple_metalcraft.crafting.casting.CastingRecipe;
-import com.infamous.simple_metalcraft.crafting.forging.ForgingRecipe;
 import com.infamous.simple_metalcraft.registry.SMBlocks;
 import com.infamous.simple_metalcraft.registry.SMRecipes;
 import net.minecraft.core.Registry;
@@ -17,6 +16,7 @@ import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
 import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.configurations.FeatureConfiguration;
 import net.minecraft.world.level.levelgen.feature.configurations.OreConfiguration;
+import net.minecraftforge.common.capabilities.RegisterCapabilitiesEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
@@ -36,11 +36,6 @@ public class SMModEvents {
     public static final int TIN_ORE_MIN_HEIGHT = 0;
     public static final int TIN_ORE_MAX_HEIGHT = 63;
 
-    public static final int PIG_IRON_ORE_VEIN_SIZE_DELTAS = 10;
-    public static final int PIG_IRON_ORE_VEIN_SIZE_NETHER = 10;
-    public static final int PIG_IRON_ORE_VEINS_PER_CHUNK_DELTAS = 26;
-    public static final int PIG_IRON_ORE_VEIN_SIZE_PER_CHUNK_NETHER = 13;
-
     /*
         public static final ConfiguredFeature<?, ?> ORE_GOLD_DELTAS = register("ore_gold_deltas", Feature.ORE.configured(new OreConfiguration(OreConfiguration.Predicates.NETHERRACK, Features.States.NETHER_GOLD_ORE, 10)).range(Features.Decorators.RANGE_10_10).squared().count(20));
         public static final ConfiguredFeature<?, ?> ORE_GOLD_NETHER = register("ore_gold_nether", Feature.ORE.configured(new OreConfiguration(OreConfiguration.Predicates.NETHERRACK, Features.States.NETHER_GOLD_ORE, 10)).range(Features.Decorators.RANGE_10_10).squared().count(10));
@@ -49,15 +44,14 @@ public class SMModEvents {
      */
 
     public static ConfiguredFeature<?, ?> ORE_TIN;
-
-    public static RecipeType<ForgingRecipe> FORGING;
-    public static RecipeType<CastingRecipe> CASTING;
     public static RecipeType<BloomingRecipe> BLOOMING;
 
     private static ImmutableList<OreConfiguration.TargetBlockState> ORE_TIN_TARGET_LIST;
 
-    public static ConfiguredFeature<?, ?> ORE_PIG_IRON_DELTAS;
-    public static ConfiguredFeature<?, ?> ORE_PIG_IRON_NETHER;
+    @SubscribeEvent
+    public static void registerCaps(RegisterCapabilitiesEvent event) {
+        EquipmentCapabilityProvider.register(event);
+    }
 
     @SubscribeEvent
     public static void onCommonSetup(FMLCommonSetupEvent event){
@@ -83,24 +77,9 @@ public class SMModEvents {
                         .rangeTriangle(VerticalAnchor.absolute(TIN_ORE_MIN_HEIGHT), VerticalAnchor.absolute(TIN_ORE_MAX_HEIGHT))
                         .squared()
                         .count(TIN_ORE_VEINS_PER_CHUNK));
-
-        ORE_PIG_IRON_DELTAS = registerFeature("ore_pig_iron_deltas",
-                Feature.ORE
-                        .configured(new OreConfiguration(OreConfiguration.Predicates.NETHERRACK, SMBlocks.NETHER_PIG_IRON_ORE.get().defaultBlockState(), PIG_IRON_ORE_VEIN_SIZE_DELTAS))
-                        .range(Features.Decorators.RANGE_10_10)
-                        .squared()
-                        .count(PIG_IRON_ORE_VEINS_PER_CHUNK_DELTAS));
-        ORE_PIG_IRON_NETHER = registerFeature("ore_pig_iron_nether",
-                Feature.ORE
-                        .configured(new OreConfiguration(OreConfiguration.Predicates.NETHERRACK, SMBlocks.NETHER_PIG_IRON_ORE.get().defaultBlockState(), PIG_IRON_ORE_VEIN_SIZE_NETHER))
-                        .range(Features.Decorators.RANGE_10_10)
-                        .squared()
-                        .count(PIG_IRON_ORE_VEIN_SIZE_PER_CHUNK_NETHER));
     }
 
     private static void registerRecipeTypes() {
-        CASTING = registerRecipeType(SMRecipes.CASTING_NAME);
-        FORGING = registerRecipeType(SMRecipes.FORGING_NAME);
         BLOOMING = registerRecipeType(SMRecipes.BLOOMING_NAME);
     }
 

@@ -1,10 +1,9 @@
 package com.infamous.simple_metalcraft.registry;
 
 import com.infamous.simple_metalcraft.SimpleMetalcraft;
+import com.infamous.simple_metalcraft.crafting.anvil.AnvilTier;
 import com.infamous.simple_metalcraft.crafting.bellows.BellowsBlock;
 import com.infamous.simple_metalcraft.crafting.blooming.BloomeryBlock;
-import com.infamous.simple_metalcraft.crafting.casting.CastingTableBlock;
-import com.infamous.simple_metalcraft.crafting.forging.ForgingTableBlock;
 import net.minecraft.util.valueproviders.UniformInt;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockBehaviour;
@@ -30,22 +29,25 @@ public class SMBlocks {
     public static final RegistryObject<Block> DEEPSLATE_TIN_ORE = BLOCKS.register("deepslate_tin_ore",
             SMBlocks::buildDeepslateMetalOreBlock);
 
-    public static final RegistryObject<Block> NETHER_PIG_IRON_ORE = BLOCKS.register("nether_pig_iron_ore",
-            SMBlocks::buildNetherOreBlock);
-
-    public static final RegistryObject<Block> CASTING_TABLE = BLOCKS.register("casting_table",
-            () -> new CastingTableBlock(craftingTableProperties()));
-
-
-    public static final RegistryObject<Block> FORGING_TABLE = BLOCKS.register("forging_table",
-            () -> new ForgingTableBlock(craftingTableProperties()));
-
+    public static final RegistryObject<Block> BRONZE_BLOCK = BLOCKS.register("bronze_block",
+            SMBlocks::buildMetalBlock);
+    public static final RegistryObject<Block> CUT_BRONZE = BLOCKS.register("cut_bronze",
+            SMBlocks::buildMetalBlock);
+    public static final RegistryObject<Block> STEEL_BLOCK = BLOCKS.register("steel_block",
+            SMBlocks::buildMetalBlock);
 
     public static final RegistryObject<Block> BLOOMERY = BLOCKS.register("bloomery",
             () -> new BloomeryBlock(furnaceProperties()));
 
     public static final RegistryObject<Block> BELLOWS = BLOCKS.register("bellows",
             () -> new BellowsBlock(BlockBehaviour.Properties.of(Material.WOOD).strength(0.5F).sound(SoundType.WOOD)));
+
+    //public static final TieredAnvilBlockHolder STONE_ANVILS = new TieredAnvilBlockHolder(BLOCKS, AnvilTier.Impl.STONE);
+    public static final TieredAnvilBlockHolder COPPER_ANVILS = new TieredAnvilBlockHolder(BLOCKS, AnvilTier.Impl.COPPER);
+    public static final TieredAnvilBlockHolder BRONZE_ANVILS = new TieredAnvilBlockHolder(BLOCKS, AnvilTier.Impl.BRONZE);
+    public static final TieredAnvilBlockHolder STEEL_ANVILS = new TieredAnvilBlockHolder(BLOCKS, AnvilTier.Impl.STEEL);
+    //public static final TieredAnvilBlockHolder DIAMOND_ANVILS = new TieredAnvilBlockHolder(BLOCKS, AnvilTier.Impl.DIAMOND);
+    //public static final TieredAnvilBlockHolder NETHERITE_ANVILS = new TieredAnvilBlockHolder(BLOCKS, AnvilTier.Impl.NETHERITE);
 
     private static BlockBehaviour.Properties furnaceProperties(){
         return BlockBehaviour.Properties.of(Material.STONE)
@@ -58,9 +60,6 @@ public class SMBlocks {
         return (blockState) -> blockState.getValue(BlockStateProperties.LIT) ? levelToEmit : 0;
     }
 
-    private static BlockBehaviour.Properties craftingTableProperties() {
-        return BlockBehaviour.Properties.of(Material.WOOD).strength(2.5F).sound(SoundType.WOOD);
-    }
     private static OreBlock buildMetalOreBlock() {
         return new OreBlock(BlockBehaviour.Properties.copy(Blocks.IRON_ORE));
     }
@@ -69,12 +68,8 @@ public class SMBlocks {
         return new OreBlock(BlockBehaviour.Properties.copy(Blocks.DEEPSLATE_IRON_ORE));
     }
 
-    private static OreBlock buildNetherOreBlock(){
-        return new OreBlock(
-                BlockBehaviour.Properties.of(Material.STONE, MaterialColor.NETHER)
-                        .requiresCorrectToolForDrops()
-                        .strength(3.0F, 3.0F)
-                        .sound(SoundType.NETHER_GOLD_ORE),
-                UniformInt.of(0, 1));
+    private static Block buildMetalBlock(){
+        return new Block(BlockBehaviour.Properties.of(Material.METAL, MaterialColor.METAL).requiresCorrectToolForDrops().strength(5.0F, 6.0F).sound(SoundType.METAL));
     }
+
 }

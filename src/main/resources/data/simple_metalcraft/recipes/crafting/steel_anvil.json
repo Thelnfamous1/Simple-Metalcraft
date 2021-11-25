@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "III",
+    " i ",
+    "iii"
+  ],
+  "key": {
+    "I": {
+      "item": "simple_metalcraft:steel_block"
+    },
+    "i": {
+      "item": "simple_metalcraft:steel_ingot"
+    }
+  },
+  "result": {
+    "item": "simple_metalcraft:steel_anvil"
+  }
+}

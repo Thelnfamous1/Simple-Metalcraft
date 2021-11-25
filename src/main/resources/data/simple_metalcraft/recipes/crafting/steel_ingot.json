@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "group": "steel_ingot",
+  "ingredients": [
+    {
+      "item": "simple_metalcraft:steel_block"
+    }
+  ],
+  "result": {
+    "item": "simple_metalcraft:steel_ingot",
+    "count": 9
+  }
+}

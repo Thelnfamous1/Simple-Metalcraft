@@ -16,9 +16,7 @@ public class ClientRecipeBookMixin {
     // Shut up the logger spam from this method for custom recipe types
     @Inject(at = @At("HEAD"), method = "getCategory", cancellable = true)
     private static void getCategory(Recipe<?> recipe, CallbackInfoReturnable<RecipeBookCategories> cir) {
-        if (recipe.getType() == SMModEvents.FORGING
-            || recipe.getType() == SMModEvents.CASTING
-            || recipe.getType() == SMModEvents.BLOOMING) {
+        if (recipe.getType() == SMModEvents.BLOOMING) {
             cir.setReturnValue(RecipeBookCategories.UNKNOWN);
         }
     }

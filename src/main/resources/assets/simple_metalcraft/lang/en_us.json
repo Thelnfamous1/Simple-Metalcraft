@@ -1,29 +1,47 @@
 {
-  "container.simple_metalcraft.casting" : "Casting",
-  "container.simple_metalcraft.casting.level.requirement": "Level Requirement: %s",
-  "container.simple_metalcraft.casting.cost" : "Casting Cost: %1$s",
-
   "container.simple_metalcraft.forging" : "Forging",
-  "container.simple_metalcraft.forging.level.requirement": "Level Requirement: %s",
   "container.simple_metalcraft.forging.cost" : "Forging Cost: %1$s",
+
+  "block.simple_metalcraft.copper_anvil": "Copper Anvil",
+  "block.simple_metalcraft.chipped_copper_anvil": "Chipped Copper Anvil",
+  "block.simple_metalcraft.damaged_copper_anvil": "Damaged Copper Anvil",
+  "item.simple_metalcraft.copper_anvil": "Copper Anvil",
+  "item.simple_metalcraft.chipped_copper_anvil": "Chipped Copper Anvil",
+  "item.simple_metalcraft.damaged_copper_anvil": "Damaged Copper Anvil",
+
+  "block.simple_metalcraft.bronze_anvil": "Bronze Anvil",
+  "block.simple_metalcraft.chipped_bronze_anvil": "Chipped Bronze Anvil",
+  "block.simple_metalcraft.damaged_bronze_anvil": "Damaged Bronze Anvil",
+  "item.simple_metalcraft.bronze_anvil": "Bronze Anvil",
+  "item.simple_metalcraft.chipped_bronze_anvil": "Chipped Bronze Anvil",
+  "item.simple_metalcraft.damaged_bronze_anvil": "Damaged Bronze Anvil",
+
+  "block.simple_metalcraft.steel_anvil": "Steel Anvil",
+  "block.simple_metalcraft.chipped_steel_anvil": "Chipped Steel Anvil",
+  "block.simple_metalcraft.damaged_steel_anvil": "Damaged Steel Anvil",
+  "item.simple_metalcraft.steel_anvil": "Steel Anvil",
+  "item.simple_metalcraft.chipped_steel_anvil": "Chipped Steel Anvil",
+  "item.simple_metalcraft.damaged_steel_anvil": "Damaged Steel Anvil",
 
   "container.simple_metalcraft.bloomery" : "Bloomery",
 
   "simple_metalcraft.gui.recipebook.toggleRecipes.bloomable": "Showing Bloomable",
 
-  "block.simple_metalcraft.casting_table" : "Casting Table",
-  "block.simple_metalcraft.forging_table" : "Forging Table",
   "block.simple_metalcraft.bloomery" : "Bloomery",
-  "block.simple_metalcraft.bellows" : "Bellows",
-
-  "item.simple_metalcraft.casting_table" : "Casting Table",
-  "item.simple_metalcraft.forging_table" : "Forging Table",
   "item.simple_metalcraft.bloomery" : "Bloomery",
+  "block.simple_metalcraft.bellows" : "Bellows",
   "item.simple_metalcraft.bellows" : "Bellows",
 
   "block.simple_metalcraft.tin_ore" : "Tin Ore",
   "block.simple_metalcraft.deepslate_tin_ore" : "Deepslate Tin Ore",
   "block.simple_metalcraft.nether_pig_iron_ore" : "Nether Pig Iron Ore",
+
+  "block.simple_metalcraft.bronze_block": "Bronze Block",
+  "item.simple_metalcraft.bronze_block": "Bronze Block",
+  "block.simple_metalcraft.cut_bronze": "Cut Bronze",
+  "item.simple_metalcraft.cut_bronze": "Cut Bronze",
+  "block.simple_metalcraft.steel_block": "Steel Block",
+  "item.simple_metalcraft.steel_block": "Steel Block",
 
   "item.simple_metalcraft.bow_drill" : "Bow Drill",
 
@@ -60,8 +78,6 @@
   "item.simple_metalcraft.copper_leggings" : "Copper Leggings",
   "item.simple_metalcraft.copper_boots" : "Copper Boots",
 
-  "item.simple_metalcraft.raw_bronze" : "Raw Bronze",
-  "item.simple_metalcraft.bronze_blend" : "Bronze Blend",
   "item.simple_metalcraft.bronze_nugget" : "Bronze Nugget",
   "item.simple_metalcraft.bronze_scrap" : "Bronze Scrap",
   "item.simple_metalcraft.bronze_ingot" : "Bronze Ingot",
@@ -76,17 +92,12 @@
   "item.simple_metalcraft.bronze_boots" : "Bronze Boots",
 
   "item.simple_metalcraft.iron_scrap" : "Iron Scrap",
-  "item.simple_metalcraft.iron_blend" : "Iron Blend",
 
-  "item.simple_metalcraft.nether_pig_iron_ore" : "Nether Pig Iron Ore",
-  "item.simple_metalcraft.raw_pig_iron" : "Raw Pig Iron",
-  "item.simple_metalcraft.pig_iron_blend" : "Pig Iron Blend",
   "item.simple_metalcraft.pig_iron_ingot" : "Pig Iron Ingot",
 
-  "item.simple_metalcraft.raw_steel" : "Raw Steel",
-  "item.simple_metalcraft.steel_blend" : "Steel Blend",
   "item.simple_metalcraft.steel_nugget" : "Steel Nugget",
   "item.simple_metalcraft.steel_scrap" : "Steel Scrap",
+  "item.simple_metalcraft.blister_steel_ingot" : "Blister Steel Ingot",
   "item.simple_metalcraft.steel_ingot" : "Steel Ingot",
   "item.simple_metalcraft.steel_sword" : "Steel Sword",
   "item.simple_metalcraft.steel_shovel" : "Steel Shovel",

@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "III",
+    " i ",
+    "iii"
+  ],
+  "key": {
+    "I": {
+      "item": "simple_metalcraft:bronze_block"
+    },
+    "i": {
+      "item": "simple_metalcraft:bronze_ingot"
+    }
+  },
+  "result": {
+    "item": "simple_metalcraft:bronze_anvil"
+  }
+}
