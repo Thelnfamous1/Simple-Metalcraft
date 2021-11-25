@@ -1,6 +1,6 @@
 {
   "replace": false,
   "values": [
-    "minecraft:flint"
+    "#simple_metalcraft:tool_stones"
   ]
 }

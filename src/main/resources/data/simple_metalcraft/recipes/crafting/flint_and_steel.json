@@ -5,7 +5,7 @@
       "item": "simple_metalcraft:steel_ingot"
     },
     {
-      "item": "minecraft:flint"
+      "tag": "simple_metalcraft:tool_stones"
     }
   ],
   "result": {

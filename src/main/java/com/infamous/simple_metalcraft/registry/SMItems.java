@@ -20,6 +20,7 @@ public class SMItems {
     // SPECIALTY
 
     public static final RegistryObject<Item> BOW_DRILL = ITEMS.register("bow_drill", () -> new BowDrillItem((new Item.Properties()).durability(16).tab(CreativeModeTab.TAB_TOOLS)));
+    public static final RegistryObject<Item> CHERT = ITEMS.register("chert", SMItems::buildMaterial);
 
     public static final RegistryObject<Item> COW_HIDE = registerHide("cow");
     public static final RegistryObject<Item> DONKEY_HIDE = registerHide("donkey");

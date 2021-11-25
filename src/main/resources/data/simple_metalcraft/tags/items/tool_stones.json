@@ -1,0 +1,8 @@
+{
+  "replace": false,
+  "values": [
+    "minecraft:flint",
+    "minecraft:quartz",
+    "simple_metalcraft:chert"
+  ]
+}

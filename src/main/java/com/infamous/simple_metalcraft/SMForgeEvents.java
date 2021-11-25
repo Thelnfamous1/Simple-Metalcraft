@@ -10,7 +10,9 @@ import com.infamous.simple_metalcraft.util.VillagerTradesHelper;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.inventory.AnvilScreen;
+import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.TickTask;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.Mob;
@@ -24,6 +26,7 @@ import net.minecraft.world.inventory.ItemCombinerMenu;
 import net.minecraft.world.item.*;
 import net.minecraft.world.item.trading.MerchantOffer;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.ServerTickList;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.levelgen.GenerationStep;
 import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
@@ -103,21 +106,27 @@ public class SMForgeEvents {
         Level level = event.getWorld();
         if(!level.isClientSide){
             Entity entity = event.getEntity();
+            BlockPos spawnPos = entity.blockPosition();
             if(entity instanceof Mob mob){
-                LazyOptional<EquipmentCapability> equipmentCap = EquipmentCapabilityProvider.get(mob);
-                equipmentCap.ifPresent(ec -> {
-                    if(!ec.getWasEquipped()){
-                        SimpleMetalcraft.LOGGER.info("Handling equipment for mob {}", mob);
-                        DifficultyInstance difficultyAt = level.getCurrentDifficultyAt(mob.getOnPos());
-                        boolean equipped = ArmoringHelper.populateDefaultEquipmentSlots(mob, difficultyAt, true);
-                        if(equipped){
-                            ArmoringHelper.populateDefaultEquipmentEnchantments(mob, difficultyAt);
-                        }
-                        ec.setWasEquipped(true);
-                    }
-                });
+                level.getServer().addTickable(new TickTask(1, () ->
+                        tryEquipMob(level, spawnPos, mob)));
             }
         }
+    }
+
+    private static void tryEquipMob(Level level, BlockPos spawnPos, Mob mob) {
+        LazyOptional<EquipmentCapability> equipmentCap = EquipmentCapabilityProvider.get(mob);
+        equipmentCap.ifPresent(ec -> {
+            if(!ec.getWasEquipped()){
+                SimpleMetalcraft.LOGGER.info("Handling equipment for mob {}", mob);
+                DifficultyInstance difficultyAt = level.getCurrentDifficultyAt(spawnPos);
+                boolean equipped = ArmoringHelper.populateDefaultEquipmentSlots(mob, difficultyAt, true);
+                if(equipped){
+                    ArmoringHelper.populateDefaultEquipmentEnchantments(mob, difficultyAt);
+                }
+                ec.setWasEquipped(true);
+            }
+        });
     }
 
     @SubscribeEvent(priority = EventPriority.HIGH)
