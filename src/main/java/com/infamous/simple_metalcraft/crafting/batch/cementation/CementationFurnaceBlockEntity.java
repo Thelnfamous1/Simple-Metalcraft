@@ -1,10 +1,9 @@
 package com.infamous.simple_metalcraft.crafting.batch.cementation;
 
-import com.infamous.simple_metalcraft.SMModEvents;
 import com.infamous.simple_metalcraft.SimpleMetalcraft;
 import com.infamous.simple_metalcraft.crafting.batch.BatchFurnaceBlockEntity;
-import com.infamous.simple_metalcraft.crafting.batch.blooming.BloomeryMenu;
 import com.infamous.simple_metalcraft.registry.SMBlockEntityTypes;
+import com.infamous.simple_metalcraft.registry.SMRecipes;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TranslatableComponent;
@@ -17,7 +16,7 @@ public class CementationFurnaceBlockEntity extends BatchFurnaceBlockEntity {
     public static final TranslatableComponent CEMENTATION_FURNACE_TITLE = new TranslatableComponent( "container." + SimpleMetalcraft.MOD_ID + ".cementation_furnace");
 
     public CementationFurnaceBlockEntity(BlockPos blockPos, BlockState blockState) {
-        super(SMBlockEntityTypes.CEMENTATION_FURNACE.get(), blockPos, blockState, SMModEvents.CEMENTATION);
+        super(SMBlockEntityTypes.CEMENTATION_FURNACE.get(), blockPos, blockState, SMRecipes.Types.CEMENTATION);
     }
 
     @Override

@@ -51,6 +51,7 @@ minecraft {
 
             arg "-mixin.config=simple_metalcraft.mixins.json"
             workingDirectory project.file('run')
+            property 'mixin.debug.export', 'true'
 
             // Recommended logging data for a userdev environment
             // The markers can be added/remove as needed separated by commas.

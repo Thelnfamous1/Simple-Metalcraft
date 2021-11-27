@@ -1,0 +1,12 @@
+{
+  "type": "simple_metalcraft:forging",
+  "ingredient": {
+    "item": "simple_metalcraft:blister_steel_ingot"
+  },
+  "catalyst": {
+    "tag": "simple_metalcraft:forging_catalysts"
+  },
+  "result": {
+    "item": "simple_metalcraft:steel_ingot"
+  }
+}

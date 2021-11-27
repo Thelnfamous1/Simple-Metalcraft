@@ -1,6 +1,5 @@
 package com.infamous.simple_metalcraft.mixin;
 
-import com.infamous.simple_metalcraft.SMModEvents;
 import com.infamous.simple_metalcraft.registry.SMRecipes;
 import net.minecraft.client.ClientRecipeBook;
 import net.minecraft.client.RecipeBookCategories;
@@ -16,7 +15,9 @@ public class ClientRecipeBookMixin {
     // Shut up the logger spam from this method for custom recipe types
     @Inject(at = @At("HEAD"), method = "getCategory", cancellable = true)
     private static void getCategory(Recipe<?> recipe, CallbackInfoReturnable<RecipeBookCategories> cir) {
-        if (recipe.getType() == SMModEvents.BLOOMING) {
+        if (recipe.getType() == SMRecipes.Types.BLOOMING
+                || recipe.getType() == SMRecipes.Types.CEMENTATION
+                || recipe.getType() == SMRecipes.Types.FORGING) {
             cir.setReturnValue(RecipeBookCategories.UNKNOWN);
         }
     }

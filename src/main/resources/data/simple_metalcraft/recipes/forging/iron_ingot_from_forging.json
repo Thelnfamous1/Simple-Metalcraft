@@ -1,0 +1,12 @@
+{
+  "type": "simple_metalcraft:forging",
+  "ingredient": {
+    "item": "simple_metalcraft:iron_bloom"
+  },
+  "catalyst": {
+    "tag": "simple_metalcraft:forging_catalysts"
+  },
+  "result": {
+    "item": "minecraft:iron_ingot"
+  }
+}

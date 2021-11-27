@@ -2,18 +2,18 @@ package com.infamous.simple_metalcraft;
 
 import com.infamous.simple_metalcraft.capability.EquipmentCapability;
 import com.infamous.simple_metalcraft.capability.EquipmentCapabilityProvider;
+import com.infamous.simple_metalcraft.crafting.anvil.ForgingRecipe;
 import com.infamous.simple_metalcraft.crafting.anvil.TieredAnvilBlock;
 import com.infamous.simple_metalcraft.mixin.ItemCombinerMenuAccessor;
 import com.infamous.simple_metalcraft.registry.SMItems;
 import com.infamous.simple_metalcraft.util.ArmoringHelper;
 import com.infamous.simple_metalcraft.util.VillagerTradesHelper;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.screens.inventory.AnvilScreen;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.TickTask;
 import net.minecraft.world.DifficultyInstance;
+import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.npc.VillagerProfession;
@@ -22,11 +22,9 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.AnvilMenu;
 import net.minecraft.world.inventory.ContainerLevelAccess;
-import net.minecraft.world.inventory.ItemCombinerMenu;
 import net.minecraft.world.item.*;
 import net.minecraft.world.item.trading.MerchantOffer;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.ServerTickList;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.levelgen.GenerationStep;
 import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
@@ -62,22 +60,20 @@ public class SMForgeEvents {
         if(event.isCanceled()) return;
         ItemStack left = event.getLeft();
         ItemStack right = event.getRight();
-        if(right.is(Items.FIRE_CHARGE) && right.getCount() >= left.getCount()){
-            if(left.is(SMItems.IRON_BLOOM.get())){
-                event.setOutput(new ItemStack(Items.IRON_INGOT, left.getCount()));
-                event.setCost(left.getCount());
-                event.setMaterialCost(left.getCount());
-            }
-            else if(left.is(SMItems.BLISTER_STEEL_INGOT.get())){
-                event.setOutput(new ItemStack(SMItems.STEEL_INGOT.get(), left.getCount()));
-                event.setCost(left.getCount());
-                event.setMaterialCost(left.getCount());
-            }
-        }
+
+        Level level = event.getPlayer().level;
+        Optional<ForgingRecipe> forgingRecipe = ForgingRecipe.getRecipeFor(left, right, level);
+
+        forgingRecipe.ifPresent(fr -> {
+            ItemStack result = fr.assemble(new SimpleContainer(left, right));
+            event.setOutput(result);
+            event.setCost(left.getCount()); // experience level cost
+            event.setMaterialCost(left.getCount()); // material cost
+        });
     }
 
     @SubscribeEvent(priority = EventPriority.HIGHEST)
-    public static void onAnvilUpdate(AnvilRepairEvent event){
+    public static void onAnvilRepair(AnvilRepairEvent event){
         Player player = event.getPlayer();
         AbstractContainerMenu menu = player.containerMenu;
         if(menu instanceof AnvilMenu anvilMenu){
@@ -89,15 +85,6 @@ public class SMForgeEvents {
             });
 
         }
-
-        ItemStack left = event.getItemInput();
-        ItemStack right = event.getIngredientInput();
-        if(right.is(Items.FIRE_CHARGE)){
-            if(left.is(SMItems.PIG_IRON_INGOT.get())){
-            }
-            else if(left.is(SMItems.BLISTER_STEEL_INGOT.get())){
-            }
-        }
     }
 
 
@@ -108,6 +95,7 @@ public class SMForgeEvents {
             Entity entity = event.getEntity();
             BlockPos spawnPos = entity.blockPosition();
             if(entity instanceof Mob mob){
+                //noinspection ConstantConditions
                 level.getServer().addTickable(new TickTask(1, () ->
                         tryEquipMob(level, spawnPos, mob)));
             }

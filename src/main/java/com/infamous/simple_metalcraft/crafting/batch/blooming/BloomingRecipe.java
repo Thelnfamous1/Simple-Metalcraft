@@ -1,6 +1,5 @@
 package com.infamous.simple_metalcraft.crafting.batch.blooming;
 
-import com.infamous.simple_metalcraft.SMModEvents;
 import com.infamous.simple_metalcraft.crafting.batch.BatchCookingRecipe;
 import com.infamous.simple_metalcraft.registry.SMItems;
 import com.infamous.simple_metalcraft.registry.SMRecipes;
@@ -12,7 +11,7 @@ import net.minecraft.world.item.crafting.RecipeSerializer;
 public class BloomingRecipe extends BatchCookingRecipe {
 
     public BloomingRecipe(ResourceLocation id, String group, Ingredient ingredient, ItemStack result, float experience, int cookingTime) {
-        super(SMModEvents.BLOOMING, id, group, ingredient, result, experience, cookingTime);
+        super(SMRecipes.Types.BLOOMING, id, group, ingredient, result, experience, cookingTime);
     }
 
     @Override
