@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "III",
+    "IFI",
+    "###"
+  ],
+  "key": {
+    "I": {
+      "item": "minecraft:iron_ingot"
+    },
+    "F": {
+      "item": "simple_metalcraft:bloomery"
+    },
+    "#": {
+      "item": "minecraft:smooth_stone"
+    }
+  },
+  "result": {
+    "item": "simple_metalcraft:cementation_furnace"
+  }
+}

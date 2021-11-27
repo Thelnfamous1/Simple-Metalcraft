@@ -63,7 +63,7 @@ public class SMForgeEvents {
         ItemStack left = event.getLeft();
         ItemStack right = event.getRight();
         if(right.is(Items.FIRE_CHARGE) && right.getCount() >= left.getCount()){
-            if(left.is(SMItems.PIG_IRON_INGOT.get())){
+            if(left.is(SMItems.IRON_BLOOM.get())){
                 event.setOutput(new ItemStack(Items.IRON_INGOT, left.getCount()));
                 event.setCost(left.getCount());
                 event.setMaterialCost(left.getCount());

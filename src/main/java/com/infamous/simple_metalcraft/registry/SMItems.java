@@ -41,6 +41,10 @@ public class SMItems {
             ITEMS.register("bloomery",
                     () -> buildDecorationBlock(SMBlocks.BLOOMERY.get()));
 
+    public static final RegistryObject<Item> CEMENTATION_FURNACE =
+            ITEMS.register("cementation_furnace",
+                    () -> buildDecorationBlock(SMBlocks.CEMENTATION_FURNACE.get()));
+
     public static final RegistryObject<Item> BELLOWS =
             ITEMS.register("bellows",
                     () -> buildRedstoneBlock(SMBlocks.BELLOWS.get()));
@@ -156,6 +160,9 @@ public class SMItems {
 
     public static final RegistryObject<Item> IRON_SCRAP =
             ITEMS.register("iron_scrap", SMItems::buildMaterial);
+
+    public static final RegistryObject<Item> IRON_BLOOM =
+            ITEMS.register("iron_bloom", SMItems::buildMaterial);
 
     // PIG IRON
 

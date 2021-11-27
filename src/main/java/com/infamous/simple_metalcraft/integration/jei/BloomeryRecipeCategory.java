@@ -1,8 +1,9 @@
 package com.infamous.simple_metalcraft.integration.jei;
 
 import com.infamous.simple_metalcraft.SimpleMetalcraft;
-import com.infamous.simple_metalcraft.crafting.blooming.BloomeryBlockEntity;
-import com.infamous.simple_metalcraft.crafting.blooming.BloomingRecipe;
+import com.infamous.simple_metalcraft.crafting.batch.BatchCookingRecipe;
+import com.infamous.simple_metalcraft.crafting.batch.blooming.BloomeryBlockEntity;
+import com.infamous.simple_metalcraft.crafting.batch.blooming.BloomingRecipe;
 import com.infamous.simple_metalcraft.registry.SMBlocks;
 import com.infamous.simple_metalcraft.registry.SMRecipes;
 import mezz.jei.api.helpers.IGuiHelper;
@@ -22,7 +23,7 @@ public class BloomeryRecipeCategory extends AbstractCookingCategory<BloomingReci
     }
 
     @Override
-    public Class<? extends BloomingRecipe> getRecipeClass() {
+    public Class<BloomingRecipe> getRecipeClass() {
         return BloomingRecipe.class;
     }
 }

@@ -2,9 +2,9 @@ package com.infamous.simple_metalcraft.registry;
 
 import com.infamous.simple_metalcraft.SimpleMetalcraft;
 import com.infamous.simple_metalcraft.crafting.anvil.AnvilTier;
+import com.infamous.simple_metalcraft.crafting.batch.cementation.CementationFurnaceBlock;
 import com.infamous.simple_metalcraft.crafting.bellows.BellowsBlock;
-import com.infamous.simple_metalcraft.crafting.blooming.BloomeryBlock;
-import net.minecraft.util.valueproviders.UniformInt;
+import com.infamous.simple_metalcraft.crafting.batch.blooming.BloomeryBlock;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
@@ -38,6 +38,9 @@ public class SMBlocks {
 
     public static final RegistryObject<Block> BLOOMERY = BLOCKS.register("bloomery",
             () -> new BloomeryBlock(furnaceProperties()));
+
+    public static final RegistryObject<Block> CEMENTATION_FURNACE = BLOCKS.register("cementation_furnace",
+            () -> new CementationFurnaceBlock(furnaceProperties()));
 
     public static final RegistryObject<Block> BELLOWS = BLOCKS.register("bellows",
             () -> new BellowsBlock(BlockBehaviour.Properties.of(Material.WOOD).strength(0.5F).sound(SoundType.WOOD)));

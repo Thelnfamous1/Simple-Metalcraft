@@ -1,11 +1,11 @@
-package com.infamous.simple_metalcraft.crafting.blooming;
+package com.infamous.simple_metalcraft.crafting.batch.blooming;
 
 import java.util.Random;
 import javax.annotation.Nullable;
 
+import com.infamous.simple_metalcraft.crafting.batch.BatchFurnaceBlockEntity;
 import com.infamous.simple_metalcraft.registry.SMBlockEntityTypes;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
@@ -14,7 +14,6 @@ import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.AbstractFurnaceBlock;
-import net.minecraft.world.level.block.entity.AbstractFurnaceBlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -22,6 +21,7 @@ import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 
 public class BloomeryBlock extends AbstractFurnaceBlock {
+
    public BloomeryBlock(BlockBehaviour.Properties properties) {
       super(properties);
    }
@@ -38,7 +38,7 @@ public class BloomeryBlock extends AbstractFurnaceBlock {
 
    @Nullable
    protected static <T extends BlockEntity> BlockEntityTicker<T> createBloomeryTicker(Level level, BlockEntityType<T> blockEntityType, BlockEntityType<BloomeryBlockEntity> furnaceEntityType) {
-      return level.isClientSide ? null : createTickerHelper(blockEntityType, furnaceEntityType, BloomeryBlockEntity::bloomeryServerTick);
+      return level.isClientSide ? null : createTickerHelper(blockEntityType, furnaceEntityType, BatchFurnaceBlockEntity::batchServerTick);
    }
 
    @Override

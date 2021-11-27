@@ -2,12 +2,13 @@ package com.infamous.simple_metalcraft;
 
 import com.google.common.collect.ImmutableList;
 import com.infamous.simple_metalcraft.capability.EquipmentCapabilityProvider;
-import com.infamous.simple_metalcraft.crafting.blooming.BloomingRecipe;
+import com.infamous.simple_metalcraft.crafting.batch.BatchCookingRecipe;
+import com.infamous.simple_metalcraft.crafting.batch.blooming.BloomingRecipe;
+import com.infamous.simple_metalcraft.crafting.batch.cementation.CementationRecipe;
 import com.infamous.simple_metalcraft.registry.SMBlocks;
 import com.infamous.simple_metalcraft.registry.SMRecipes;
 import net.minecraft.core.Registry;
 import net.minecraft.data.BuiltinRegistries;
-import net.minecraft.data.worldgen.Features;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.item.crafting.RecipeType;
@@ -45,6 +46,7 @@ public class SMModEvents {
 
     public static ConfiguredFeature<?, ?> ORE_TIN;
     public static RecipeType<BloomingRecipe> BLOOMING;
+    public static RecipeType<CementationRecipe> CEMENTATION;
 
     private static ImmutableList<OreConfiguration.TargetBlockState> ORE_TIN_TARGET_LIST;
 
@@ -81,6 +83,7 @@ public class SMModEvents {
 
     private static void registerRecipeTypes() {
         BLOOMING = registerRecipeType(SMRecipes.BLOOMING_NAME);
+        CEMENTATION = registerRecipeType(SMRecipes.CEMENTATION_NAME);
     }
 
     private static <FC extends FeatureConfiguration> ConfiguredFeature<FC, ?> registerFeature(String name, ConfiguredFeature<FC, ?> feature) {

@@ -24,11 +24,12 @@
   "item.simple_metalcraft.damaged_steel_anvil": "Damaged Steel Anvil",
 
   "container.simple_metalcraft.bloomery" : "Bloomery",
-
-  "simple_metalcraft.gui.recipebook.toggleRecipes.bloomable": "Showing Bloomable",
+  "container.simple_metalcraft.cementation_furnace" : "Cementation Furnace",
 
   "block.simple_metalcraft.bloomery" : "Bloomery",
   "item.simple_metalcraft.bloomery" : "Bloomery",
+  "block.simple_metalcraft.cementation_furnace" : "Cementation Furnace",
+  "item.simple_metalcraft.cementation_furnace" : "Cementation Furnace",
   "block.simple_metalcraft.bellows" : "Bellows",
   "item.simple_metalcraft.bellows" : "Bellows",
 
@@ -93,6 +94,7 @@
   "item.simple_metalcraft.bronze_boots" : "Bronze Boots",
 
   "item.simple_metalcraft.iron_scrap" : "Iron Scrap",
+  "item.simple_metalcraft.iron_bloom" : "Iron Bloom",
 
   "item.simple_metalcraft.pig_iron_ingot" : "Pig Iron Ingot",
 

@@ -2,7 +2,9 @@ package com.infamous.simple_metalcraft.integration.jei;
 
 import com.infamous.simple_metalcraft.SMModEvents;
 import com.infamous.simple_metalcraft.SimpleMetalcraft;
-import com.infamous.simple_metalcraft.crafting.blooming.BloomingRecipe;
+import com.infamous.simple_metalcraft.crafting.batch.BatchCookingRecipe;
+import com.infamous.simple_metalcraft.crafting.batch.blooming.BloomingRecipe;
+import com.infamous.simple_metalcraft.crafting.batch.cementation.CementationRecipe;
 import com.infamous.simple_metalcraft.registry.SMItems;
 import mezz.jei.api.IModPlugin;
 import mezz.jei.api.JeiPlugin;
@@ -33,27 +35,38 @@ public class SimpleMetalcraftPlugin implements IModPlugin {
     public void registerRecipes(IRecipeRegistration registration) {
         RecipeCache recipeCache = cacheRecipes();
         registration.addRecipes(recipeCache.bloomingRecipes, BloomeryRecipeCategory.UID);
+        registration.addRecipes(recipeCache.cementationRecipes, CementationFurnaceRecipeCategory.UID);
     }
 
     @Override
     public void registerCategories(IRecipeCategoryRegistration registration) {
         IJeiHelpers jeiHelpers = registration.getJeiHelpers();
         IGuiHelper guiHelper = jeiHelpers.getGuiHelper();
-        BloomeryRecipeCategory category = new BloomeryRecipeCategory(guiHelper);
-        registration.addRecipeCategories(category);
+
+        BloomeryRecipeCategory bloomeryRecipeCategory = new BloomeryRecipeCategory(guiHelper);
+        registration.addRecipeCategories(bloomeryRecipeCategory);
+
+        CementationFurnaceRecipeCategory cementationFurnaceRecipeCategory = new CementationFurnaceRecipeCategory(guiHelper);
+        registration.addRecipeCategories(cementationFurnaceRecipeCategory);
     }
 
     @Override
     public void registerRecipeCatalysts(IRecipeCatalystRegistration registration) {
-        ItemStack catalystIngredient = new ItemStack(SMItems.BLOOMERY.get());
-        registration.addRecipeCatalyst(catalystIngredient, BloomeryRecipeCategory.UID, VanillaRecipeCategoryUid.FUEL);
+        ItemStack bloomeryCatalyst = new ItemStack(SMItems.BLOOMERY.get());
+        ItemStack cementationFurnaceCatalyst = new ItemStack(SMItems.CEMENTATION_FURNACE.get());
+        registration.addRecipeCatalyst(bloomeryCatalyst, BloomeryRecipeCategory.UID, VanillaRecipeCategoryUid.FUEL);
+        registration.addRecipeCatalyst(cementationFurnaceCatalyst, CementationFurnaceRecipeCategory.UID, VanillaRecipeCategoryUid.FUEL);
     }
 
     public static class RecipeCache {
         private final List<BloomingRecipe> bloomingRecipes = new ArrayList<>();
+        private final List<CementationRecipe> cementationRecipes = new ArrayList<>();
 
         public List<BloomingRecipe> getBloomingRecipes() {
             return bloomingRecipes;
+        }
+        public List<CementationRecipe> getCementationRecipes() {
+            return cementationRecipes;
         }
     }
 
@@ -64,6 +77,7 @@ public class SimpleMetalcraftPlugin implements IModPlugin {
         RecipeManager recipeManager = world.getRecipeManager();
 
         recipeCache.bloomingRecipes.addAll(recipeManager.getAllRecipesFor(SMModEvents.BLOOMING));
+        recipeCache.cementationRecipes.addAll(recipeManager.getAllRecipesFor(SMModEvents.CEMENTATION));
 
         return recipeCache;
     }

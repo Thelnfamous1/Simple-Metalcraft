@@ -29,7 +29,7 @@ public abstract class AnvilScreenMixin extends ItemCombinerScreen<AnvilMenu> {
         int cost = this.menu.getCost();
         ItemStack left = this.menu.getSlot(0).getItem();
         ItemStack right = this.menu.getSlot(1).getItem();
-        boolean isForgeable = left.is(SMItems.PIG_IRON_INGOT.get()) || left.is(SMItems.BLISTER_STEEL_INGOT.get());
+        boolean isForgeable = left.is(SMItems.IRON_BLOOM.get()) || left.is(SMItems.BLISTER_STEEL_INGOT.get());
         if(isForgeable && right.is(Items.FIRE_CHARGE)){
             return new TranslatableComponent(FORGING_COST_LOCALIZATION, cost);
         } else{

@@ -1,0 +1,10 @@
+{
+  "type": "minecraft:blasting",
+  "group": "iron_bloom",
+  "ingredient": {
+    "item": "simple_metalcraft:pig_iron_ingot"
+  },
+  "result": "simple_metalcraft:iron_bloom",
+  "experience": 0.7,
+  "cookingtime": 100
+}

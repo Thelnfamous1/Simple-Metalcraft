@@ -1,4 +1,4 @@
-package com.infamous.simple_metalcraft.crafting.blooming;
+package com.infamous.simple_metalcraft.crafting.batch.blooming;
 
 import com.google.common.collect.ImmutableList;
 import com.infamous.simple_metalcraft.SMModEvents;

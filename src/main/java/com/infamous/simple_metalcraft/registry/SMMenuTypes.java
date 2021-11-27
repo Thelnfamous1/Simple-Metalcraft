@@ -1,7 +1,8 @@
 package com.infamous.simple_metalcraft.registry;
 
 import com.infamous.simple_metalcraft.SimpleMetalcraft;
-import com.infamous.simple_metalcraft.crafting.blooming.BloomeryMenu;
+import com.infamous.simple_metalcraft.crafting.batch.blooming.BloomeryMenu;
+import com.infamous.simple_metalcraft.crafting.batch.cementation.CementationFurnaceMenu;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraftforge.fmllegacy.RegistryObject;
 import net.minecraftforge.registries.DeferredRegister;
@@ -14,4 +15,8 @@ public class SMMenuTypes {
     public static RegistryObject<MenuType<BloomeryMenu>> BLOOMERY = MENU_TYPES.register(
             "bloomery",
             () -> new MenuType<>(BloomeryMenu::new));
+
+    public static RegistryObject<MenuType<CementationFurnaceMenu>> CEMENTATION_FURNACE = MENU_TYPES.register(
+            "cementation_furnace",
+            () -> new MenuType<>(CementationFurnaceMenu::new));
 }
