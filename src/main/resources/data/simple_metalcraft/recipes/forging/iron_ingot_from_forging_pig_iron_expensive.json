@@ -1,12 +1,13 @@
 {
   "type": "simple_metalcraft:forging",
   "ingredient": {
-    "item": "simple_metalcraft:iron_bloom"
+    "item": "simple_metalcraft:pig_iron_ingot"
   },
   "catalyst": {
-    "tag": "simple_metalcraft:forging_catalysts"
+    "item": "minecraft:fire_charge"
   },
   "result": {
     "item": "minecraft:iron_ingot"
-  }
+  },
+  "experienceCost": 0
 }

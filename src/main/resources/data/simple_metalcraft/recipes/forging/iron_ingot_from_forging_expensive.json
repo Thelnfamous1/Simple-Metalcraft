@@ -1,0 +1,13 @@
+{
+  "type": "simple_metalcraft:forging",
+  "ingredient": {
+    "item": "simple_metalcraft:iron_bloom"
+  },
+  "catalyst": {
+    "item": "minecraft:fire_charge"
+  },
+  "result": {
+    "item": "minecraft:iron_ingot"
+  },
+  "experienceCost": 0
+}

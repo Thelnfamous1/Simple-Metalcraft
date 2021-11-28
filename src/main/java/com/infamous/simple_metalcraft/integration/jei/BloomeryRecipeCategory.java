@@ -1,9 +1,9 @@
 package com.infamous.simple_metalcraft.integration.jei;
 
 import com.infamous.simple_metalcraft.SimpleMetalcraft;
-import com.infamous.simple_metalcraft.crafting.batch.BatchCookingRecipe;
 import com.infamous.simple_metalcraft.crafting.batch.blooming.BloomeryBlockEntity;
 import com.infamous.simple_metalcraft.crafting.batch.blooming.BloomingRecipe;
+import com.infamous.simple_metalcraft.integration.jei.util.AbstractCookingCategory;
 import com.infamous.simple_metalcraft.registry.SMBlocks;
 import com.infamous.simple_metalcraft.registry.SMRecipes;
 import mezz.jei.api.helpers.IGuiHelper;

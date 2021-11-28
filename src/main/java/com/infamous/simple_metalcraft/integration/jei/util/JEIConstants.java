@@ -1,4 +1,4 @@
-package com.infamous.simple_metalcraft.integration.jei;
+package com.infamous.simple_metalcraft.integration.jei.util;
 
 import mezz.jei.api.constants.ModIds;
 import net.minecraft.resources.ResourceLocation;

@@ -15,24 +15,28 @@ public class ForgingSerializer extends ForgeRegistryEntry<RecipeSerializer<?>> i
     public static final String INGREDIENT = "ingredient";
     public static final String CATALYST = "catalyst";
     public static final String RESULT = "result";
+    public static final String EXPERIENCE_COST = "experienceCost";
 
     public ForgingRecipe fromJson(ResourceLocation id, JsonObject jsonObject) {
         Ingredient ingredient = Ingredient.fromJson(GsonHelper.getAsJsonObject(jsonObject, INGREDIENT));
         Ingredient catalyst = Ingredient.fromJson(GsonHelper.getAsJsonObject(jsonObject, CATALYST));
         ItemStack result = ShapedRecipe.itemStackFromJson(GsonHelper.getAsJsonObject(jsonObject, RESULT));
-        return new ForgingRecipe(id, ingredient, catalyst, result);
+        int experienceCost = Math.max(GsonHelper.getAsInt(jsonObject, EXPERIENCE_COST, 0), 0);
+        return new ForgingRecipe(id, ingredient, catalyst, result, experienceCost);
     }
 
     public ForgingRecipe fromNetwork(ResourceLocation id, FriendlyByteBuf byteBuf) {
         Ingredient ingredient = Ingredient.fromNetwork(byteBuf);
         Ingredient catalyst = Ingredient.fromNetwork(byteBuf);
         ItemStack result = byteBuf.readItem();
-        return new ForgingRecipe(id, ingredient, catalyst, result);
+        int experienceCost = byteBuf.readVarInt();
+        return new ForgingRecipe(id, ingredient, catalyst, result, experienceCost);
     }
 
     public void toNetwork(FriendlyByteBuf byteBuf, ForgingRecipe recipe) {
         recipe.ingredient.toNetwork(byteBuf);
         recipe.catalyst.toNetwork(byteBuf);
         byteBuf.writeItem(recipe.result);
+        byteBuf.writeVarInt(recipe.experienceCost);
     }
 }

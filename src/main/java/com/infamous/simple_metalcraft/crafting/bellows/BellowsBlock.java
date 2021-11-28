@@ -64,6 +64,24 @@ public class BellowsBlock extends FaceAttachedHorizontalDirectionalBlock {
     }
 
     @Override
+    public BlockState getStateForPlacement(BlockPlaceContext context) {
+        for(Direction direction : context.getNearestLookingDirections()) {
+            BlockState blockstate;
+            if (direction.getAxis() == Direction.Axis.Y) {
+                blockstate = this.defaultBlockState().setValue(FACE, AttachFace.WALL).setValue(FACING, context.getHorizontalDirection());
+            } else {
+                blockstate = this.defaultBlockState().setValue(FACE, AttachFace.WALL).setValue(FACING, direction);
+            }
+
+            if (blockstate.canSurvive(context.getLevel(), context.getClickedPos())) {
+                return blockstate;
+            }
+        }
+
+        return null;
+    }
+
+    @Override
     public boolean canSurvive(BlockState p_53186_, LevelReader p_53187_, BlockPos p_53188_) {
         return true;
     }
@@ -82,10 +100,10 @@ public class BellowsBlock extends FaceAttachedHorizontalDirectionalBlock {
         BlockEntity connectedBE = level.getBlockEntity(connectedPos);
 
         if (connectedBE instanceof AbstractFurnaceBlockEntity) { // TODO: To hardcode or not to hardcode?
-            SimpleMetalcraft.LOGGER.info("Connected to {}", connectedBE);
+            //SimpleMetalcraft.LOGGER.info("Connected to {}", connectedBE);
             BlockEntityTicker<T> ticker = (BlockEntityTicker<T>) connectedBS.getTicker(level, connectedBE.getType());
             if(ticker != null){
-                SimpleMetalcraft.LOGGER.info("Boost ticking {}", connectedBE);
+                //SimpleMetalcraft.LOGGER.info("Boost ticking {}", connectedBE);
                 for(int i = 0; i < this.getCookingBoost(); i++){
                     ticker.tick(level, connectedPos, connectedBS, (T) connectedBE);
                 }

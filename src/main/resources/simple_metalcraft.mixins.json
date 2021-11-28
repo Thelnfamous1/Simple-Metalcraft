@@ -5,8 +5,9 @@
   "refmap": "simple_metalcraft.refmap.json",
   "mixins": [
     "AbstractFurnaceBlockEntityAccessor",
-    "ItemCombinerMenuAccessor",
-    "AnvilBlockMixin"
+    "AnvilBlockMixin",
+    "AnvilMenuMixin",
+    "ItemCombinerMenuAccessor"
   ],
   "client": [
     "AnvilScreenMixin",

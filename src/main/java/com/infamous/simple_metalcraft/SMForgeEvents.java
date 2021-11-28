@@ -60,15 +60,18 @@ public class SMForgeEvents {
         if(event.isCanceled()) return;
         ItemStack left = event.getLeft();
         ItemStack right = event.getRight();
+        if(right.getCount() < left.getCount()) return; // need at least as many catalysts as ingredients
 
         Level level = event.getPlayer().level;
         Optional<ForgingRecipe> forgingRecipe = ForgingRecipe.getRecipeFor(left, right, level);
 
         forgingRecipe.ifPresent(fr -> {
             ItemStack result = fr.assemble(new SimpleContainer(left, right));
+            int leftCount = left.getCount();
+            result.setCount(result.getCount() * leftCount); // grow the result count based on how many inputs used
             event.setOutput(result);
-            event.setCost(left.getCount()); // experience level cost
-            event.setMaterialCost(left.getCount()); // material cost
+            event.setCost(leftCount * fr.getExperienceCost()); // experience level cost
+            event.setMaterialCost(leftCount); // material cost
         });
     }
 
@@ -106,7 +109,7 @@ public class SMForgeEvents {
         LazyOptional<EquipmentCapability> equipmentCap = EquipmentCapabilityProvider.get(mob);
         equipmentCap.ifPresent(ec -> {
             if(!ec.getWasEquipped()){
-                SimpleMetalcraft.LOGGER.info("Handling equipment for mob {}", mob);
+                //SimpleMetalcraft.LOGGER.info("Handling equipment for mob {}", mob);
                 DifficultyInstance difficultyAt = level.getCurrentDifficultyAt(spawnPos);
                 boolean equipped = ArmoringHelper.populateDefaultEquipmentSlots(mob, difficultyAt, true);
                 if(equipped){

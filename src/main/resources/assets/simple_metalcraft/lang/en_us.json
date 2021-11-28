@@ -1,6 +1,7 @@
 {
   "container.simple_metalcraft.forging" : "Forging",
   "container.simple_metalcraft.forging.cost" : "Forging Cost: %1$s",
+  "container.simple_metalcraft.repair.cost" : "Repair Cost: %1$s",
 
   "block.simple_metalcraft.copper_anvil": "Copper Anvil",
   "block.simple_metalcraft.chipped_copper_anvil": "Chipped Copper Anvil",
@@ -70,6 +71,7 @@
 
   "item.simple_metalcraft.copper_nugget" : "Copper Nugget",
   "item.simple_metalcraft.copper_scrap" : "Copper Scrap",
+  "item.simple_metalcraft.copper_shears" : "Copper Shears",
   "item.simple_metalcraft.copper_sword" : "Copper Sword",
   "item.simple_metalcraft.copper_shovel" : "Copper Shovel",
   "item.simple_metalcraft.copper_pickaxe" : "Copper Pickaxe",
@@ -83,6 +85,7 @@
   "item.simple_metalcraft.bronze_nugget" : "Bronze Nugget",
   "item.simple_metalcraft.bronze_scrap" : "Bronze Scrap",
   "item.simple_metalcraft.bronze_ingot" : "Bronze Ingot",
+  "item.simple_metalcraft.bronze_shears" : "Bronze Shears",
   "item.simple_metalcraft.bronze_sword" : "Bronze Sword",
   "item.simple_metalcraft.bronze_shovel" : "Bronze Shovel",
   "item.simple_metalcraft.bronze_pickaxe" : "Bronze Pickaxe",
@@ -102,6 +105,7 @@
   "item.simple_metalcraft.steel_scrap" : "Steel Scrap",
   "item.simple_metalcraft.blister_steel_ingot" : "Blister Steel Ingot",
   "item.simple_metalcraft.steel_ingot" : "Steel Ingot",
+  "item.simple_metalcraft.steel_shears" : "Steel Shears",
   "item.simple_metalcraft.steel_sword" : "Steel Sword",
   "item.simple_metalcraft.steel_shovel" : "Steel Shovel",
   "item.simple_metalcraft.steel_pickaxe" : "Steel Pickaxe",

@@ -1,4 +1,4 @@
-package com.infamous.simple_metalcraft.integration.jei;
+package com.infamous.simple_metalcraft.integration.jei.util;
 
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;

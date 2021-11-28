@@ -1,7 +1,7 @@
 {
   "type": "minecraft:crafting_shaped",
   "pattern": [
-    "III",
+    "###",
     "IFI",
     "###"
   ],
@@ -10,10 +10,10 @@
       "item": "minecraft:iron_ingot"
     },
     "F": {
-      "item": "simple_metalcraft:bloomery"
+      "item": "minecraft:furnace"
     },
     "#": {
-      "item": "minecraft:smooth_stone"
+      "tag": "minecraft:stone_crafting_materials"
     }
   },
   "result": {

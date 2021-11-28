@@ -3,12 +3,16 @@ package com.infamous.simple_metalcraft;
 import com.google.common.collect.ImmutableList;
 import com.infamous.simple_metalcraft.capability.EquipmentCapabilityProvider;
 import com.infamous.simple_metalcraft.registry.SMBlocks;
+import com.infamous.simple_metalcraft.registry.SMItems;
 import com.infamous.simple_metalcraft.registry.SMRecipes;
 import net.minecraft.core.Registry;
+import net.minecraft.core.dispenser.ShearsDispenseItemBehavior;
 import net.minecraft.data.BuiltinRegistries;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.item.crafting.RecipeType;
+import net.minecraft.world.level.block.DispenserBlock;
 import net.minecraft.world.level.levelgen.VerticalAnchor;
 import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
 import net.minecraft.world.level.levelgen.feature.Feature;
@@ -56,8 +60,15 @@ public class SMModEvents {
                 () -> {
                     registerRecipeTypes();
                     registerFeatures();
+                    registerDispenserBehavior();
                 }
         );
+    }
+
+    private static void registerDispenserBehavior() {
+        DispenserBlock.registerBehavior(SMItems.COPPER_SHEARS.get(), new ShearsDispenseItemBehavior());
+        DispenserBlock.registerBehavior(SMItems.BRONZE_SHEARS.get(), new ShearsDispenseItemBehavior());
+        DispenserBlock.registerBehavior(SMItems.STEEL_SHEARS.get(), new ShearsDispenseItemBehavior());
     }
 
     private static void registerFeatures() {

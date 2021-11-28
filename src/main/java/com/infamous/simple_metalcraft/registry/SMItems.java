@@ -1,5 +1,6 @@
 package com.infamous.simple_metalcraft.registry;
 
+import com.infamous.simple_metalcraft.crafting.TieredShearsItem;
 import com.infamous.simple_metalcraft.util.SMArmorMaterials;
 import com.infamous.simple_metalcraft.util.SMTiers;
 import com.infamous.simple_metalcraft.SimpleMetalcraft;
@@ -85,6 +86,9 @@ public class SMItems {
     public static final RegistryObject<Item> COPPER_SCRAP =
             ITEMS.register("copper_scrap", SMItems::buildMaterial);
 
+    public static final RegistryObject<Item> COPPER_SHEARS =
+            ITEMS.register("copper_shears", () -> buildTieredShears(SMTiers.COPPER));
+
     public static final RegistryObject<Item> COPPER_SWORD =
             ITEMS.register("copper_sword", () -> buildSword(SMTiers.COPPER, 3, -2.4F));
 
@@ -128,6 +132,9 @@ public class SMItems {
 
     public static final RegistryObject<Item> BRONZE_INGOT =
             ITEMS.register("bronze_ingot", SMItems::buildMaterial);
+
+    public static final RegistryObject<Item> BRONZE_SHEARS =
+            ITEMS.register("bronze_shears", () -> buildTieredShears(SMTiers.BRONZE));
 
     public static final RegistryObject<Item> BRONZE_SWORD =
             ITEMS.register("bronze_sword", () -> buildSword(SMTiers.BRONZE, 3, -2.4F));
@@ -184,6 +191,9 @@ public class SMItems {
 
     public static final RegistryObject<Item> STEEL_INGOT =
             ITEMS.register("steel_ingot", SMItems::buildMaterial);
+
+    public static final RegistryObject<Item> STEEL_SHEARS =
+            ITEMS.register("steel_shears", () -> buildTieredShears(SMTiers.STEEL));
 
     public static final RegistryObject<Item> STEEL_SWORD =
             ITEMS.register("steel_sword", () -> buildSword(SMTiers.STEEL, 3, -2.4F));
@@ -281,5 +291,9 @@ public class SMItems {
 
     private static RegistryObject<Item> registerHide(String animalName) {
         return ITEMS.register(animalName + "_hide", SMItems::buildMaterial);
+    }
+
+    private static Item buildTieredShears(Tier tier) {
+        return new TieredShearsItem(tier, (new Item.Properties()).tab(CreativeModeTab.TAB_TOOLS));
     }
 }

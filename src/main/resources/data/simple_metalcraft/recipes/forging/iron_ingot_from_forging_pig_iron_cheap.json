@@ -1,0 +1,13 @@
+{
+  "type": "simple_metalcraft:forging",
+  "ingredient": {
+    "item": "simple_metalcraft:pig_iron_ingot"
+  },
+  "catalyst": {
+    "tag": "minecraft:coals"
+  },
+  "result": {
+    "item": "minecraft:iron_ingot"
+  },
+  "experienceCost": 1
+}

@@ -1,0 +1,15 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    " #",
+    "# "
+  ],
+  "key": {
+    "#": {
+      "item": "simple_metalcraft:steel_ingot"
+    }
+  },
+  "result": {
+    "item": "simple_metalcraft:steel_shears"
+  }
+}
