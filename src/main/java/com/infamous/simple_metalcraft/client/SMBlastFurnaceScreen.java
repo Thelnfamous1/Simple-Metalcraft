@@ -1,7 +1,7 @@
 package com.infamous.simple_metalcraft.client;
 
 import com.infamous.simple_metalcraft.SimpleMetalcraft;
-import com.infamous.simple_metalcraft.crafting.blasting.SMBlastFurnaceMenu;
+import com.infamous.simple_metalcraft.crafting.furnace.blasting.SMBlastFurnaceMenu;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;

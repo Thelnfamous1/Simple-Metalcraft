@@ -1,7 +1,6 @@
-package com.infamous.simple_metalcraft.crafting.blasting;
+package com.infamous.simple_metalcraft.crafting.furnace;
 
 import com.infamous.simple_metalcraft.crafting.CookingMenu;
-import com.infamous.simple_metalcraft.crafting.SMCookingRecipe;
 import net.minecraft.world.Container;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.player.Inventory;
@@ -13,43 +12,31 @@ import net.minecraft.world.level.Level;
 import net.minecraftforge.common.ForgeHooks;
 
 public abstract class AdvancedFurnaceMenu extends AbstractContainerMenu implements CookingMenu {
-    public static final int INGREDIENT_A_SLOT = 0;
-    public static final int INGREDIENT_B_SLOT = 1;
-    public static final int INGREDIENT_C_SLOT = 2;
-    public static final int FUEL_SLOT = 3;
-    public static final int RESULT_A_SLOT = 4;
-    public static final int RESULT_B_SLOT = 5;
-
-    public static final int SLOT_COUNT = RESULT_B_SLOT + 1;
-    private static final int INV_SLOT_START = SLOT_COUNT;
-    private static final int INV_SLOT_END = INV_SLOT_START + 27;
-    private static final int USE_ROW_SLOT_START = INV_SLOT_END;
-    private static final int USE_ROW_SLOT_END = INV_SLOT_END + 9;
-
     public static final int PLAYER_INVENTORY_HEIGHT = 3;
     public static final int PLAYER_INVENTORY_WIDTH = 9;
     public static final int PLAYER_HOTBAR_WIDTH = PLAYER_INVENTORY_WIDTH;
+    public static final int DATA_COUNT = 4;
     private final Container container;
     private final ContainerData data;
     protected final Level level;
     private final RecipeType<? extends SMCookingRecipe> recipeType;
 
-    protected AdvancedFurnaceMenu(MenuType<?> menuType, RecipeType<? extends SMCookingRecipe> recipeType, int menuId, Inventory inventory) {
-        this(menuType, recipeType, menuId, inventory, new SimpleContainer(SLOT_COUNT), new SimpleContainerData(4));
+    protected AdvancedFurnaceMenu(MenuType<?> menuType, RecipeType<? extends SMCookingRecipe> recipeType, int menuId, Inventory inventory, int numSlots, int numIngredientSlots, int numResultSlots) {
+        this(menuType, recipeType, menuId, inventory, new SimpleContainer(numSlots), new SimpleContainerData(DATA_COUNT), numSlots, numIngredientSlots, numResultSlots);
     }
 
-    protected AdvancedFurnaceMenu(MenuType<?> menuType, RecipeType<? extends SMCookingRecipe> recipeType, int menuId, Inventory inventory, Container container, ContainerData containerData) {
+    protected AdvancedFurnaceMenu(MenuType<?> menuType, RecipeType<? extends SMCookingRecipe> recipeType, int menuId, Inventory inventory, Container container, ContainerData containerData, int numSlots, int numIngredientSlots, int numResultSlots) {
         super(menuType, menuId);
         this.recipeType = recipeType;
-        checkContainerSize(container, SLOT_COUNT);
-        checkContainerDataCount(containerData, 4);
+        checkContainerSize(container, numSlots);
+        checkContainerDataCount(containerData, DATA_COUNT);
         this.container = container;
         this.data = containerData;
         this.level = inventory.player.level;
 
-        this.buildIngredientSlots(container);
+        this.buildIngredientSlots(container, numIngredientSlots);
         this.buildFuelSlots(container);
-        this.buildResultSlots(inventory, container);
+        this.buildResultSlots(inventory, container, numResultSlots);
         this.buildPlayerInventorySlots(inventory);
 
         this.addDataSlots(containerData);
@@ -57,19 +44,31 @@ public abstract class AdvancedFurnaceMenu extends AbstractContainerMenu implemen
 
     // SLOT CONSTRUCTION START
 
-    protected void buildIngredientSlots(Container container) {
-        this.addSlot(new Slot(container, INGREDIENT_A_SLOT, 56 - 18, 17));
-        this.addSlot(new Slot(container, INGREDIENT_B_SLOT, 56, 17));
-        this.addSlot(new Slot(container, INGREDIENT_C_SLOT, 56 + 18, 17));
+    protected void buildIngredientSlots(Container container, int numIngredientSlots) {
+        int leftOffset = 18 * (numIngredientSlots - 1);
+
+        if(numIngredientSlots % 2 == 0){ // even number of slots
+            for(int i = 0; i < numIngredientSlots; i++){
+                int rightOffset = 18 * i;
+                this.addSlot(new Slot(container, this.getFirstIngredientSlot() + i, 56 - leftOffset + rightOffset, 17));
+            }
+        } else{ // odd number of slots
+            for(int i = 0; i < numIngredientSlots; i++){
+                int rightOffset = 18 * i;
+                this.addSlot(new Slot(container, this.getFirstIngredientSlot() + i, 56 - leftOffset + rightOffset, 17));
+            }
+        }
     }
 
     protected void buildFuelSlots(Container container) {
-        this.addSlot(new BlastFurnaceFuelSlot(this, container, FUEL_SLOT, 56, 53));
+        this.addSlot(new AdvancedFurnaceFuelSlot(this, container, this.getFuelSlot(), 56, 53));
     }
 
-    protected void buildResultSlots(Inventory inventory, Container container) {
-        this.addSlot(new FurnaceResultSlot(inventory.player, container, RESULT_A_SLOT, 116, 35));
-        this.addSlot(new FurnaceByproductSlot(inventory.player, container, RESULT_B_SLOT, 116 + 26, 35));
+    protected void buildResultSlots(Inventory inventory, Container container, int numResultSlots) {
+        this.addSlot(new FurnaceResultSlot(inventory.player, container, this.getFirstResultSlot(), 116, 35));
+        for(int i = 1; i <= numResultSlots; i++){
+            this.addSlot(new FurnaceByproductSlot(inventory.player, container, this.getFirstResultSlot() + i, 116 + (26 * i), 35));
+        }
     }
 
     protected void buildPlayerInventorySlots(Inventory inventory) {
@@ -95,32 +94,32 @@ public abstract class AdvancedFurnaceMenu extends AbstractContainerMenu implemen
     public ItemStack quickMoveStack(Player player, int slotId) {
         ItemStack slotStackCopy = ItemStack.EMPTY;
         Slot slot = this.slots.get(slotId);
-        if (slot != null && slot.hasItem()) {
+        if (slot.hasItem()) {
             ItemStack slotStack = slot.getItem();
             slotStackCopy = slotStack.copy();
-            if (slotId >= RESULT_A_SLOT && slotId < INV_SLOT_START) { // result slots
-                if (!this.moveItemStackTo(slotStack, INV_SLOT_START, USE_ROW_SLOT_END, true)) {
+            if (slotId >= this.getFirstResultSlot() && slotId < this.getInvSlotStart()) { // result slots
+                if (!this.moveItemStackTo(slotStack, this.getInvSlotStart(), this.getUseRowSlotEnd(), true)) {
                     return ItemStack.EMPTY;
                 }
 
                 slot.onQuickCraft(slotStack, slotStackCopy);
-            } else if (slotId >= INV_SLOT_START) { // inventory slots
+            } else if (slotId >= this.getInvSlotStart()) { // inventory slots
                 if (this.canSmelt(slotStack)) {
-                    if (!this.moveItemStackTo(slotStack, INGREDIENT_A_SLOT, FUEL_SLOT, false)) {
+                    if (!this.moveItemStackTo(slotStack, this.getFirstIngredientSlot(), this.getFuelSlot(), false)) {
                         return ItemStack.EMPTY;
                     }
                 } else if (this.isFuel(slotStack)) {
-                    if (!this.moveItemStackTo(slotStack, FUEL_SLOT, RESULT_A_SLOT, false)) {
+                    if (!this.moveItemStackTo(slotStack, this.getFuelSlot(), this.getFirstResultSlot(), false)) {
                         return ItemStack.EMPTY;
                     }
-                } else if (slotId < INV_SLOT_END) {
-                    if (!this.moveItemStackTo(slotStack, USE_ROW_SLOT_START, USE_ROW_SLOT_END, false)) {
+                } else if (slotId < this.getInvSlotEnd()) {
+                    if (!this.moveItemStackTo(slotStack, this.getUseRowSlotStart(), this.getUseRowSlotEnd(), false)) {
                         return ItemStack.EMPTY;
                     }
-                } else if (slotId < USE_ROW_SLOT_END && !this.moveItemStackTo(slotStack, INV_SLOT_START, INV_SLOT_END, false)) {
+                } else if (slotId < this.getUseRowSlotEnd() && !this.moveItemStackTo(slotStack, this.getInvSlotStart(), getInvSlotEnd(), false)) {
                     return ItemStack.EMPTY;
                 }
-            } else if (!this.moveItemStackTo(slotStack, INV_SLOT_START, USE_ROW_SLOT_END, false)) { // input and fuel slots
+            } else if (!this.moveItemStackTo(slotStack, this.getInvSlotStart(), this.getUseRowSlotEnd(), false)) { // input and fuel slots
                 return ItemStack.EMPTY;
             }
 
@@ -140,6 +139,26 @@ public abstract class AdvancedFurnaceMenu extends AbstractContainerMenu implemen
         return slotStackCopy;
     }
 
+    protected abstract int getFuelSlot();
+
+    protected abstract int getFirstIngredientSlot();
+
+    protected abstract int getInvSlotStart();
+
+    protected abstract int getFirstResultSlot();
+
+    private int getUseRowSlotEnd() {
+        return this.getUseRowSlotStart() + PLAYER_INVENTORY_WIDTH;
+    }
+
+    private int getUseRowSlotStart() {
+        return this.getInvSlotEnd();
+    }
+
+    private int getInvSlotEnd() {
+        return this.getInvSlotStart() + (PLAYER_INVENTORY_WIDTH * PLAYER_INVENTORY_HEIGHT);
+    }
+
     protected boolean canSmelt(ItemStack stack) {
         ItemStack copy = stack.copy();
         SimpleContainer inputContainer = this.buildInputContainer();
@@ -151,15 +170,9 @@ public abstract class AdvancedFurnaceMenu extends AbstractContainerMenu implemen
         return this.level.getRecipeManager().getRecipeFor(this.recipeType, inputContainer, this.level).isPresent();
     }
 
-    protected SimpleContainer buildInputContainer() {
-        return new SimpleContainer(
-                this.slots.get(INGREDIENT_A_SLOT).getItem().copy(),
-                this.slots.get(INGREDIENT_B_SLOT).getItem().copy(),
-                this.slots.get(INGREDIENT_C_SLOT).getItem().copy()
-        );
-    }
+    protected abstract SimpleContainer buildInputContainer();
 
-    protected boolean isFuel(ItemStack stack) {
+    public boolean isFuel(ItemStack stack) {
         return ForgeHooks.getBurnTime(stack, this.recipeType) > 0;
     }
 

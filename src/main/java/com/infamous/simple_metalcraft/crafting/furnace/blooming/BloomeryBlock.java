@@ -1,9 +1,6 @@
-package com.infamous.simple_metalcraft.crafting.batch.blooming;
+package com.infamous.simple_metalcraft.crafting.furnace.blooming;
 
-import java.util.Random;
-import javax.annotation.Nullable;
-
-import com.infamous.simple_metalcraft.crafting.batch.BatchFurnaceBlockEntity;
+import com.infamous.simple_metalcraft.crafting.furnace.AdvancedFurnaceBlockEntity;
 import com.infamous.simple_metalcraft.registry.SMBlockEntityTypes;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
@@ -19,6 +16,9 @@ import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
+
+import javax.annotation.Nullable;
+import java.util.Random;
 
 public class BloomeryBlock extends AbstractFurnaceBlock {
 
@@ -38,7 +38,7 @@ public class BloomeryBlock extends AbstractFurnaceBlock {
 
    @Nullable
    protected static <T extends BlockEntity> BlockEntityTicker<T> createBloomeryTicker(Level level, BlockEntityType<T> blockEntityType, BlockEntityType<BloomeryBlockEntity> furnaceEntityType) {
-      return level.isClientSide ? null : createTickerHelper(blockEntityType, furnaceEntityType, BatchFurnaceBlockEntity::batchServerTick);
+      return level.isClientSide ? null : createTickerHelper(blockEntityType, furnaceEntityType, AdvancedFurnaceBlockEntity::advancedServerTick);
    }
 
    @Override

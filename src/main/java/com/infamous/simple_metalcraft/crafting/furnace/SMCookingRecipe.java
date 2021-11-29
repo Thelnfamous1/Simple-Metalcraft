@@ -1,5 +1,6 @@
-package com.infamous.simple_metalcraft.crafting;
+package com.infamous.simple_metalcraft.crafting.furnace;
 
+import com.infamous.simple_metalcraft.crafting.furnace.AdvancedCookingRecipe;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.Container;
 import net.minecraft.world.item.ItemStack;

@@ -1,9 +1,9 @@
 package com.infamous.simple_metalcraft.registry;
 
 import com.infamous.simple_metalcraft.SimpleMetalcraft;
-import com.infamous.simple_metalcraft.crafting.batch.blooming.BloomeryMenu;
-import com.infamous.simple_metalcraft.crafting.batch.cementation.CementationFurnaceMenu;
-import com.infamous.simple_metalcraft.crafting.blasting.SMBlastFurnaceMenu;
+import com.infamous.simple_metalcraft.crafting.furnace.blooming.BloomeryMenu;
+import com.infamous.simple_metalcraft.crafting.furnace.cementation.CementationFurnaceMenu;
+import com.infamous.simple_metalcraft.crafting.furnace.blasting.SMBlastFurnaceMenu;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraftforge.fmllegacy.RegistryObject;
 import net.minecraftforge.registries.DeferredRegister;

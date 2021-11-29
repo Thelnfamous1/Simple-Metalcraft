@@ -1,6 +1,6 @@
-package com.infamous.simple_metalcraft.crafting.batch.cementation;
+package com.infamous.simple_metalcraft.crafting.furnace.cementation;
 
-import com.infamous.simple_metalcraft.crafting.batch.BatchFurnaceBlockEntity;
+import com.infamous.simple_metalcraft.crafting.furnace.AdvancedFurnaceBlockEntity;
 import com.infamous.simple_metalcraft.registry.SMBlockEntityTypes;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
@@ -37,7 +37,7 @@ public class CementationFurnaceBlock extends AbstractFurnaceBlock {
 
    @Nullable
    protected static <T extends BlockEntity> BlockEntityTicker<T> createCementationFurnaceTicker(Level level, BlockEntityType<T> blockEntityType, BlockEntityType<CementationFurnaceBlockEntity> furnaceEntityType) {
-      return level.isClientSide ? null : createTickerHelper(blockEntityType, furnaceEntityType, BatchFurnaceBlockEntity::batchServerTick);
+      return level.isClientSide ? null : createTickerHelper(blockEntityType, furnaceEntityType, AdvancedFurnaceBlockEntity::advancedServerTick);
    }
 
    @Override

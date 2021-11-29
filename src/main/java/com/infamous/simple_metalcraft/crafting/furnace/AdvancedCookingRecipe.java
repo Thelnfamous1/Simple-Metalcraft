@@ -1,6 +1,5 @@
-package com.infamous.simple_metalcraft.crafting;
+package com.infamous.simple_metalcraft.crafting.furnace;
 
-import com.infamous.simple_metalcraft.SimpleMetalcraft;
 import net.minecraft.world.Container;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
@@ -38,13 +37,43 @@ public interface AdvancedCookingRecipe {
         return false;
     }
 
-    default void consumeInputs(Container container){
+    default int getBatchSize(Container container){
+        Map<Ingredient, Integer> foundMatches = new LinkedHashMap<>();
+        Map<Ingredient, Integer> ingredients = this.getIngredientsMap();
+        int batchSize = 1;
+        for(Map.Entry<Ingredient, Integer> entry : ingredients.entrySet()){
+            int matchCount = this.getMatchCount(container, entry, foundMatches);
+            if(batchSize > 1){
+                batchSize = Math.min(matchCount, batchSize);
+            } else{
+                batchSize = matchCount;
+            }
+        }
+        return batchSize;
+    }
+
+    default int getMatchCount(Container container, Map.Entry<Ingredient, Integer> ingredientsEntry, Map<Ingredient, Integer> foundMatches) {
+        for (int slotId = 0; slotId < container.getContainerSize(); slotId++) {
+            ItemStack stack = container.getItem(slotId);
+            Ingredient key = ingredientsEntry.getKey();
+            Integer value = ingredientsEntry.getValue();
+            if (!foundMatches.containsKey(key)
+                    && key.test(stack)
+                    && stack.getCount() >= value) {
+                foundMatches.put(key, value);
+                return stack.getCount() / value;
+            }
+        }
+        return 0;
+    }
+
+    default void consumeInputs(Container container, int batchSize){
         Map<Ingredient, Integer> foundMatches = new LinkedHashMap<>();
         Map<Ingredient, Integer> ingredients = this.getIngredientsMap();
         for(Map.Entry<Ingredient, Integer> entry : ingredients.entrySet()){
             ItemStack match = this.getMatch(container, entry, foundMatches);
             if(!match.isEmpty()){
-                match.shrink(entry.getValue());
+                match.shrink(entry.getValue() * batchSize);
             }
         }
     }

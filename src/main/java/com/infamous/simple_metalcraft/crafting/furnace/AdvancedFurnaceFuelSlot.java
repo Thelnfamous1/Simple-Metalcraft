@@ -1,14 +1,14 @@
-package com.infamous.simple_metalcraft.crafting.blasting;
+package com.infamous.simple_metalcraft.crafting.furnace;
 
 import net.minecraft.world.Container;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 
-public class BlastFurnaceFuelSlot extends Slot {
+public class AdvancedFurnaceFuelSlot extends Slot {
    private final AdvancedFurnaceMenu menu;
 
-   public BlastFurnaceFuelSlot(AdvancedFurnaceMenu blastBurnaceMenu, Container container, int slotId, int slotX, int slotY) {
+   public AdvancedFurnaceFuelSlot(AdvancedFurnaceMenu blastBurnaceMenu, Container container, int slotId, int slotX, int slotY) {
       super(container, slotId, slotX, slotY);
       this.menu = blastBurnaceMenu;
    }

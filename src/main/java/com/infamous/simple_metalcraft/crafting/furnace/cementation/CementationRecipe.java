@@ -1,6 +1,6 @@
-package com.infamous.simple_metalcraft.crafting.batch.cementation;
+package com.infamous.simple_metalcraft.crafting.furnace.cementation;
 
-import com.infamous.simple_metalcraft.crafting.batch.BatchCookingRecipe;
+import com.infamous.simple_metalcraft.crafting.furnace.SMCookingRecipe;
 import com.infamous.simple_metalcraft.registry.SMItems;
 import com.infamous.simple_metalcraft.registry.SMRecipes;
 import net.minecraft.resources.ResourceLocation;
@@ -8,10 +8,13 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 
-public class CementationRecipe extends BatchCookingRecipe {
+import java.util.List;
+import java.util.Map;
 
-    public CementationRecipe(ResourceLocation id, String group, Ingredient ingredient, ItemStack result, float experience, int cookingTime) {
-        super(SMRecipes.Types.CEMENTATION, id, group, ingredient, result, experience, cookingTime);
+public class CementationRecipe extends SMCookingRecipe {
+
+    public CementationRecipe(ResourceLocation id, String group, Map<Ingredient, Integer> ingredients, List<ItemStack> results, float experience, int cookingTime) {
+        super(SMRecipes.Types.CEMENTATION, id, group, ingredients, results, experience, cookingTime);
     }
 
     @Override

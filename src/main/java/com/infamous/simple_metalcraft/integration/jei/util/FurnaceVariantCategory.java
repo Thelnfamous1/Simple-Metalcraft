@@ -21,6 +21,6 @@ public abstract class FurnaceVariantCategory<T> implements IRecipeCategory<T> {
 
 	public FurnaceVariantCategory(IGuiHelper guiHelper) {
 		this.staticFlame = guiHelper.createDrawable(JEIConstants.RECIPE_GUI_VANILLA, 82, 114, 14, 14);
-		this.animatedFlame = guiHelper.createAnimatedDrawable(staticFlame, 300, IDrawableAnimated.StartDirection.TOP, true);
+		this.animatedFlame = guiHelper.createAnimatedDrawable(this.staticFlame, 300, IDrawableAnimated.StartDirection.TOP, true);
 	}
 }

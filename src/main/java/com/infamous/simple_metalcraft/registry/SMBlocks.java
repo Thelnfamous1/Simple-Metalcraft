@@ -2,10 +2,10 @@ package com.infamous.simple_metalcraft.registry;
 
 import com.infamous.simple_metalcraft.SimpleMetalcraft;
 import com.infamous.simple_metalcraft.crafting.anvil.AnvilTier;
-import com.infamous.simple_metalcraft.crafting.batch.cementation.CementationFurnaceBlock;
+import com.infamous.simple_metalcraft.crafting.furnace.cementation.CementationFurnaceBlock;
 import com.infamous.simple_metalcraft.crafting.bellows.BellowsBlock;
-import com.infamous.simple_metalcraft.crafting.batch.blooming.BloomeryBlock;
-import com.infamous.simple_metalcraft.crafting.blasting.SMBlastFurnaceBlock;
+import com.infamous.simple_metalcraft.crafting.furnace.blooming.BloomeryBlock;
+import com.infamous.simple_metalcraft.crafting.furnace.blasting.SMBlastFurnaceBlock;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;

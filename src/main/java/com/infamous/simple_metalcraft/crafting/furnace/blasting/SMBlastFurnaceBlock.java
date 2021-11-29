@@ -1,5 +1,6 @@
-package com.infamous.simple_metalcraft.crafting.blasting;
+package com.infamous.simple_metalcraft.crafting.furnace.blasting;
 
+import com.infamous.simple_metalcraft.crafting.furnace.AdvancedFurnaceBlockEntity;
 import com.infamous.simple_metalcraft.registry.SMBlockEntityTypes;
 import net.minecraft.core.BlockPos;
 import net.minecraft.stats.Stats;
@@ -32,7 +33,7 @@ public class SMBlastFurnaceBlock extends BlastFurnaceBlock {
 
     @Nullable
     protected static <T extends BlockEntity> BlockEntityTicker<T> createBlastFurnaceTicker(Level level, BlockEntityType<T> blockEntityType, BlockEntityType<? extends SMBlastFurnaceBlockEntity> specificBET) {
-        return level.isClientSide ? null : createTickerHelper(blockEntityType, specificBET, SMBlastFurnaceBlockEntity::blastServerTick);
+        return level.isClientSide ? null : createTickerHelper(blockEntityType, specificBET, AdvancedFurnaceBlockEntity::advancedServerTick);
     }
 
     @Override

@@ -1,8 +1,7 @@
 package com.infamous.simple_metalcraft.client;
 
 import com.infamous.simple_metalcraft.SimpleMetalcraft;
-import com.infamous.simple_metalcraft.crafting.batch.blooming.BloomeryMenu;
-import com.infamous.simple_metalcraft.crafting.batch.cementation.CementationFurnaceMenu;
+import com.infamous.simple_metalcraft.crafting.furnace.cementation.CementationFurnaceMenu;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;

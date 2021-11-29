@@ -1,19 +1,12 @@
-package com.infamous.simple_metalcraft.crafting.blasting;
+package com.infamous.simple_metalcraft.crafting.furnace;
 
-import com.infamous.simple_metalcraft.crafting.SMCookingRecipe;
 import com.infamous.simple_metalcraft.mixin.AbstractFurnaceBlockEntityAccessor;
-import com.infamous.simple_metalcraft.registry.SMBlockEntityTypes;
-import com.infamous.simple_metalcraft.registry.SMRecipes;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.NonNullList;
-import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.util.Mth;
 import net.minecraft.world.Container;
 import net.minecraft.world.SimpleContainer;
-import net.minecraft.world.entity.player.Inventory;
-import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.RecipeType;
@@ -21,30 +14,34 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.AbstractFurnaceBlock;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.AbstractFurnaceBlockEntity;
+import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.common.ForgeHooks;
 
 import javax.annotation.Nullable;
 
-public class SMBlastFurnaceBlockEntity extends AbstractFurnaceBlockEntity {
-    protected static final int SLOT_INPUT_A = 0;
-    protected static final int SLOT_INPUT_B = 1;
-    protected static final int SLOT_INPUT_C = 2;
-    protected static final int CUSTOM_SLOT_FUEL = 3;
-    protected static final int SLOT_RESULT_A = 4;
-    protected static final int SLOT_RESULT_B = 5;
-    protected static final int NUM_SLOTS = SLOT_RESULT_B + 1;
-    private static final int[] CUSTOM_SLOTS_FOR_UP = new int[]{SLOT_INPUT_A, SLOT_INPUT_B, SLOT_INPUT_C};
-    private static final int[] CUSTOM_SLOTS_FOR_DOWN = new int[]{SLOT_RESULT_A, SLOT_RESULT_B, CUSTOM_SLOT_FUEL};
-    private static final int[] CUSTOM_SLOTS_FOR_SIDES = new int[]{CUSTOM_SLOT_FUEL};
-    public static final TranslatableComponent BLAST_FURNACE_COMPONENT = new TranslatableComponent("container.blast_furnace");
+public abstract class AdvancedFurnaceBlockEntity extends AbstractFurnaceBlockEntity {
+    private final boolean batchSmelt;
 
-    public SMBlastFurnaceBlockEntity(BlockPos blockPos, BlockState blockState) {
-        super(SMBlockEntityTypes.BLAST_FURNACE.get(), blockPos, blockState, SMRecipes.Types.BLASTING);
-        this.items = NonNullList.withSize(NUM_SLOTS, ItemStack.EMPTY);
+    public AdvancedFurnaceBlockEntity(BlockEntityType<?> blockEntityType, BlockPos blockPos, BlockState blockState, RecipeType<? extends SMCookingRecipe> recipeType, boolean batchSmelt) {
+        super(blockEntityType, blockPos, blockState, recipeType);
+        this.batchSmelt = batchSmelt;
+        this.items = NonNullList.withSize(this.getNumSlots(), ItemStack.EMPTY);
     }
 
-    public static void blastServerTick(Level level, BlockPos blockPos, BlockState blockState, SMBlastFurnaceBlockEntity bfbe) {
+    public static AbstractFurnaceBlockEntityAccessor castToAccessor(AdvancedFurnaceBlockEntity blastFurnaceBlockEntity){
+        return (AbstractFurnaceBlockEntityAccessor) blastFurnaceBlockEntity;
+    }
+
+    protected Container buildInputContainer() {
+        return new SimpleContainer(this.getInputsAsList().toArray(ItemStack[]::new));
+    }
+
+    protected Container buildOutputContainer() {
+        return new SimpleContainer(this.getOutputsAsList().toArray(ItemStack[]::new));
+    }
+
+    public static void advancedServerTick(Level level, BlockPos blockPos, BlockState blockState, AdvancedFurnaceBlockEntity bfbe) {
         AbstractFurnaceBlockEntityAccessor accessor = castToAccessor(bfbe);
         boolean wasLit = accessor.callIsLit();
         boolean changedLitState = false;
@@ -52,38 +49,39 @@ public class SMBlastFurnaceBlockEntity extends AbstractFurnaceBlockEntity {
             accessor.setLitTime(accessor.getLitTime() - 1);
         }
 
-        ItemStack fuelSlotStack = bfbe.items.get(CUSTOM_SLOT_FUEL);
+        ItemStack fuelSlotStack = bfbe.items.get(bfbe.getFuelSlot());
 
         if (accessor.callIsLit() || !fuelSlotStack.isEmpty() && !bfbe.inputsEmpty()) {
             SMCookingRecipe recipe = level.getRecipeManager().getRecipeFor((RecipeType<SMCookingRecipe>)accessor.getRecipeType(), bfbe.buildInputContainer(), level).orElse(null);
             int maxStackSize = bfbe.getMaxStackSize();
 
-            // If blast furnace is not lit and we can burn the input, consume the fuel and set it to lit
+            // If furnace is not lit and we can burn the input, consume the fuel and set it to lit
             if (!accessor.callIsLit() && bfbe.canBurn(recipe, bfbe.items, maxStackSize)) {
                 accessor.setLitTime(bfbe.getBurnDuration(fuelSlotStack));
                 accessor.setLitDuration(accessor.getLitTime());
                 if (accessor.callIsLit()) {
                     changedLitState = true;
                     if (fuelSlotStack.hasContainerItem())
-                        bfbe.items.set(CUSTOM_SLOT_FUEL, fuelSlotStack.getContainerItem());
+                        bfbe.items.set(bfbe.getFuelSlot(), fuelSlotStack.getContainerItem());
                     else
                     if (!fuelSlotStack.isEmpty()) {
-                        fuelSlotStack.shrink(CUSTOM_SLOT_FUEL);
+                        fuelSlotStack.shrink(bfbe.getFuelSlot());
                         if (fuelSlotStack.isEmpty()) {
-                            bfbe.items.set(CUSTOM_SLOT_FUEL, fuelSlotStack.getContainerItem());
+                            bfbe.items.set(bfbe.getFuelSlot(), fuelSlotStack.getContainerItem());
                         }
                     }
                 }
             }
 
-            // If the blast furnace is lit and we can burn the input, update the cooking progress and potentially give output
+            // If the furnace is lit and we can burn the input, update the cooking progress and potentially give output
             if (accessor.callIsLit() && bfbe.canBurn(recipe, bfbe.items, maxStackSize)) {
                 accessor.setCookingProgress(accessor.getCookingProgress() + 1);
                 if (accessor.getCookingProgress() == accessor.getCookingTotalTime()) {
                     accessor.setCookingProgress(0);
                     //noinspection ConstantConditions
                     accessor.setCookingTotalTime(recipe.getCookingTime());
-                    if(bfbe.burn(recipe, bfbe.items, maxStackSize)){
+                    int burnCount = bfbe.burn(recipe, bfbe.items, maxStackSize);
+                    for(int i = 0; i < burnCount; i++){
                         bfbe.setRecipeUsed(recipe);
                     }
 
@@ -110,48 +108,37 @@ public class SMBlastFurnaceBlockEntity extends AbstractFurnaceBlockEntity {
 
     }
 
-    protected Container buildInputContainer() {
-        return new SimpleContainer(this.getInputsAsList().toArray(ItemStack[]::new));
+    protected boolean inputsEmpty(){
+        return this.getInputsAsList().stream().allMatch(ItemStack::isEmpty);
     }
 
-    protected boolean inputsEmpty() {
-        return this.items.get(SLOT_INPUT_A).isEmpty()
-                && this.items.get(SLOT_INPUT_B).isEmpty()
-                && this.items.get(SLOT_INPUT_C).isEmpty();
-    }
+    protected abstract NonNullList<ItemStack> getInputsAsList();
 
-    protected NonNullList<ItemStack> getInputsAsList(){
-        return NonNullList.of(
-                ItemStack.EMPTY, // default value
-                this.items.get(SLOT_INPUT_A),
-                this.items.get(SLOT_INPUT_B),
-                this.items.get(SLOT_INPUT_C)
-        );
-    }
-
-    protected NonNullList<ItemStack> getOutputsAsList(){
-        return NonNullList.of(
-                ItemStack.EMPTY, // default value
-                this.items.get(SLOT_RESULT_A),
-                this.items.get(SLOT_RESULT_B)
-        );
-    }
+    protected abstract NonNullList<ItemStack> getOutputsAsList();
 
     protected boolean canBurn(@Nullable SMCookingRecipe recipe, NonNullList<ItemStack> furnaceStacks, int maxStackSize) {
         if (!this.inputsEmpty() && recipe != null) {
-            boolean resultACheck = this.checkResultSlot(recipe, furnaceStacks, maxStackSize, 0, SLOT_RESULT_A);
-            boolean resultBCheck = this.checkResultSlot(recipe, furnaceStacks, maxStackSize, 1, SLOT_RESULT_B);
-            return resultACheck && resultBCheck;
+            int batchSize = 1;
+            if(this.batchSmelt){
+                batchSize = recipe.getBatchSize(this.buildInputContainer());
+            }
+            boolean resultCheck = true;
+            for(int i = 0; i < this.getOutputsAsList().size(); i++){
+                int resultSlotId = this.getFuelSlot() + i + 1;
+                resultCheck = resultCheck && this.checkResultSlot(recipe, furnaceStacks, maxStackSize, i, resultSlotId, batchSize);
+            }
+            return resultCheck;
         } else {
             return false;
         }
     }
 
-    private boolean checkResultSlot(SMCookingRecipe recipe, NonNullList<ItemStack> furnaceStacks, int maxStackSize, int resultIndex, int resultSlotId) {
+    private boolean checkResultSlot(SMCookingRecipe recipe, NonNullList<ItemStack> furnaceStacks, int maxStackSize, int resultIndex, int resultSlotId, int batchSize) {
         ItemStack testResultStack = recipe.assemble(resultIndex);
         if (testResultStack.isEmpty()) {
             return false;
         } else {
+            testResultStack.setCount(testResultStack.getCount() * batchSize); // create batch result
             ItemStack resultSlotStack = furnaceStacks.get(resultSlotId);
             if (resultSlotStack.isEmpty()) {
                 return true;
@@ -165,27 +152,34 @@ public class SMBlastFurnaceBlockEntity extends AbstractFurnaceBlockEntity {
         }
     }
 
-    protected boolean burn(@Nullable SMCookingRecipe recipe, NonNullList<ItemStack> furnaceStacks, int maxStackSize) {
+    protected int burn(@Nullable SMCookingRecipe recipe, NonNullList<ItemStack> furnaceStacks, int maxStackSize) {
         if (recipe != null && this.canBurn(recipe, furnaceStacks, maxStackSize)) {
-            this.updateResultSlot(recipe, furnaceStacks, 0, SLOT_RESULT_A);
-            this.updateResultSlot(recipe, furnaceStacks, 1, SLOT_RESULT_B);
+            int batchSize = 1;
+            if(this.batchSmelt){
+                batchSize = recipe.getBatchSize(this.buildInputContainer());
+            }
+            for(int i = 0; i < this.getOutputsAsList().size(); i++){
+                int resultSlotId = this.getFuelSlot() + i + 1;
+                this.updateResultSlot(recipe, furnaceStacks, i, resultSlotId, batchSize);
+            }
 
             // TODO: Make "sponge smelting" more generalized
             if (this.getInputsAsList().stream().anyMatch(s -> s.is(Blocks.WET_SPONGE.asItem()))
-                    && !furnaceStacks.get(CUSTOM_SLOT_FUEL).isEmpty()
-                    && furnaceStacks.get(CUSTOM_SLOT_FUEL).is(Items.BUCKET)) {
-                furnaceStacks.set(CUSTOM_SLOT_FUEL, new ItemStack(Items.WATER_BUCKET));
+                    && !furnaceStacks.get(this.getFuelSlot()).isEmpty()
+                    && furnaceStacks.get(this.getFuelSlot()).is(Items.BUCKET)) {
+                furnaceStacks.set(this.getFuelSlot(), new ItemStack(Items.WATER_BUCKET));
             }
 
-            recipe.consumeInputs(this.buildInputContainer());
-            return true;
+            recipe.consumeInputs(this.buildInputContainer(), batchSize);
+            return batchSize;
         } else {
-            return false;
+            return 0;
         }
     }
 
-    private void updateResultSlot(SMCookingRecipe recipe, NonNullList<ItemStack> furnaceStacks, int resultIndex, int resultSlotId) {
-        ItemStack resultStack = recipe.assemble(resultIndex);
+    private void updateResultSlot(SMCookingRecipe recipe, NonNullList<ItemStack> furnaceStacks, int resultIndex, int resultSlotId, int batchSize) {
+        ItemStack resultStack = recipe.assemble(resultIndex).copy();
+        resultStack.setCount(resultStack.getCount() * batchSize); // create batch result
         ItemStack resultSlotStack = furnaceStacks.get(resultSlotId);
         if (resultSlotStack.isEmpty()) {
             furnaceStacks.set(resultSlotId, resultStack.copy());
@@ -195,37 +189,30 @@ public class SMBlastFurnaceBlockEntity extends AbstractFurnaceBlockEntity {
     }
 
     @Override
-    protected Component getDefaultName() {
-        return BLAST_FURNACE_COMPONENT;
-    }
-
-    @Override
-    protected int getBurnDuration(ItemStack stack) {
-        return super.getBurnDuration(stack) / 2;
-    }
-
-    @Override
-    protected AbstractContainerMenu createMenu(int id, Inventory inventory) {
-        return new SMBlastFurnaceMenu(id, inventory, this, this.dataAccess);
-    }
-
-    @Override
     public int[] getSlotsForFace(Direction direction) {
         if (direction == Direction.DOWN) {
-            return CUSTOM_SLOTS_FOR_DOWN;
+            return this.getDownSlots();
         } else {
-            return direction == Direction.UP ? CUSTOM_SLOTS_FOR_UP : CUSTOM_SLOTS_FOR_SIDES;
+            return direction == Direction.UP ? this.getUpSlots() : this.getSideSlots();
         }
     }
 
+    protected abstract int[] getSideSlots();
+
+    protected abstract int[] getUpSlots();
+
+    protected abstract int[] getDownSlots();
+
     @Override
     public boolean canTakeItemThroughFace(int slotId, ItemStack stack, Direction direction) {
-        if (direction == Direction.DOWN && slotId == CUSTOM_SLOT_FUEL) {
+        if (direction == Direction.DOWN && slotId == this.getFuelSlot()) {
             return stack.is(Items.WATER_BUCKET) || stack.is(Items.BUCKET);
         } else {
             return true;
         }
     }
+
+    protected abstract int getFuelSlot();
 
     @Override
     public void setItem(int slotId, ItemStack stack) {
@@ -236,7 +223,7 @@ public class SMBlastFurnaceBlockEntity extends AbstractFurnaceBlockEntity {
             stack.setCount(this.getMaxStackSize());
         }
 
-        if (slotId >= SLOT_INPUT_A && slotId < CUSTOM_SLOT_FUEL && !stacksMatch) {
+        if (slotId >= getFirstInputSlot() && slotId < this.getFuelSlot() && !stacksMatch) {
             AbstractFurnaceBlockEntityAccessor accessor = castToAccessor(this);
             accessor.setCookingTotalTime(accessor.callGetTotalCookTime(this.level, accessor.getRecipeType(), this.buildInputContainer()));
             accessor.setCookingProgress(0);
@@ -245,20 +232,20 @@ public class SMBlastFurnaceBlockEntity extends AbstractFurnaceBlockEntity {
 
     }
 
+    protected abstract int getFirstInputSlot();
+
     @Override
     public boolean canPlaceItem(int slotId, ItemStack stack) {
-        if (slotId > CUSTOM_SLOT_FUEL && slotId < NUM_SLOTS) {
+        if (slotId > this.getFuelSlot() && slotId < this.getNumSlots()) {
             return false;
-        } else if (slotId != CUSTOM_SLOT_FUEL) {
+        } else if (slotId != this.getFuelSlot()) {
             return true;
         } else {
-            ItemStack fuelSlotStack = this.items.get(CUSTOM_SLOT_FUEL);
+            ItemStack fuelSlotStack = this.items.get(this.getFuelSlot());
             AbstractFurnaceBlockEntityAccessor accessor = castToAccessor(this);
             return ForgeHooks.getBurnTime(stack, accessor.getRecipeType()) > 0 || stack.is(Items.BUCKET) && !fuelSlotStack.is(Items.BUCKET);
         }
     }
 
-    public static AbstractFurnaceBlockEntityAccessor castToAccessor(SMBlastFurnaceBlockEntity blastFurnaceBlockEntity){
-        return (AbstractFurnaceBlockEntityAccessor) blastFurnaceBlockEntity;
-    }
+    protected abstract int getNumSlots();
 }

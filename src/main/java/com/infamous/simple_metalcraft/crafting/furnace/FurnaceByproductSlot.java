@@ -1,4 +1,4 @@
-package com.infamous.simple_metalcraft.crafting.blasting;
+package com.infamous.simple_metalcraft.crafting.furnace;
 
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.Container;

@@ -1,6 +1,6 @@
-package com.infamous.simple_metalcraft.crafting.blasting;
+package com.infamous.simple_metalcraft.crafting.furnace.blasting;
 
-import com.infamous.simple_metalcraft.crafting.SMCookingRecipe;
+import com.infamous.simple_metalcraft.crafting.furnace.SMCookingRecipe;
 import com.infamous.simple_metalcraft.registry.SMItems;
 import com.infamous.simple_metalcraft.registry.SMRecipes;
 import net.minecraft.resources.ResourceLocation;

@@ -1,9 +1,9 @@
 package com.infamous.simple_metalcraft.registry;
 
 import com.infamous.simple_metalcraft.SimpleMetalcraft;
-import com.infamous.simple_metalcraft.crafting.batch.blooming.BloomeryBlockEntity;
-import com.infamous.simple_metalcraft.crafting.batch.cementation.CementationFurnaceBlockEntity;
-import com.infamous.simple_metalcraft.crafting.blasting.SMBlastFurnaceBlockEntity;
+import com.infamous.simple_metalcraft.crafting.furnace.blooming.BloomeryBlockEntity;
+import com.infamous.simple_metalcraft.crafting.furnace.cementation.CementationFurnaceBlockEntity;
+import com.infamous.simple_metalcraft.crafting.furnace.blasting.SMBlastFurnaceBlockEntity;
 import com.mojang.datafixers.types.Type;
 import net.minecraft.Util;
 import net.minecraft.resources.ResourceLocation;

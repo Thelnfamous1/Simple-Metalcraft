@@ -1,9 +1,10 @@
-package com.infamous.simple_metalcraft.crafting;
+package com.infamous.simple_metalcraft.crafting.furnace;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonSyntaxException;
+import com.infamous.simple_metalcraft.crafting.furnace.SMCookingRecipe;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.GsonHelper;
@@ -23,9 +24,11 @@ import java.util.Map;
 public class SMCookingSerializer<T extends SMCookingRecipe> extends ForgeRegistryEntry<RecipeSerializer<?>> implements RecipeSerializer<T> {
     public static final String GROUP = "group";
     public static final String RESULTS = "results";
+    public static final String RESULT = "result";
     public static final String EXPERIENCE = "experience";
     public static final String COOKINGTIME = "cookingtime";
     public static final String INGREDIENTS = "ingredients";
+    public static final String INGREDIENT = "ingredient";
     public static final String VALUES = "values";
     public static final String COUNT = "count";
     private final int defaultCookingTime;
@@ -47,12 +50,18 @@ public class SMCookingSerializer<T extends SMCookingRecipe> extends ForgeRegistr
 
     private Map<Ingredient, Integer> getIngredients(JsonObject jsonObject) {
         Map<Ingredient, Integer> ingredients = new LinkedHashMap<>();
-        JsonArray ingredientArray = GsonHelper.getAsJsonArray(jsonObject, INGREDIENTS);
-        ingredientArray.forEach(jsonElement -> {
-            Ingredient ingredient = this.getIngredient(jsonElement);
-            int count = GsonHelper.getAsInt(jsonElement.getAsJsonObject(), COUNT, 1);
-            ingredients.put(ingredient, count);
-        });
+        if(GsonHelper.isArrayNode(jsonObject, INGREDIENTS)){
+            JsonArray ingredientArray = GsonHelper.getAsJsonArray(jsonObject, INGREDIENTS);
+            ingredientArray.forEach(jsonElement -> {
+                Ingredient ingredient = this.getIngredient(jsonElement);
+                int count = GsonHelper.getAsInt(jsonElement.getAsJsonObject(), COUNT, 1);
+                ingredients.put(ingredient, count);
+            });
+        } else{
+            JsonObject ingredientObject = GsonHelper.getAsJsonObject(jsonObject, INGREDIENT);
+            Ingredient ingredient = Ingredient.fromJson(ingredientObject);
+            ingredients.put(ingredient, 1);
+        }
 
         return ingredients;
     }
@@ -71,8 +80,27 @@ public class SMCookingSerializer<T extends SMCookingRecipe> extends ForgeRegistr
 
     private List<ItemStack> getResults(JsonObject jsonObject) {
         List<ItemStack> results = new ArrayList<>();
-        JsonArray resultsArray = GsonHelper.getAsJsonArray(jsonObject, RESULTS);
-        resultsArray.forEach(jsonElement -> results.add(ShapedRecipe.itemStackFromJson(jsonElement.getAsJsonObject())));
+        if(GsonHelper.isArrayNode(jsonObject, RESULTS)){
+            JsonArray resultsArray = GsonHelper.getAsJsonArray(jsonObject, RESULTS);
+            resultsArray.forEach(jsonElement -> results.add(ShapedRecipe.itemStackFromJson(jsonElement.getAsJsonObject())));
+
+        } else{
+            //Forge: Check if primitive string to keep vanilla or a object which can contain a count field.
+            if (!jsonObject.has(RESULT)) throw new JsonSyntaxException("Missing " + RESULT +", expected to find a string or object");
+            ItemStack result;
+            if (jsonObject.get(RESULT).isJsonObject()) result = ShapedRecipe.itemStackFromJson(GsonHelper.getAsJsonObject(jsonObject, RESULT));
+            else {
+                String resultString = GsonHelper.getAsString(jsonObject, RESULT);
+                ResourceLocation resultLocation = new ResourceLocation(resultString);
+                Item resultItem = ForgeRegistries.ITEMS.getValue(resultLocation);
+                if(resultItem == null){
+                    throw new JsonSyntaxException("Item: " + resultString + " does not exist");
+                }
+                result = new ItemStack(resultItem);
+
+            }
+            results.add(result);
+        }
         return results;
     }
 
