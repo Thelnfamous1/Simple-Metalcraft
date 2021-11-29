@@ -1,10 +1,32 @@
 {
-  "type": "minecraft:blasting",
+  "type": "simple_metalcraft:blasting",
   "group": "pig_iron_ingot",
-  "ingredient": {
-    "tag": "minecraft:iron_ores"
-  },
-  "result": "simple_metalcraft:pig_iron_ingot",
+  "ingredients": [
+    {
+      "values": [
+        {
+          "tag": "minecraft:iron_ores"
+        },
+        {
+          "item": "minecraft:raw_iron"
+        }
+      ]
+    },
+    {
+      "tag": "simple_metalcraft:flux_stones"
+    },
+    {
+      "tag": "minecraft:coals"
+    }
+  ],
+  "results": [
+    {
+      "item":"simple_metalcraft:pig_iron_ingot"
+    },
+    {
+      "item":"simple_metalcraft:iron_slag"
+    }
+  ],
   "experience": 0.7,
   "cookingtime": 100
 }

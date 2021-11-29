@@ -91,6 +91,7 @@ public class SMModEvents {
         SMRecipes.Types.BLOOMING = registerRecipeType(SMRecipes.BLOOMING_NAME);
         SMRecipes.Types.CEMENTATION = registerRecipeType(SMRecipes.CEMENTATION_NAME);
         SMRecipes.Types.FORGING = registerRecipeType(SMRecipes.FORGING_NAME);
+        SMRecipes.Types.BLASTING = registerRecipeType(SMRecipes.BLASTING_NAME);
     }
 
     private static <FC extends FeatureConfiguration> ConfiguredFeature<FC, ?> registerFeature(String name, ConfiguredFeature<FC, ?> feature) {

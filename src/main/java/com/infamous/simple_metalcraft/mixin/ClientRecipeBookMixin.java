@@ -17,7 +17,8 @@ public class ClientRecipeBookMixin {
     private static void getCategory(Recipe<?> recipe, CallbackInfoReturnable<RecipeBookCategories> cir) {
         if (recipe.getType() == SMRecipes.Types.BLOOMING
                 || recipe.getType() == SMRecipes.Types.CEMENTATION
-                || recipe.getType() == SMRecipes.Types.FORGING) {
+                || recipe.getType() == SMRecipes.Types.FORGING
+                || recipe.getType() == SMRecipes.Types.BLASTING) {
             cir.setReturnValue(RecipeBookCategories.UNKNOWN);
         }
     }

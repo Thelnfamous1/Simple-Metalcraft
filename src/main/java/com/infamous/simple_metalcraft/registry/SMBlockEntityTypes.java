@@ -3,6 +3,7 @@ package com.infamous.simple_metalcraft.registry;
 import com.infamous.simple_metalcraft.SimpleMetalcraft;
 import com.infamous.simple_metalcraft.crafting.batch.blooming.BloomeryBlockEntity;
 import com.infamous.simple_metalcraft.crafting.batch.cementation.CementationFurnaceBlockEntity;
+import com.infamous.simple_metalcraft.crafting.blasting.SMBlastFurnaceBlockEntity;
 import com.mojang.datafixers.types.Type;
 import net.minecraft.Util;
 import net.minecraft.resources.ResourceLocation;
@@ -21,6 +22,11 @@ public class SMBlockEntityTypes {
     public static final RegistryObject<BlockEntityType<BloomeryBlockEntity>> BLOOMERY = BLOCK_ENTITIES.register(
       "bloomery", () -> BlockEntityType.Builder.of(BloomeryBlockEntity::new, SMBlocks.BLOOMERY.get()).build(buildType("bloomery"))
     );
+
+    public static final RegistryObject<BlockEntityType<SMBlastFurnaceBlockEntity>> BLAST_FURNACE = BLOCK_ENTITIES.register(
+            "blast_furnace", () -> BlockEntityType.Builder.of(SMBlastFurnaceBlockEntity::new, SMBlocks.BLAST_FURNACE.get()).build(buildType("blast_furnace"))
+    );
+
     public static final RegistryObject<BlockEntityType<CementationFurnaceBlockEntity>> CEMENTATION_FURNACE = BLOCK_ENTITIES.register(
             "cementation_furnace", () -> BlockEntityType.Builder.of(CementationFurnaceBlockEntity::new, SMBlocks.CEMENTATION_FURNACE.get()).build(buildType("cementation_furnace"))
     );

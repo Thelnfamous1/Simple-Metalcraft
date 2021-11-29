@@ -5,6 +5,7 @@ import com.infamous.simple_metalcraft.crafting.anvil.AnvilTier;
 import com.infamous.simple_metalcraft.crafting.batch.cementation.CementationFurnaceBlock;
 import com.infamous.simple_metalcraft.crafting.bellows.BellowsBlock;
 import com.infamous.simple_metalcraft.crafting.batch.blooming.BloomeryBlock;
+import com.infamous.simple_metalcraft.crafting.blasting.SMBlastFurnaceBlock;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
@@ -38,6 +39,9 @@ public class SMBlocks {
 
     public static final RegistryObject<Block> BLOOMERY = BLOCKS.register("bloomery",
             () -> new BloomeryBlock(furnaceProperties()));
+
+    public static final RegistryObject<Block> BLAST_FURNACE = BLOCKS.register("blast_furnace",
+            () -> new SMBlastFurnaceBlock(furnaceProperties()));
 
     public static final RegistryObject<Block> CEMENTATION_FURNACE = BLOCKS.register("cementation_furnace",
             () -> new CementationFurnaceBlock(furnaceProperties()));

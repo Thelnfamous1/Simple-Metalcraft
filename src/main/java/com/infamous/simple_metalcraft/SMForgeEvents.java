@@ -109,6 +109,7 @@ public class SMForgeEvents {
         LazyOptional<EquipmentCapability> equipmentCap = EquipmentCapabilityProvider.get(mob);
         equipmentCap.ifPresent(ec -> {
             if(!ec.getWasEquipped()){
+                ArmoringHelper.clearSpawnEquipment(mob);
                 //SimpleMetalcraft.LOGGER.info("Handling equipment for mob {}", mob);
                 DifficultyInstance difficultyAt = level.getCurrentDifficultyAt(spawnPos);
                 boolean equipped = ArmoringHelper.populateDefaultEquipmentSlots(mob, difficultyAt, true);

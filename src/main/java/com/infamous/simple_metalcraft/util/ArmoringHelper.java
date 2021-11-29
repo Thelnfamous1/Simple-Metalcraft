@@ -125,6 +125,26 @@ public class ArmoringHelper {
         }
     }
 
+    public static void clearSpawnEquipment(LivingEntity mob){
+        boolean equipArmor = mob.getType().is(SMTags.EQUIP_ARMOR);
+        boolean equipWeapon = mob.getType().is((SMTags.EQUIP_WEAPON));
+
+        if(!equipArmor && !equipWeapon){
+            return;
+        }
+
+        for(EquipmentSlot equipmentSlot : EquipmentSlot.values()){
+            if (equipmentSlot.getType() == EquipmentSlot.Type.ARMOR
+                    && equipArmor) {
+                mob.setItemSlot(equipmentSlot, ItemStack.EMPTY);
+            }
+            else if (equipmentSlot == EquipmentSlot.MAINHAND
+                    && equipWeapon) {
+                mob.setItemSlot(equipmentSlot, ItemStack.EMPTY);
+            }
+        }
+    }
+
     public static void populateDefaultEquipmentEnchantments(LivingEntity mob, DifficultyInstance difficultyInstance) {
         float specialMultiplier = difficultyInstance.getSpecialMultiplier();
         enchantSpawnedWeapon(mob, specialMultiplier);

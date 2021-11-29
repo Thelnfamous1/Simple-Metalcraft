@@ -4,9 +4,10 @@ import com.infamous.simple_metalcraft.SimpleMetalcraft;
 import com.infamous.simple_metalcraft.crafting.anvil.ForgingRecipe;
 import com.infamous.simple_metalcraft.crafting.anvil.ForgingSerializer;
 import com.infamous.simple_metalcraft.crafting.batch.BatchCookingSerializer;
-import com.infamous.simple_metalcraft.crafting.batch.BatchCookingRecipe;
 import com.infamous.simple_metalcraft.crafting.batch.blooming.BloomingRecipe;
 import com.infamous.simple_metalcraft.crafting.batch.cementation.CementationRecipe;
+import com.infamous.simple_metalcraft.crafting.SMCookingSerializer;
+import com.infamous.simple_metalcraft.crafting.blasting.SMBlastingRecipe;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraftforge.fmllegacy.RegistryObject;
@@ -32,10 +33,16 @@ public class SMRecipes {
     public static RegistryObject<RecipeSerializer<ForgingRecipe>> FORGING = RECIPE_SERIALIZERS.register(
             FORGING_NAME, ForgingSerializer::new);
 
+    public static final int BLAST_FURNACE_COOKING_TIME = 100;
+    public static final String BLASTING_NAME = "blasting";
+    public static RegistryObject<RecipeSerializer<SMBlastingRecipe>> BLASTING = RECIPE_SERIALIZERS.register(
+            BLASTING_NAME, () -> new SMCookingSerializer<>(SMBlastingRecipe::new, BLAST_FURNACE_COOKING_TIME));
+
     public static class Types{
         public static RecipeType<BloomingRecipe> BLOOMING;
         public static RecipeType<CementationRecipe> CEMENTATION;
         public static RecipeType<ForgingRecipe> FORGING;
+        public static RecipeType<SMBlastingRecipe> BLASTING;
     }
 
 }
