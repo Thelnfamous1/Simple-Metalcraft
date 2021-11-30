@@ -1,5 +1,6 @@
 package com.infamous.simple_metalcraft.crafting.furnace;
 
+import com.infamous.simple_metalcraft.SimpleMetalcraft;
 import com.infamous.simple_metalcraft.crafting.CookingMenu;
 import net.minecraft.world.Container;
 import net.minecraft.world.SimpleContainer;
@@ -83,19 +84,19 @@ public abstract class AdvancedFurnaceMenu extends AbstractContainerMenu implemen
     }
 
     @Override
-    public ItemStack quickMoveStack(Player player, int slotId) {
+    public ItemStack quickMoveStack(Player player, int fromSlotId) {
         ItemStack slotStackCopy = ItemStack.EMPTY;
-        Slot slot = this.slots.get(slotId);
+        Slot slot = this.slots.get(fromSlotId);
         if (slot.hasItem()) {
             ItemStack slotStack = slot.getItem();
             slotStackCopy = slotStack.copy();
-            if (slotId >= this.getFirstResultSlot() && slotId < this.getInvSlotStart()) { // result slots
+            if (fromSlotId >= this.getFirstResultSlot() && fromSlotId < this.getInvSlotStart()) { // from result slots
                 if (!this.moveItemStackTo(slotStack, this.getInvSlotStart(), this.getUseRowSlotEnd(), true)) {
                     return ItemStack.EMPTY;
                 }
 
                 slot.onQuickCraft(slotStack, slotStackCopy);
-            } else if (slotId >= this.getInvSlotStart()) { // inventory slots
+            } else if (fromSlotId >= this.getInvSlotStart()) { // from inventory slots
                 if (this.canSmelt(slotStack)) {
                     if (!this.moveItemStackTo(slotStack, this.getFirstIngredientSlot(), this.getFuelSlot(), false)) {
                         return ItemStack.EMPTY;
@@ -104,14 +105,14 @@ public abstract class AdvancedFurnaceMenu extends AbstractContainerMenu implemen
                     if (!this.moveItemStackTo(slotStack, this.getFuelSlot(), this.getFirstResultSlot(), false)) {
                         return ItemStack.EMPTY;
                     }
-                } else if (slotId < this.getInvSlotEnd()) {
+                } else if (fromSlotId < this.getInvSlotEnd()) {
                     if (!this.moveItemStackTo(slotStack, this.getUseRowSlotStart(), this.getUseRowSlotEnd(), false)) {
                         return ItemStack.EMPTY;
                     }
-                } else if (slotId < this.getUseRowSlotEnd() && !this.moveItemStackTo(slotStack, this.getInvSlotStart(), getInvSlotEnd(), false)) {
+                } else if (fromSlotId < this.getUseRowSlotEnd() && !this.moveItemStackTo(slotStack, this.getInvSlotStart(), getInvSlotEnd(), false)) {
                     return ItemStack.EMPTY;
                 }
-            } else if (!this.moveItemStackTo(slotStack, this.getInvSlotStart(), this.getUseRowSlotEnd(), false)) { // input and fuel slots
+            } else if (!this.moveItemStackTo(slotStack, this.getInvSlotStart(), this.getUseRowSlotEnd(), false)) { // from input and fuel slots
                 return ItemStack.EMPTY;
             }
 
@@ -154,11 +155,15 @@ public abstract class AdvancedFurnaceMenu extends AbstractContainerMenu implemen
     protected boolean canSmelt(ItemStack stack) {
         ItemStack copy = stack.copy();
         SimpleContainer inputContainer = this.buildInputContainer();
-        if(inputContainer.canAddItem(copy)){
+        if(!inputContainer.canAddItem(copy)){
+            SimpleMetalcraft.LOGGER.info("Attempted to quick move {}, could not add to input container", stack);
             return false;
         } else{
+            SimpleMetalcraft.LOGGER.info("Attempting to quick move {}, adding to input container", stack);
             inputContainer.addItem(copy);
         }
+
+        SimpleMetalcraft.LOGGER.info("Checking container {}", inputContainer.toString());
         return this.level.getRecipeManager().getRecipeFor(this.recipeType, inputContainer, this.level).isPresent();
     }
 

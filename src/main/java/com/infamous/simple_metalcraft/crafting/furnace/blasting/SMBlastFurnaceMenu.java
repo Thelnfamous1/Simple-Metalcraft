@@ -50,7 +50,8 @@ public class SMBlastFurnaceMenu extends AdvancedFurnaceMenu {
     protected SimpleContainer buildInputContainer() {
         return new SimpleContainer(
                 this.slots.get(SMBlastingConstants.SLOT_INPUT_A).getItem().copy(),
-                this.slots.get(SMBlastingConstants.SLOT_INPUT_B).getItem().copy()
+                this.slots.get(SMBlastingConstants.SLOT_INPUT_B).getItem().copy(),
+                this.slots.get(SMBlastingConstants.SLOT_INPUT_C).getItem().copy()
         );
     }
 }
