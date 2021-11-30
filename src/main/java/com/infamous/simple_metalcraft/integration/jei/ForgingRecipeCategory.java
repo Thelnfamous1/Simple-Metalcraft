@@ -2,37 +2,29 @@ package com.infamous.simple_metalcraft.integration.jei;
 
 import com.infamous.simple_metalcraft.SimpleMetalcraft;
 import com.infamous.simple_metalcraft.crafting.anvil.ForgingRecipe;
-import com.infamous.simple_metalcraft.integration.jei.util.ForgingRecipeDisplayData;
 import com.infamous.simple_metalcraft.integration.jei.util.JEIConstants;
 import com.infamous.simple_metalcraft.integration.jei.util.JEIErrorUtil;
 import com.infamous.simple_metalcraft.registry.SMRecipes;
 import com.mojang.blaze3d.vertex.PoseStack;
-
-import java.util.Arrays;
-import java.util.Map;
-
-import net.minecraft.world.entity.player.Inventory;
-import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.inventory.AnvilMenu;
-import net.minecraft.world.level.block.Blocks;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.player.LocalPlayer;
-import net.minecraft.client.resources.language.I18n;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.resources.ResourceLocation;
-
-import com.google.common.cache.CacheBuilder;
-import com.google.common.cache.CacheLoader;
-import com.google.common.cache.LoadingCache;
 import mezz.jei.api.constants.VanillaTypes;
 import mezz.jei.api.gui.IRecipeLayout;
 import mezz.jei.api.gui.drawable.IDrawable;
-import mezz.jei.api.gui.ingredient.IGuiIngredient;
 import mezz.jei.api.gui.ingredient.IGuiItemStackGroup;
 import mezz.jei.api.helpers.IGuiHelper;
 import mezz.jei.api.ingredients.IIngredients;
 import mezz.jei.api.recipe.category.IRecipeCategory;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.player.LocalPlayer;
+import net.minecraft.client.resources.language.I18n;
 import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.inventory.AnvilMenu;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.block.Blocks;
+
+import java.util.Arrays;
 
 /**
  * Majority of this copied directly from JEI source code - it's not a part of the API, and I see no need to reinvent

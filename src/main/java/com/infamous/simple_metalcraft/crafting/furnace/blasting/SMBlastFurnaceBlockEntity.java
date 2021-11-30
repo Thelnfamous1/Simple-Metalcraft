@@ -81,4 +81,9 @@ public class SMBlastFurnaceBlockEntity extends AdvancedFurnaceBlockEntity {
         return SMBlastingConstants.NUM_SLOTS;
     }
 
+    @Override
+    protected int getNumInputSlots() {
+        return SMBlastingConstants.NUM_INPUT_SLOTS;
+    }
+
 }

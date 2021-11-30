@@ -10,9 +10,8 @@ import net.minecraft.world.level.block.Block;
 import javax.annotation.Nullable;
 
 /**
- * Copied directly from JEI source code - it's not a part of the API, and I see no need to reinvent
- * a perfectly working wheel
- * @author mezz
+ * Mostly copied directly from JEI source code, with modifications for this implementation
+ * @author mezz and Thelnfamous1
  */
 public class JEIErrorUtil {
 

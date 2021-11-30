@@ -10,6 +10,17 @@ import java.util.Map;
 
 public interface AdvancedCookingRecipe {
 
+    /**
+     * O(n * m * k) operation, where
+     * n is the number of entries in the Ingredient-Integer Map,
+     * m is the number of slots in the Container, and
+     * k is the number of ItemStacks in the current iterated Map entry.
+     * In the default implementation of this mod, the slowest speed is O(3 * 3 * 3)
+     * for the "simple_metalcraft:blasting/pig_iron_ingot_from_blasting" recipe:
+     * There are 3 Ingredient-Integer entries, and 3 slots in the Container.
+     * @param container The Container to find matches in
+     * @return Whether or not the Container contains all of the ingredients in necessary amounts
+     */
     default boolean findMatches(Container container) {
         Map<Ingredient, Integer> foundMatches = new LinkedHashMap<>();
         Map<Ingredient, Integer> ingredients = this.getIngredientsMap();
@@ -27,8 +38,8 @@ public interface AdvancedCookingRecipe {
             ItemStack stackInSlot = container.getItem(slotId);
             Ingredient key = ingredientsEntry.getKey();
             Integer value = ingredientsEntry.getValue();
-            if (!foundMatches.containsKey(key)
-                    && key.test(stackInSlot)
+            if (!foundMatches.containsKey(key) // default implementation uses LinkedHashMap, for which this operation runs in O(1) time
+                    && key.test(stackInSlot) // O(n) operation, where n is the number of ItemStacks in the Ingredient
                     && stackInSlot.getCount() >= value) {
                 foundMatches.put(key, value);
                 return true;

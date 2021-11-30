@@ -6,9 +6,8 @@ import mezz.jei.api.helpers.IGuiHelper;
 import mezz.jei.api.recipe.category.IRecipeCategory;
 
 /**
- * Copied directly from JEI source code - it's not a part of the API, and I see no need to reinvent
- * a perfectly working wheel
- * @author mezz
+ * Mostly copied directly from JEI source code, with modifications for this implementation
+ * @author mezz and Thelnfamous1
  * @param <T>
  */
 public abstract class FurnaceVariantCategory<T> implements IRecipeCategory<T> {
@@ -20,7 +19,11 @@ public abstract class FurnaceVariantCategory<T> implements IRecipeCategory<T> {
 	protected final IDrawableAnimated animatedFlame;
 
 	public FurnaceVariantCategory(IGuiHelper guiHelper) {
-		this.staticFlame = guiHelper.createDrawable(JEIConstants.RECIPE_GUI_VANILLA, 82, 114, 14, 14);
+		this.staticFlame = this.createStaticFlame(guiHelper);
 		this.animatedFlame = guiHelper.createAnimatedDrawable(this.staticFlame, 300, IDrawableAnimated.StartDirection.TOP, true);
+	}
+
+	protected IDrawableStatic createStaticFlame(IGuiHelper guiHelper) {
+		return guiHelper.createDrawable(JEIConstants.RECIPE_GUI_VANILLA, 82, 114, 14, 14);
 	}
 }

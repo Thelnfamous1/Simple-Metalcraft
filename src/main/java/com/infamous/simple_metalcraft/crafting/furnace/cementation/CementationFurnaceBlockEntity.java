@@ -73,4 +73,9 @@ public class CementationFurnaceBlockEntity extends AdvancedFurnaceBlockEntity {
     protected int getNumSlots() {
         return CementationConstants.NUM_SLOTS;
     }
+
+    @Override
+    protected int getNumInputSlots() {
+        return CementationConstants.NUM_INPUT_SLOTS;
+    }
 }

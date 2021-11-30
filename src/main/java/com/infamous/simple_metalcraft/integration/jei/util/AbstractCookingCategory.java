@@ -8,6 +8,7 @@ import mezz.jei.api.constants.VanillaTypes;
 import mezz.jei.api.gui.IRecipeLayout;
 import mezz.jei.api.gui.drawable.IDrawable;
 import mezz.jei.api.gui.drawable.IDrawableAnimated;
+import mezz.jei.api.gui.drawable.IDrawableStatic;
 import mezz.jei.api.gui.ingredient.IGuiItemStackGroup;
 import mezz.jei.api.helpers.IGuiHelper;
 import mezz.jei.api.ingredients.IIngredients;
@@ -20,9 +21,8 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TranslatableComponent;
 
 /**
- * Copied directly from JEI source code - it's not a part of the API, and I see no need to reinvent
- * a perfectly working wheel
- * @author mezz
+ * Mostly copied directly from JEI source code, with modifications for this implementation
+ * @author mezz and Thelnfamous1
  * @param <T>
  */
 public abstract class AbstractCookingCategory<T extends AbstractCookingRecipe> extends FurnaceVariantCategory<T> {
@@ -36,19 +36,31 @@ public abstract class AbstractCookingCategory<T extends AbstractCookingRecipe> e
 
 	public AbstractCookingCategory(IGuiHelper guiHelper, Block icon, Component localizedName, int regularCookTime) {
 		super(guiHelper);
-		this.background = guiHelper.createDrawable(JEIConstants.RECIPE_GUI_VANILLA, 0, 114, 82, 54);
+		this.background = this.createBackground(guiHelper);
 		this.regularCookTime = regularCookTime;
 		this.icon = guiHelper.createDrawableIngredient(new ItemStack(icon));
 		this.localizedName = localizedName;
-		this.cachedArrows = CacheBuilder.newBuilder()
-			.maximumSize(25)
-			.build(new CacheLoader<>() {
-				@Override
-				public IDrawableAnimated load(Integer cookTime) {
-					return guiHelper.drawableBuilder(JEIConstants.RECIPE_GUI_VANILLA, 82, 128, 24, 17)
-						.buildAnimated(cookTime, IDrawableAnimated.StartDirection.LEFT, false);
-				}
-			});
+		this.cachedArrows = this.buildCachedArrows(guiHelper);
+	}
+
+	protected LoadingCache<Integer, IDrawableAnimated> buildCachedArrows(IGuiHelper guiHelper) {
+		return CacheBuilder.newBuilder()
+				.maximumSize(25)
+				.build(new CacheLoader<>() {
+					@Override
+					public IDrawableAnimated load(Integer cookTime) {
+						return AbstractCookingCategory.this.createArrow(cookTime, guiHelper);
+					}
+				});
+	}
+
+	protected IDrawableAnimated createArrow(Integer cookTime, IGuiHelper guiHelper) {
+		return guiHelper.drawableBuilder(JEIConstants.RECIPE_GUI_VANILLA, 82, 128, 24, 17)
+				.buildAnimated(cookTime, IDrawableAnimated.StartDirection.LEFT, false);
+	}
+
+	protected IDrawableStatic createBackground(IGuiHelper guiHelper) {
+		return guiHelper.createDrawable(JEIConstants.RECIPE_GUI_VANILLA, 0, 114, 82, 54);
 	}
 
 	protected IDrawableAnimated getArrow(T recipe) {

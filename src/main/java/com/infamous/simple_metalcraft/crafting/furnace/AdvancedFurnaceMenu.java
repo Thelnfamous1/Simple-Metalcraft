@@ -45,18 +45,10 @@ public abstract class AdvancedFurnaceMenu extends AbstractContainerMenu implemen
     // SLOT CONSTRUCTION START
 
     protected void buildIngredientSlots(Container container, int numIngredientSlots) {
-        int leftOffset = 18 * (numIngredientSlots - 1);
-
-        if(numIngredientSlots % 2 == 0){ // even number of slots
-            for(int i = 0; i < numIngredientSlots; i++){
-                int rightOffset = 18 * i;
-                this.addSlot(new Slot(container, this.getFirstIngredientSlot() + i, 56 - leftOffset + rightOffset, 17));
-            }
-        } else{ // odd number of slots
-            for(int i = 0; i < numIngredientSlots; i++){
-                int rightOffset = 18 * i;
-                this.addSlot(new Slot(container, this.getFirstIngredientSlot() + i, 56 - leftOffset + rightOffset, 17));
-            }
+        int leftOffset = 9 * (numIngredientSlots - 1);
+        for(int i = 0; i < numIngredientSlots; i++){
+            int rightOffset = 18 * i;
+            this.addSlot(new Slot(container, this.getFirstIngredientSlot() + i, 56 - leftOffset + rightOffset, 17));
         }
     }
 
@@ -66,7 +58,7 @@ public abstract class AdvancedFurnaceMenu extends AbstractContainerMenu implemen
 
     protected void buildResultSlots(Inventory inventory, Container container, int numResultSlots) {
         this.addSlot(new FurnaceResultSlot(inventory.player, container, this.getFirstResultSlot(), 116, 35));
-        for(int i = 1; i <= numResultSlots; i++){
+        for(int i = 1; i < numResultSlots; i++){
             this.addSlot(new FurnaceByproductSlot(inventory.player, container, this.getFirstResultSlot() + i, 116 + (26 * i), 35));
         }
     }

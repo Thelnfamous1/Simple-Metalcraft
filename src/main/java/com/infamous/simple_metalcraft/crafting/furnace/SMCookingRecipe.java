@@ -1,6 +1,5 @@
 package com.infamous.simple_metalcraft.crafting.furnace;
 
-import com.infamous.simple_metalcraft.crafting.furnace.AdvancedCookingRecipe;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.Container;
 import net.minecraft.world.item.ItemStack;
@@ -9,6 +8,7 @@ import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.Level;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -30,12 +30,12 @@ public abstract class SMCookingRecipe extends AbstractCookingRecipe implements A
 
    @Override
    public Map<Ingredient, Integer> getIngredientsMap(){
-      return this.ingredients;
+      return Collections.unmodifiableMap(this.ingredients);
     }
 
    @Override
    public List<ItemStack> getResults() {
-      return this.results;
+      return Collections.unmodifiableList(this.results);
    }
 
 }

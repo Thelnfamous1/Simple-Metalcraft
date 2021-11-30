@@ -1,11 +1,19 @@
 {
   "type": "simple_metalcraft:cementation",
   "group": "blister_steel_ingot",
-  "ingredient": {
-    "item": "minecraft:iron_ingot"
-  },
+  "ingredients": [
+    {
+      "item": "minecraft:iron_ingot",
+      "count": 1
+    },
+    {
+      "item": "minecraft:charcoal",
+      "count": 1
+    }
+  ],
   "result":{
-    "item": "simple_metalcraft:blister_steel_ingot"
+    "item": "simple_metalcraft:blister_steel_ingot",
+    "count": 1
   },
   "experience": 0.9,
   "cookingtime": 179200

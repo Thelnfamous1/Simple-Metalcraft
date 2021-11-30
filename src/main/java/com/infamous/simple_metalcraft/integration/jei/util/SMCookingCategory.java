@@ -3,6 +3,8 @@ package com.infamous.simple_metalcraft.integration.jei.util;
 import com.infamous.simple_metalcraft.crafting.furnace.SMCookingRecipe;
 import mezz.jei.api.constants.VanillaTypes;
 import mezz.jei.api.gui.IRecipeLayout;
+import mezz.jei.api.gui.drawable.IDrawableAnimated;
+import mezz.jei.api.gui.drawable.IDrawableStatic;
 import mezz.jei.api.gui.ingredient.IGuiItemStackGroup;
 import mezz.jei.api.helpers.IGuiHelper;
 import mezz.jei.api.ingredients.IIngredients;
@@ -23,6 +25,17 @@ public abstract class SMCookingCategory<T extends SMCookingRecipe> extends Abstr
     }
 
     @Override
+    protected IDrawableStatic createStaticFlame(IGuiHelper guiHelper) {
+        return guiHelper.createDrawable(JEIConstants.RECIPE_GUI_CUSTOM, 117, 0, 14, 14);
+    }
+
+    @Override
+    protected IDrawableAnimated createArrow(Integer cookTime, IGuiHelper guiHelper) {
+        return guiHelper.drawableBuilder(JEIConstants.RECIPE_GUI_CUSTOM, 117, 14, 24, 17)
+                .buildAnimated(cookTime, IDrawableAnimated.StartDirection.LEFT, false);
+    }
+
+    @Override
     public void setIngredients(T recipe, IIngredients ingredients) {
         ingredients.setInputLists(
                 VanillaTypes.ITEM,
@@ -39,20 +52,23 @@ public abstract class SMCookingCategory<T extends SMCookingRecipe> extends Abstr
     public void setRecipe(IRecipeLayout recipeLayout, T recipe, IIngredients ingredients) {
         IGuiItemStackGroup guiItemStacks = recipeLayout.getItemStacks();
 
-        int inputSlotStart = this.getInputSlotStart();
-        int outputSlotStart = this.getOutputSlotStart();
+        final int inputSlotStart = this.getInputSlotStart();
+        final int outputSlotStart = this.getOutputSlotStart();
 
-        for(int i = 0; i < this.getNumInputs(); i++){
-            guiItemStacks.init(inputSlotStart + i, true, 0, 0);
+        final int numInputs = this.getNumInputs();
+
+        for(int i = 0; i < numInputs; i++){
+            guiItemStacks.init(inputSlotStart + i, true, i * 18, 0);
         }
 
         for(int i = 0; i < this.getNumOutputs(); i++){
-            guiItemStacks.init(outputSlotStart + i, false, 60, 18);
+            int inputSlotsOffset = (9 * numInputs) - 9;
+            guiItemStacks.init(outputSlotStart + i, false, 60 + inputSlotsOffset + (26 * i), 18);
         }
 
         int inputIndex = this.getInputSlotStart();
         for (Map.Entry<Ingredient, Integer> entry : recipe.getIngredientsMap().entrySet()) {
-            if(inputIndex >= this.getNumInputs()){
+            if(inputIndex >= numInputs){
                 break;
             }
 

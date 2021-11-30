@@ -3,9 +3,11 @@ package com.infamous.simple_metalcraft.integration.jei;
 import com.infamous.simple_metalcraft.SimpleMetalcraft;
 import com.infamous.simple_metalcraft.crafting.furnace.blooming.BloomingConstants;
 import com.infamous.simple_metalcraft.crafting.furnace.blooming.BloomingRecipe;
+import com.infamous.simple_metalcraft.integration.jei.util.JEIConstants;
 import com.infamous.simple_metalcraft.integration.jei.util.SMCookingCategory;
 import com.infamous.simple_metalcraft.registry.SMBlocks;
 import com.infamous.simple_metalcraft.registry.SMRecipes;
+import mezz.jei.api.gui.drawable.IDrawableStatic;
 import mezz.jei.api.helpers.IGuiHelper;
 import net.minecraft.resources.ResourceLocation;
 
@@ -15,6 +17,11 @@ public class BloomingRecipeCategory extends SMCookingCategory<BloomingRecipe> {
 
     public BloomingRecipeCategory(IGuiHelper guiHelper) {
         super(guiHelper, SMBlocks.BLOOMERY.get(), BloomingConstants.BLOOMERY_TITLE, SMRecipes.BLOOMERY_COOKING_TIME);
+    }
+
+    @Override
+    protected IDrawableStatic createBackground(IGuiHelper guiHelper) {
+        return guiHelper.createDrawable(JEIConstants.RECIPE_GUI_CUSTOM, 0, 0, 117, 54);
     }
 
     @Override

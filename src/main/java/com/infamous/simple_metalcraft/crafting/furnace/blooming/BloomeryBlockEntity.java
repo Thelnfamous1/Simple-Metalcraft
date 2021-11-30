@@ -74,4 +74,9 @@ public class BloomeryBlockEntity extends AdvancedFurnaceBlockEntity {
     protected int getNumSlots() {
         return BloomingConstants.NUM_SLOTS;
     }
+
+    @Override
+    protected int getNumInputSlots() {
+        return BloomingConstants.NUM_INPUT_SLOTS;
+    }
 }
