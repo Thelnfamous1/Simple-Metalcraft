@@ -1,6 +1,5 @@
 package com.infamous.simple_metalcraft.crafting.furnace;
 
-import com.infamous.simple_metalcraft.mixin.AbstractFurnaceBlockEntityAccessor;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.NonNullList;
@@ -9,6 +8,7 @@ import net.minecraft.world.Container;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.item.crafting.AbstractCookingRecipe;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.AbstractFurnaceBlock;
@@ -21,7 +21,12 @@ import net.minecraftforge.common.ForgeHooks;
 import javax.annotation.Nullable;
 
 public abstract class AdvancedFurnaceBlockEntity extends AbstractFurnaceBlockEntity {
+    public static final int LIT_TIME_ID = 0;
+    public static final int LIT_DURATION_ID = 1;
+    public static final int COOKING_PROGRESS_ID = 2;
+    public static final int COOKING_TOTAL_TIME_ID = 3;
     private final boolean batchSmelt;
+    private final RecipeType<? extends SMCookingRecipe> customRecipeType;
 
     @Nullable
     protected SMCookingRecipe currentRecipe;
@@ -32,10 +37,7 @@ public abstract class AdvancedFurnaceBlockEntity extends AbstractFurnaceBlockEnt
         this.batchSmelt = batchSmelt;
         this.items = NonNullList.withSize(this.getNumSlots(), ItemStack.EMPTY);
         this.failedMatches = NonNullList.withSize(this.getNumInputSlots(), ItemStack.EMPTY);
-    }
-
-    public static AbstractFurnaceBlockEntityAccessor castToAccessor(AdvancedFurnaceBlockEntity afbe){
-        return (AbstractFurnaceBlockEntityAccessor) afbe;
+        this.customRecipeType = recipeType;
     }
 
     // Using similar logic as FastFurnace's recipe querying optimization
@@ -58,9 +60,8 @@ public abstract class AdvancedFurnaceBlockEntity extends AbstractFurnaceBlockEnt
         return this.currentRecipe;
     }
 
-    // Have to cast twice because recipeType field is private in AbstractFurnaceBlockEntity
-    protected RecipeType<SMCookingRecipe> getCustomRecipeType() {
-        return (RecipeType<SMCookingRecipe>) castToAccessor(this).getRecipeType();
+    protected RecipeType<? extends SMCookingRecipe> getCustomRecipeType() {
+        return this.customRecipeType;
     }
 
     private void buildFailedMatches(NonNullList<ItemStack> inputs) {
@@ -88,30 +89,31 @@ public abstract class AdvancedFurnaceBlockEntity extends AbstractFurnaceBlockEnt
     }
 
     public static void advancedServerTick(Level level, BlockPos blockPos, BlockState blockState, AdvancedFurnaceBlockEntity afbe) {
-        AbstractFurnaceBlockEntityAccessor accessor = castToAccessor(afbe);
-        boolean wasLit = accessor.callIsLit();
+        boolean wasLit = isLit(afbe);
         boolean changedLitState = false;
-        if (accessor.callIsLit()) {
-            accessor.setLitTime(accessor.getLitTime() - 1);
+        if(isLit(afbe)){
+            setLitTime(afbe, getLitTime(afbe) - 1);
         }
 
         ItemStack fuelSlotStack = afbe.items.get(afbe.getFuelSlot());
 
-        if (accessor.callIsLit() || !fuelSlotStack.isEmpty() && !afbe.inputsEmpty()) {
+        if (isLit(afbe)
+                || !fuelSlotStack.isEmpty() && !afbe.inputsEmpty()) {
             SMCookingRecipe recipe = afbe.getFastRecipe();
             int maxStackSize = afbe.getMaxStackSize();
 
             // If furnace is not lit and we can burn the input, consume the fuel and set it to lit
-            if (!accessor.callIsLit() && afbe.canBurn(recipe, afbe.items, maxStackSize)) {
-                accessor.setLitTime(afbe.getBurnDuration(fuelSlotStack));
-                accessor.setLitDuration(accessor.getLitTime());
-                if (accessor.callIsLit()) {
+            if (!isLit(afbe)
+                    && afbe.canBurn(recipe, afbe.items, maxStackSize)) {
+                setLitTime(afbe, afbe.getBurnDuration(fuelSlotStack));
+                setLitDuration(afbe, getLitTime(afbe));
+                if(isLit(afbe)){
                     changedLitState = true;
                     if (fuelSlotStack.hasContainerItem())
                         afbe.items.set(afbe.getFuelSlot(), fuelSlotStack.getContainerItem());
                     else
                     if (!fuelSlotStack.isEmpty()) {
-                        fuelSlotStack.shrink(afbe.getFuelSlot());
+                        fuelSlotStack.shrink(1);
                         if (fuelSlotStack.isEmpty()) {
                             afbe.items.set(afbe.getFuelSlot(), fuelSlotStack.getContainerItem());
                         }
@@ -120,12 +122,12 @@ public abstract class AdvancedFurnaceBlockEntity extends AbstractFurnaceBlockEnt
             }
 
             // If the furnace is lit and we can burn the input, update the cooking progress and potentially give output
-            if (accessor.callIsLit() && afbe.canBurn(recipe, afbe.items, maxStackSize)) {
-                accessor.setCookingProgress(accessor.getCookingProgress() + 1);
-                if (accessor.getCookingProgress() == accessor.getCookingTotalTime()) {
-                    accessor.setCookingProgress(0);
-                    //noinspection ConstantConditions
-                    accessor.setCookingTotalTime(recipe.getCookingTime());
+            if (isLit(afbe)
+                    && afbe.canBurn(recipe, afbe.items, maxStackSize)) {
+                setCookingProgress(afbe, getCookingProgress(afbe) + 1);
+                if(getCookingProgress(afbe) == getCookingTotalTime(afbe)){
+                    setCookingProgress(afbe, 0);
+                    setCookingTotalTime(afbe, recipe.getCookingTime());
                     int burnCount = afbe.burn(recipe, afbe.items, maxStackSize);
                     for(int i = 0; i < burnCount; i++){
                         afbe.setRecipeUsed(recipe);
@@ -134,17 +136,17 @@ public abstract class AdvancedFurnaceBlockEntity extends AbstractFurnaceBlockEnt
                     changedLitState = true;
                 }
             } else {
-                accessor.setCookingProgress(0);
+                setCookingProgress(afbe, 0);
             }
         } else {
-            if (!accessor.callIsLit() && accessor.getCookingProgress() > 0) {
-                accessor.setCookingProgress(Mth.clamp(accessor.getCookingProgress() - 2, 0, accessor.getCookingTotalTime()));
+            if(isLit(afbe) && getCookingProgress(afbe) > 0){
+                setCookingProgress(afbe, Mth.clamp(getCookingProgress(afbe) - 2, 0, getCookingTotalTime(afbe)));
             }
         }
 
-        if (wasLit != accessor.callIsLit()) {
+        if (wasLit != isLit(afbe)) {
             changedLitState = true;
-            blockState = blockState.setValue(AbstractFurnaceBlock.LIT, Boolean.valueOf(accessor.callIsLit()));
+            blockState = blockState.setValue(AbstractFurnaceBlock.LIT, isLit(afbe));
             level.setBlock(blockPos, blockState, 3);
         }
 
@@ -152,6 +154,46 @@ public abstract class AdvancedFurnaceBlockEntity extends AbstractFurnaceBlockEnt
             setChanged(level, blockPos, blockState);
         }
 
+    }
+
+    private static void setCookingTotalTime(AdvancedFurnaceBlockEntity afbe, int cookingTime) {
+        afbe.setFurnaceData(COOKING_TOTAL_TIME_ID, cookingTime);
+    }
+
+    private static void setCookingProgress(AdvancedFurnaceBlockEntity afbe, int cookingProgress) {
+        afbe.setFurnaceData(COOKING_PROGRESS_ID, cookingProgress);
+    }
+
+    private static int getCookingTotalTime(AdvancedFurnaceBlockEntity afbe) {
+        return afbe.getFurnaceData(COOKING_TOTAL_TIME_ID);
+    }
+
+    private static int getCookingProgress(AdvancedFurnaceBlockEntity afbe) {
+        return afbe.getFurnaceData(COOKING_PROGRESS_ID);
+    }
+
+    private static void setLitDuration(AdvancedFurnaceBlockEntity afbe, int litDuration) {
+        afbe.setFurnaceData(LIT_DURATION_ID, litDuration);
+    }
+
+    private static int getLitTime(AdvancedFurnaceBlockEntity afbe) {
+        return afbe.getFurnaceData(LIT_TIME_ID);
+    }
+
+    private static void setLitTime(AdvancedFurnaceBlockEntity afbe, int litTime) {
+        afbe.setFurnaceData(LIT_TIME_ID, litTime);
+    }
+
+    private static boolean isLit(AdvancedFurnaceBlockEntity afbe) {
+        return getLitTime(afbe) > 0;
+    }
+
+    private int getFurnaceData(int id) {
+        return this.dataAccess.get(id);
+    }
+
+    private void setFurnaceData(int id, int value) {
+        this.dataAccess.set(id, value);
     }
 
     protected boolean inputsEmpty(){
@@ -270,13 +312,16 @@ public abstract class AdvancedFurnaceBlockEntity extends AbstractFurnaceBlockEnt
             stack.setCount(this.getMaxStackSize());
         }
 
-        if (slotId >= getFirstInputSlot() && slotId < this.getFuelSlot() && !stacksMatch) {
-            AbstractFurnaceBlockEntityAccessor accessor = castToAccessor(this);
-            accessor.setCookingTotalTime(accessor.callGetTotalCookTime(this.level, this.getCustomRecipeType(), this.buildInputContainer()));
-            accessor.setCookingProgress(0);
+        if (slotId >= this.getFirstInputSlot() && slotId < this.getFuelSlot() && !stacksMatch) {
+            setCookingTotalTime(this, getTotalCookTime(this.level, this.getCustomRecipeType(), this.buildInputContainer()));
+            setCookingProgress(this, 0);
             this.setChanged();
         }
 
+    }
+
+    protected static int getTotalCookTime(Level level, RecipeType<? extends SMCookingRecipe> recipeType, Container container) {
+        return level.getRecipeManager().getRecipeFor(recipeType, container, level).map(AbstractCookingRecipe::getCookingTime).orElse(200);
     }
 
     protected abstract int getFirstInputSlot();

@@ -1,13 +1,11 @@
 {
   "required": true,
   "package": "com.infamous.simple_metalcraft.mixin",
-  "compatibilityLevel": "JAVA_16",
+  "compatibilityLevel": "JAVA_17",
   "refmap": "simple_metalcraft.refmap.json",
   "mixins": [
-    "AbstractFurnaceBlockEntityAccessor",
     "AnvilBlockMixin",
-    "AnvilMenuMixin",
-    "ItemCombinerMenuAccessor"
+    "AnvilMenuMixin"
   ],
   "client": [
     "AnvilScreenMixin",

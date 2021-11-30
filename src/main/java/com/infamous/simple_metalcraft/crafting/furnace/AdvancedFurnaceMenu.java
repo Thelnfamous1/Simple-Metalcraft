@@ -1,6 +1,5 @@
 package com.infamous.simple_metalcraft.crafting.furnace;
 
-import com.infamous.simple_metalcraft.SimpleMetalcraft;
 import com.infamous.simple_metalcraft.crafting.CookingMenu;
 import net.minecraft.world.Container;
 import net.minecraft.world.SimpleContainer;
@@ -154,20 +153,17 @@ public abstract class AdvancedFurnaceMenu extends AbstractContainerMenu implemen
 
     protected boolean canSmelt(ItemStack stack) {
         ItemStack copy = stack.copy();
-        SimpleContainer inputContainer = this.buildInputContainer();
-        if(!inputContainer.canAddItem(copy)){
-            SimpleMetalcraft.LOGGER.info("Attempted to quick move {}, could not add to input container", stack);
+        SimpleContainer disposableInputContainer = this.buildDisposableInputContainer();
+        if(!disposableInputContainer.canAddItem(copy)){
             return false;
         } else{
-            SimpleMetalcraft.LOGGER.info("Attempting to quick move {}, adding to input container", stack);
-            inputContainer.addItem(copy);
+            disposableInputContainer.addItem(copy);
         }
 
-        SimpleMetalcraft.LOGGER.info("Checking container {}", inputContainer.toString());
-        return this.level.getRecipeManager().getRecipeFor(this.recipeType, inputContainer, this.level).isPresent();
+        return this.level.getRecipeManager().getRecipeFor(this.recipeType, disposableInputContainer, this.level).isPresent();
     }
 
-    protected abstract SimpleContainer buildInputContainer();
+    protected abstract SimpleContainer buildDisposableInputContainer();
 
     public boolean isFuel(ItemStack stack) {
         return ForgeHooks.getBurnTime(stack, this.recipeType) > 0;

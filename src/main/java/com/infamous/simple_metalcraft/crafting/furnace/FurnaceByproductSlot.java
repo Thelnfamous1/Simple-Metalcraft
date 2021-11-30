@@ -1,12 +1,10 @@
 package com.infamous.simple_metalcraft.crafting.furnace;
 
-import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.Container;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.block.entity.AbstractFurnaceBlockEntity;
-import net.minecraftforge.fmllegacy.hooks.BasicEventHooks;
+import net.minecraftforge.event.ForgeEventFactory;
 
 public class FurnaceByproductSlot extends Slot {
    private final Player player;
@@ -49,6 +47,6 @@ public class FurnaceByproductSlot extends Slot {
        */
 
       this.removeCount = 0;
-      BasicEventHooks.firePlayerSmeltedEvent(this.player, stack);
+      ForgeEventFactory.firePlayerSmeltedEvent(this.player, stack);
    }
 }

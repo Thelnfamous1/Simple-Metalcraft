@@ -4,7 +4,6 @@ import com.infamous.simple_metalcraft.capability.EquipmentCapability;
 import com.infamous.simple_metalcraft.capability.EquipmentCapabilityProvider;
 import com.infamous.simple_metalcraft.crafting.anvil.ForgingRecipe;
 import com.infamous.simple_metalcraft.crafting.anvil.TieredAnvilBlock;
-import com.infamous.simple_metalcraft.mixin.ItemCombinerMenuAccessor;
 import com.infamous.simple_metalcraft.registry.SMItems;
 import com.infamous.simple_metalcraft.util.ArmoringHelper;
 import com.infamous.simple_metalcraft.util.VillagerTradesHelper;
@@ -27,7 +26,7 @@ import net.minecraft.world.item.trading.MerchantOffer;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.levelgen.GenerationStep;
-import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
+import net.minecraft.world.level.levelgen.placement.PlacedFeature;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.common.world.BiomeGenerationSettingsBuilder;
 import net.minecraftforge.event.AnvilUpdateEvent;
@@ -80,7 +79,7 @@ public class SMForgeEvents {
         Player player = event.getPlayer();
         AbstractContainerMenu menu = player.containerMenu;
         if(menu instanceof AnvilMenu anvilMenu){
-            ContainerLevelAccess access = ((ItemCombinerMenuAccessor)anvilMenu).getAccess();
+            ContainerLevelAccess access = anvilMenu.access;
             access.execute((level, blockPos) -> {
                 if(level.getBlockState(blockPos).getBlock() instanceof TieredAnvilBlock tieredAnvil){
                     event.setBreakChance(tieredAnvil.getAnvilTier().getBreakChance());
@@ -124,7 +123,7 @@ public class SMForgeEvents {
     @SubscribeEvent(priority = EventPriority.HIGH)
     public static void onBiomeLoading(BiomeLoadingEvent event){
         BiomeGenerationSettingsBuilder builder = event.getGeneration();
-        List<Supplier<ConfiguredFeature<?, ?>>> undergroundOreFeatures =
+        List<Supplier<PlacedFeature>> undergroundOreFeatures =
                 builder.getFeatures(GenerationStep.Decoration.UNDERGROUND_ORES);
 
         ResourceLocation biomeName = event.getName();
@@ -132,7 +131,8 @@ public class SMForgeEvents {
         if(category != Biome.BiomeCategory.THEEND
                 && category != Biome.BiomeCategory.NETHER){
             SimpleMetalcraft.LOGGER.info("Adding tin ore to biome: " + biomeName);
-            undergroundOreFeatures.add(() -> SMModEvents.ORE_TIN);
+            undergroundOreFeatures.add(() -> SMModEvents.PLACED_ORE_TIN_SMALL);
+            undergroundOreFeatures.add(() -> SMModEvents.PLACED_ORE_TIN_LARGE);
         }
     }
 

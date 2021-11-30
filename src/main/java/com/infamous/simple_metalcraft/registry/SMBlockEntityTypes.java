@@ -1,17 +1,17 @@
 package com.infamous.simple_metalcraft.registry;
 
 import com.infamous.simple_metalcraft.SimpleMetalcraft;
+import com.infamous.simple_metalcraft.crafting.furnace.blasting.SMBlastFurnaceBlockEntity;
 import com.infamous.simple_metalcraft.crafting.furnace.blooming.BloomeryBlockEntity;
 import com.infamous.simple_metalcraft.crafting.furnace.cementation.CementationFurnaceBlockEntity;
-import com.infamous.simple_metalcraft.crafting.furnace.blasting.SMBlastFurnaceBlockEntity;
 import com.mojang.datafixers.types.Type;
 import net.minecraft.Util;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.datafix.fixes.References;
 import net.minecraft.world.level.block.entity.BlockEntityType;
-import net.minecraftforge.fmllegacy.RegistryObject;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
+import net.minecraftforge.registries.RegistryObject;
 
 public class SMBlockEntityTypes {
 

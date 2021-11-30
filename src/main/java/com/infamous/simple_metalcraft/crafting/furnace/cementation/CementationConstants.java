@@ -23,5 +23,5 @@ public class CementationConstants {
 
     protected static final int[] CUSTOM_SLOTS_FOR_UP = new int[]{SLOT_INPUT_A, SLOT_INPUT_B};
     protected static final int[] CUSTOM_SLOTS_FOR_SIDES = new int[]{CUSTOM_SLOT_FUEL};
-    protected static final int[] CUSTOM_SLOTS_FOR_DOWN = new int[]{SLOT_RESULT_A, SLOT_RESULT_A, CUSTOM_SLOT_FUEL};
+    protected static final int[] CUSTOM_SLOTS_FOR_DOWN = new int[]{SLOT_RESULT_A, CUSTOM_SLOT_FUEL};
 }

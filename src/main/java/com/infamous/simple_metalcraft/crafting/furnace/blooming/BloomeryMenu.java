@@ -47,7 +47,7 @@ public class BloomeryMenu extends AdvancedFurnaceMenu {
     }
 
     @Override
-    protected SimpleContainer buildInputContainer() {
+    protected SimpleContainer buildDisposableInputContainer() {
         return new SimpleContainer(
                 this.slots.get(BloomingConstants.SLOT_INPUT_A).getItem().copy(),
                 this.slots.get(BloomingConstants.SLOT_INPUT_B).getItem().copy()

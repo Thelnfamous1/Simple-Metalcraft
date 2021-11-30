@@ -5,7 +5,6 @@ import com.infamous.simple_metalcraft.crafting.anvil.ForgingRecipe;
 import com.infamous.simple_metalcraft.crafting.furnace.blasting.SMBlastingRecipe;
 import com.infamous.simple_metalcraft.crafting.furnace.blooming.BloomingRecipe;
 import com.infamous.simple_metalcraft.crafting.furnace.cementation.CementationRecipe;
-import com.infamous.simple_metalcraft.integration.jei.ForgingRecipeCategory;
 import com.infamous.simple_metalcraft.registry.SMRecipes;
 import mezz.jei.api.constants.VanillaRecipeCategoryUid;
 import mezz.jei.api.helpers.IGuiHelper;
@@ -15,10 +14,8 @@ import mezz.jei.api.registration.IRecipeCategoryRegistration;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeManager;
-import net.minecraftforge.fmllegacy.RegistryObject;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;

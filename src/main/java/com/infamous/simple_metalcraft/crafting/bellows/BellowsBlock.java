@@ -1,6 +1,5 @@
 package com.infamous.simple_metalcraft.crafting.bellows;
 
-import com.infamous.simple_metalcraft.SimpleMetalcraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
@@ -9,8 +8,6 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
@@ -89,7 +86,7 @@ public class BellowsBlock extends FaceAttachedHorizontalDirectionalBlock {
     public void press(BlockState blockState, Level level, BlockPos blockPos) {
         level.setBlock(blockPos, blockState.setValue(POWERED, Boolean.valueOf(true)), 3);
         this.updateNeighbours(blockState, level, blockPos);
-        level.getBlockTicks().scheduleTick(blockPos, this, this.getPressDuration());
+        level.scheduleTick(blockPos, this, this.getPressDuration());
         this.tickConnectedFurnace(blockState, level, blockPos);
     }
 

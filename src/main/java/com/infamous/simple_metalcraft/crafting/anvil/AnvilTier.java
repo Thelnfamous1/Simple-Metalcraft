@@ -2,7 +2,6 @@ package com.infamous.simple_metalcraft.crafting.anvil;
 
 import com.infamous.simple_metalcraft.registry.SMBlocks;
 import com.infamous.simple_metalcraft.registry.TieredAnvilBlockHolder;
-import net.minecraftforge.fmllegacy.RegistryObject;
 
 import java.util.function.Supplier;
 

@@ -3,15 +3,15 @@ package com.infamous.simple_metalcraft.registry;
 import com.infamous.simple_metalcraft.SimpleMetalcraft;
 import com.infamous.simple_metalcraft.crafting.anvil.ForgingRecipe;
 import com.infamous.simple_metalcraft.crafting.anvil.ForgingSerializer;
-import com.infamous.simple_metalcraft.crafting.furnace.blooming.BloomingRecipe;
-import com.infamous.simple_metalcraft.crafting.furnace.cementation.CementationRecipe;
 import com.infamous.simple_metalcraft.crafting.furnace.SMCookingSerializer;
 import com.infamous.simple_metalcraft.crafting.furnace.blasting.SMBlastingRecipe;
+import com.infamous.simple_metalcraft.crafting.furnace.blooming.BloomingRecipe;
+import com.infamous.simple_metalcraft.crafting.furnace.cementation.CementationRecipe;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.RecipeType;
-import net.minecraftforge.fmllegacy.RegistryObject;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
+import net.minecraftforge.registries.RegistryObject;
 
 public class SMRecipes {
 
