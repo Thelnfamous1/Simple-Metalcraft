@@ -1,9 +1,9 @@
 package com.infamous.simple_metalcraft.integration.jei;
 
 import com.infamous.simple_metalcraft.SimpleMetalcraft;
+import com.infamous.simple_metalcraft.client.SMAnvilScreen;
 import com.infamous.simple_metalcraft.crafting.anvil.ForgingRecipe;
 import com.infamous.simple_metalcraft.integration.jei.util.JEIConstants;
-import com.infamous.simple_metalcraft.integration.jei.util.JEIErrorUtil;
 import com.infamous.simple_metalcraft.registry.SMRecipes;
 import com.mojang.blaze3d.vertex.PoseStack;
 import mezz.jei.api.constants.VanillaTypes;
@@ -18,9 +18,6 @@ import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.resources.language.I18n;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.entity.player.Inventory;
-import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.inventory.AnvilMenu;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Blocks;
 
@@ -39,20 +36,10 @@ public class ForgingRecipeCategory implements IRecipeCategory<ForgingRecipe> {
 	public static final ResourceLocation UID = new ResourceLocation(SimpleMetalcraft.MOD_ID, SMRecipes.FORGING_NAME);
 
 	public ForgingRecipeCategory(IGuiHelper guiHelper) {
-		background = guiHelper.drawableBuilder(JEIConstants.RECIPE_GUI_VANILLA, 0, 168, 125, 18)
+		this.background = guiHelper.drawableBuilder(JEIConstants.RECIPE_GUI_VANILLA, 0, 168, 125, 18)
 			.addPadding(0, 20, 0, 0)
 			.build();
-		icon = guiHelper.createDrawableIngredient(new ItemStack(Blocks.ANVIL));
-		/*
-		cachedDisplayData = CacheBuilder.newBuilder()
-			.maximumSize(25)
-			.build(new CacheLoader<>() {
-				@Override
-				public ForgingRecipeDisplayData load(ForgingRecipe key) {
-					return new ForgingRecipeDisplayData();
-				}
-			});
-		 */
+		this.icon = guiHelper.createDrawableIngredient(new ItemStack(Blocks.ANVIL));
 	}
 
 	@Override
@@ -95,47 +82,15 @@ public class ForgingRecipeCategory implements IRecipeCategory<ForgingRecipe> {
 		guiItemStacks.init(2, false, 107, 0);
 
 		guiItemStacks.set(ingredients);
-
-		/*
-		ForgingRecipeDisplayData displayData = cachedDisplayData.getUnchecked(recipe);
-		displayData.setCurrentIngredients(guiItemStacks.getGuiIngredients());
-
-		 */
 	}
 
 	@Override
 	public void draw(ForgingRecipe recipe, PoseStack poseStack, double mouseX, double mouseY) {
-		/*
-		ForgingRecipeDisplayData displayData = cachedDisplayData.getUnchecked(recipe);
-		Map<Integer, ? extends IGuiIngredient<ItemStack>> currentIngredients = displayData.getCurrentIngredients();
-		if (currentIngredients == null) {
-			return;
-		}
-
-		ItemStack newLeftStack = currentIngredients.get(0).getDisplayedIngredient();
-		ItemStack newRightStack = currentIngredients.get(1).getDisplayedIngredient();
-
-		if (newLeftStack == null || newRightStack == null) {
-			return;
-		}
-
-		ItemStack lastLeftStack = displayData.getLastLeftStack();
-		ItemStack lastRightStack = displayData.getLastRightStack();
-		int lastCost = displayData.getLastCost();
-		if (lastLeftStack == null || lastRightStack == null
-			|| !ItemStack.matches(lastLeftStack, newLeftStack)
-			|| !ItemStack.matches(lastRightStack, newRightStack)) {
-			lastCost = findLevelsCost(newLeftStack, newRightStack;
-			displayData.setLast(newLeftStack, newRightStack, lastCost);
-		}
-
-		 */
-
 		int lastCost = recipe.getExperienceCost();
 
 		if (lastCost != 0) {
 			String costText = lastCost < 0 ? "err" : Integer.toString(lastCost);
-			String text = I18n.get(ForgingRecipe.FORGING_COST_LOCALIZATION, costText);
+			String text = I18n.get(SMAnvilScreen.FORGING_COST_LOCALIZATION, costText);
 
 			Minecraft minecraft = Minecraft.getInstance();
 			int mainColor = 0xFF80FF20;
@@ -162,25 +117,6 @@ public class ForgingRecipeCategory implements IRecipeCategory<ForgingRecipe> {
 		minecraft.font.draw(poseStack, text, x, y + 1, shadowColor);
 		minecraft.font.draw(poseStack, text, x + 1, y + 1, shadowColor);
 		minecraft.font.draw(poseStack, text, x, y, mainColor);
-	}
-
-	public static int findLevelsCost(ItemStack leftStack, ItemStack rightStack) {
-		Player player = Minecraft.getInstance().player;
-		if (player == null) {
-			return -1;
-		}
-		Inventory fakeInventory = new Inventory(player);
-		try {
-			AnvilMenu repair = new AnvilMenu(0, fakeInventory);
-			repair.slots.get(0).set(leftStack);
-			repair.slots.get(1).set(rightStack);
-			return repair.getCost();
-		} catch (RuntimeException e) {
-			String left = JEIErrorUtil.getItemStackInfo(leftStack);
-			String right = JEIErrorUtil.getItemStackInfo(rightStack);
-			SimpleMetalcraft.LOGGER.error("Could not get JEI anvil level cost for: ({} and {}).", left, right, e);
-			return -1;
-		}
 	}
 
 }

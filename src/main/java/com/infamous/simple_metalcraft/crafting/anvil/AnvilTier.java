@@ -43,6 +43,12 @@ public interface AnvilTier {
         );
 
         // IRON ANVIL BREAK CHANCE = 0.12f
+        public static final float IRON_ANVIL_BREAK_CHANCE = 0.06f;
+        public static final AnvilTier IRON
+                = new Impl("iron",
+                () -> SMBlocks.IRON_ANVILS,
+                IRON_ANVIL_BREAK_CHANCE
+        );
 
         public static final float STEEL_ANVIL_BREAK_CHANCE = 0.06f;
         public static final AnvilTier STEEL

@@ -1,6 +1,7 @@
 package com.infamous.simple_metalcraft.registry;
 
 import com.infamous.simple_metalcraft.SimpleMetalcraft;
+import com.infamous.simple_metalcraft.crafting.anvil.SMAnvilMenu;
 import com.infamous.simple_metalcraft.crafting.furnace.blasting.SMBlastFurnaceMenu;
 import com.infamous.simple_metalcraft.crafting.furnace.blooming.BloomeryMenu;
 import com.infamous.simple_metalcraft.crafting.furnace.cementation.CementationFurnaceMenu;
@@ -24,4 +25,8 @@ public class SMMenuTypes {
     public static RegistryObject<MenuType<CementationFurnaceMenu>> CEMENTATION_FURNACE = MENU_TYPES.register(
             "cementation_furnace",
             () -> new MenuType<>(CementationFurnaceMenu::new));
+
+    public static RegistryObject<MenuType<SMAnvilMenu>> ANVIL = MENU_TYPES.register(
+            "anvil",
+            () -> new MenuType<>(SMAnvilMenu::new));
 }

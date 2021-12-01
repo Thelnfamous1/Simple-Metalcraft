@@ -4,7 +4,7 @@
     "item": "simple_metalcraft:blister_steel_ingot"
   },
   "catalyst": {
-    "item": "minecraft:fire_charge"
+    "item": "minecraft:blaze_powder"
   },
   "result": {
     "item": "simple_metalcraft:steel_ingot"

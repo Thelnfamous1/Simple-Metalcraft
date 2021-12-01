@@ -23,7 +23,7 @@ public class SMRecipes {
     public static RegistryObject<RecipeSerializer<BloomingRecipe>> BLOOMING = RECIPE_SERIALIZERS.register(
             BLOOMING_NAME, () -> new SMCookingSerializer<>(BloomingRecipe::new, BLOOMERY_COOKING_TIME));
 
-    public static final int CEMENTATION_FURNACE_COOKING_TIME = 200;
+    public static final int CEMENTATION_FURNACE_COOKING_TIME = 2800;
     public static final String CEMENTATION_NAME = "cementation";
     public static RegistryObject<RecipeSerializer<CementationRecipe>> CEMENTATION = RECIPE_SERIALIZERS.register(
             CEMENTATION_NAME, () -> new SMCookingSerializer<>(CementationRecipe::new, CEMENTATION_FURNACE_COOKING_TIME));

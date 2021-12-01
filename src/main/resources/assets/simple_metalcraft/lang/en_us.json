@@ -17,6 +17,13 @@
   "item.simple_metalcraft.chipped_bronze_anvil": "Chipped Bronze Anvil",
   "item.simple_metalcraft.damaged_bronze_anvil": "Damaged Bronze Anvil",
 
+  "block.simple_metalcraft.iron_anvil": "Iron Anvil",
+  "block.simple_metalcraft.chipped_iron_anvil": "Chipped Iron Anvil",
+  "block.simple_metalcraft.damaged_iron_anvil": "Damaged Iron Anvil",
+  "item.simple_metalcraft.iron_anvil": "Iron Anvil",
+  "item.simple_metalcraft.chipped_iron_anvil": "Chipped Iron Anvil",
+  "item.simple_metalcraft.damaged_iron_anvil": "Damaged Iron Anvil",
+
   "block.simple_metalcraft.steel_anvil": "Steel Anvil",
   "block.simple_metalcraft.chipped_steel_anvil": "Chipped Steel Anvil",
   "block.simple_metalcraft.damaged_steel_anvil": "Damaged Steel Anvil",
@@ -49,6 +56,7 @@
 
   "item.simple_metalcraft.bow_drill" : "Bow Drill",
   "item.simple_metalcraft.chert" : "Chert",
+  "item.simple_metalcraft.dross" : "Dross",
 
   "item.simple_metalcraft.cow_hide" : "Cow Hide",
   "item.simple_metalcraft.donkey_hide" : "Donkey Hide",
@@ -70,6 +78,8 @@
   "item.simple_metalcraft.tin_ingot" : "Tin Ingot",
 
   "item.simple_metalcraft.gold_scrap" : "Gold Scrap",
+
+  "item.simple_metalcraft.stone_shears" : "Stone Shears",
 
   "item.simple_metalcraft.copper_nugget" : "Copper Nugget",
   "item.simple_metalcraft.copper_scrap" : "Copper Scrap",
@@ -101,6 +111,7 @@
   "item.simple_metalcraft.iron_scrap" : "Iron Scrap",
   "item.simple_metalcraft.iron_bloom" : "Iron Bloom",
   "item.simple_metalcraft.iron_slag" : "Iron Slag",
+  "item.simple_metalcraft.iron_shears" : "Iron Shears",
 
   "item.simple_metalcraft.pig_iron_ingot" : "Pig Iron Ingot",
 

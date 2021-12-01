@@ -23,6 +23,7 @@ public class SMBlocks {
     private SMBlocks(){};
 
     public static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(ForgeRegistries.BLOCKS, SimpleMetalcraft.MOD_ID);
+    public static final DeferredRegister<Block> VANILLA_BLOCKS = DeferredRegister.create(ForgeRegistries.BLOCKS, "minecraft");
 
     public static final RegistryObject<Block> TIN_ORE = BLOCKS.register("tin_ore",
             SMBlocks::buildMetalOreBlock);
@@ -52,9 +53,11 @@ public class SMBlocks {
     //public static final TieredAnvilBlockHolder STONE_ANVILS = new TieredAnvilBlockHolder(BLOCKS, AnvilTier.Impl.STONE);
     public static final TieredAnvilBlockHolder COPPER_ANVILS = new TieredAnvilBlockHolder(BLOCKS, AnvilTier.Impl.COPPER);
     public static final TieredAnvilBlockHolder BRONZE_ANVILS = new TieredAnvilBlockHolder(BLOCKS, AnvilTier.Impl.BRONZE);
+    public static final TieredAnvilBlockHolder IRON_ANVILS = new TieredAnvilBlockHolder(BLOCKS, AnvilTier.Impl.IRON);
     public static final TieredAnvilBlockHolder STEEL_ANVILS = new TieredAnvilBlockHolder(BLOCKS, AnvilTier.Impl.STEEL);
     //public static final TieredAnvilBlockHolder DIAMOND_ANVILS = new TieredAnvilBlockHolder(BLOCKS, AnvilTier.Impl.DIAMOND);
     //public static final TieredAnvilBlockHolder NETHERITE_ANVILS = new TieredAnvilBlockHolder(BLOCKS, AnvilTier.Impl.NETHERITE);
+
 
     private static BlockBehaviour.Properties furnaceProperties(){
         return BlockBehaviour.Properties.of(Material.STONE)

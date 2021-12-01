@@ -3,19 +3,12 @@
   "group": "iron_bloom",
   "ingredients": [
     {
-      "values": [
-        {
-          "item": "minecraft:raw_iron"
-        },
-        {
-          "tag": "minecraft:iron_ores"
-        }
-      ],
-      "count": 2
+      "item": "simple_metalcraft:iron_slag",
+      "count": 9
     },
     {
       "item": "minecraft:charcoal",
-      "count": 2
+      "count": 1
     }
   ],
   "results":[
@@ -24,8 +17,8 @@
       "count": 1
     },
     {
-      "item": "simple_metalcraft:iron_slag",
-      "count": 1
+      "item": "simple_metalcraft:dross",
+      "count": 8
     }
   ],
   "experience": 0.7,

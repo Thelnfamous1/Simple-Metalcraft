@@ -14,7 +14,7 @@ import net.minecraft.world.level.block.state.BlockState;
 public class BloomeryBlockEntity extends AdvancedFurnaceBlockEntity {
 
     public BloomeryBlockEntity(BlockPos blockPos, BlockState blockState) {
-        super(SMBlockEntityTypes.BLOOMERY.get(), blockPos, blockState, SMRecipes.Types.BLOOMING, true);
+        super(SMBlockEntityTypes.BLOOMERY.get(), blockPos, blockState, SMRecipes.Types.BLOOMING, false);
     }
 
     @Override

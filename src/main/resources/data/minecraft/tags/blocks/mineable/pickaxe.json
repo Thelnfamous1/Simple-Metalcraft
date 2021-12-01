@@ -7,6 +7,18 @@
     "simple_metalcraft:cut_bronze",
     "simple_metalcraft:steel_block",
     "simple_metalcraft:bloomery",
-    "simple_metalcraft:cementation_furnace"
+    "simple_metalcraft:cementation_furnace",
+    "simple_metalcraft:copper_anvil",
+    "simple_metalcraft:chipped_copper_anvil",
+    "simple_metalcraft:damaged_copper_anvil",
+    "simple_metalcraft:bronze_anvil",
+    "simple_metalcraft:chipped_bronze_anvil",
+    "simple_metalcraft:damaged_bronze_anvil",
+    "simple_metalcraft:iron_anvil",
+    "simple_metalcraft:chipped_iron_anvil",
+    "simple_metalcraft:damaged_iron_anvil",
+    "simple_metalcraft:steel_anvil",
+    "simple_metalcraft:chipped_steel_anvil",
+    "simple_metalcraft:damaged_steel_anvil"
   ]
 }

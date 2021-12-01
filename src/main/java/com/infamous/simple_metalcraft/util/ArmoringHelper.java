@@ -11,8 +11,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 
-import javax.annotation.Nullable;
-import java.util.Random;
+import java.util.*;
 
 public class ArmoringHelper {
 
@@ -77,7 +76,7 @@ public class ArmoringHelper {
                     Items.LEATHER_CHESTPLATE,
                     SMItems.COPPER_CHESTPLATE.get(),
                     SMItems.BRONZE_CHESTPLATE.get(),
-                    Items.IRON_HELMET,
+                    Items.IRON_CHESTPLATE,
                     SMItems.STEEL_CHESTPLATE.get(),
                     Items.DIAMOND_CHESTPLATE
             };
@@ -86,7 +85,7 @@ public class ArmoringHelper {
                     Items.LEATHER_LEGGINGS,
                     SMItems.COPPER_LEGGINGS.get(),
                     SMItems.BRONZE_LEGGINGS.get(),
-                    Items.IRON_HELMET,
+                    Items.IRON_LEGGINGS,
                     SMItems.STEEL_LEGGINGS.get(),
                     Items.DIAMOND_LEGGINGS
             };
@@ -125,12 +124,12 @@ public class ArmoringHelper {
         }
     }
 
-    public static void clearSpawnEquipment(LivingEntity mob){
+    public static boolean clearSpawnEquipment(LivingEntity mob){
         boolean equipArmor = mob.getType().is(SMTags.EQUIP_ARMOR);
         boolean equipWeapon = mob.getType().is((SMTags.EQUIP_WEAPON));
 
         if(!equipArmor && !equipWeapon){
-            return;
+            return false;
         }
 
         for(EquipmentSlot equipmentSlot : EquipmentSlot.values()){
@@ -143,6 +142,7 @@ public class ArmoringHelper {
                 mob.setItemSlot(equipmentSlot, ItemStack.EMPTY);
             }
         }
+        return true;
     }
 
     public static void populateDefaultEquipmentEnchantments(LivingEntity mob, DifficultyInstance difficultyInstance) {
@@ -173,19 +173,18 @@ public class ArmoringHelper {
 
     }
 
-    @Nullable
-    public static Item chooseEquipment(EquipmentSlot slot, int tierIndex) {
+    public static ItemStack chooseEquipment(EquipmentSlot slot, int tierIndex) {
         return switch (slot) {
-            case HEAD -> SORTED_HELMETS[tierIndex];
-            case CHEST -> SORTED_CHESTPLATES[tierIndex];
-            case LEGS -> SORTED_LEGGINGS[tierIndex];
-            case FEET -> SORTED_BOOTS[tierIndex];
-            case MAINHAND -> getRandomWeapon(tierIndex);
-            default -> null;
+            case HEAD -> new ItemStack(SORTED_HELMETS[tierIndex]);
+            case CHEST -> new ItemStack(SORTED_CHESTPLATES[tierIndex]);
+            case LEGS -> new ItemStack(SORTED_LEGGINGS[tierIndex]);
+            case FEET -> new ItemStack(SORTED_BOOTS[tierIndex]);
+            case MAINHAND -> new ItemStack(getRandomWeapon(tierIndex));
+            default -> ItemStack.EMPTY;
         };
     }
 
-    public static boolean populateDefaultEquipmentSlots(LivingEntity mob, DifficultyInstance instance, boolean forceEquip) {
+    public static boolean populateDefaultEquipmentSlots(LivingEntity mob, DifficultyInstance instance) {
         boolean equipArmor = mob.getType().is(SMTags.EQUIP_ARMOR);
         boolean equipWeapon = mob.getType().is((SMTags.EQUIP_WEAPON));
 
@@ -205,7 +204,10 @@ public class ArmoringHelper {
 
             boolean cannotFinishEarly = true;
 
-            for(EquipmentSlot slot : EquipmentSlot.values()) {
+            List<ItemStack> equippedItems = new ArrayList<>();
+            List<EquipmentSlot> equipmentSlots = Arrays.asList(EquipmentSlot.values());
+            Collections.shuffle(equipmentSlots);
+            for(EquipmentSlot slot : equipmentSlots) {
                 if ((slot.getType() == EquipmentSlot.Type.ARMOR && equipArmor)
                         || (slot == EquipmentSlot.MAINHAND && equipWeapon)) {
                     ItemStack currentStackInSlot = mob.getItemBySlot(slot);
@@ -214,15 +216,18 @@ public class ArmoringHelper {
                     }
 
                     cannotFinishEarly = false;
-                    if (currentStackInSlot.isEmpty() || forceEquip) {
-                        Item chosenItem = chooseEquipment(slot, tierIndex);
-                        if (chosenItem != null) {
-                            SimpleMetalcraft.LOGGER.info("Put {} in slot {} for {}", chosenItem, slot, mob);
-                            mob.setItemSlot(slot, new ItemStack(chosenItem));
+                    if (currentStackInSlot.isEmpty()) {
+                        ItemStack chosenItem = chooseEquipment(slot, tierIndex);
+                        if (!chosenItem.isEmpty()) {
+                            mob.setItemSlot(slot, chosenItem);
+                            equippedItems.add(chosenItem);
                         }
                     }
                 }
-                }
+            }
+            if(!equippedItems.isEmpty()){
+                SimpleMetalcraft.LOGGER.info("Equipped {} at {} with the following items: {}", mob.getType(), mob.position(), Arrays.toString(equippedItems.toArray()));
+            }
             return true;
         }
         return false;

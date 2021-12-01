@@ -4,7 +4,7 @@
     "item": "simple_metalcraft:iron_bloom"
   },
   "catalyst": {
-    "item": "minecraft:fire_charge"
+    "item": "minecraft:blaze_powder"
   },
   "result": {
     "item": "minecraft:iron_ingot"

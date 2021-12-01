@@ -14,7 +14,7 @@ import net.minecraft.world.level.block.state.BlockState;
 public class CementationFurnaceBlockEntity extends AdvancedFurnaceBlockEntity {
 
     public CementationFurnaceBlockEntity(BlockPos blockPos, BlockState blockState) {
-        super(SMBlockEntityTypes.CEMENTATION_FURNACE.get(), blockPos, blockState, SMRecipes.Types.CEMENTATION, true);
+        super(SMBlockEntityTypes.CEMENTATION_FURNACE.get(), blockPos, blockState, SMRecipes.Types.CEMENTATION, false);
     }
 
     @Override

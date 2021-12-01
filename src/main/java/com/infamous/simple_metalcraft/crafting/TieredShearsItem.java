@@ -1,5 +1,6 @@
 package com.infamous.simple_metalcraft.crafting;
 
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.ShearsItem;
 import net.minecraft.world.item.Tier;
 
@@ -17,8 +18,6 @@ public class TieredShearsItem extends ShearsItem {
         return this.tier;
     }
 
-    // TODO: Figure out how tiers should work with shears
-    /*
     public int getEnchantmentValue() {
         return this.tier.getEnchantmentValue();
     }
@@ -26,5 +25,4 @@ public class TieredShearsItem extends ShearsItem {
     public boolean isValidRepairItem(ItemStack toRepair, ItemStack repairItem) {
         return this.tier.getRepairIngredient().test(repairItem) || super.isValidRepairItem(toRepair, repairItem);
     }
-     */
 }

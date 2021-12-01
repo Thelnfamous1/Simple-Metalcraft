@@ -1,5 +1,6 @@
 package com.infamous.simple_metalcraft.registry;
 
+import com.infamous.simple_metalcraft.crafting.SlagItem;
 import com.infamous.simple_metalcraft.crafting.TieredShearsItem;
 import com.infamous.simple_metalcraft.util.SMArmorMaterials;
 import com.infamous.simple_metalcraft.util.SMTiers;
@@ -22,6 +23,7 @@ public class SMItems {
 
     public static final RegistryObject<Item> BOW_DRILL = ITEMS.register("bow_drill", () -> new BowDrillItem((new Item.Properties()).durability(16).tab(CreativeModeTab.TAB_TOOLS)));
     public static final RegistryObject<Item> CHERT = ITEMS.register("chert", SMItems::buildMaterial);
+    public static final RegistryObject<Item> DROSS = ITEMS.register("dross", SMItems::buildSlag);
 
     public static final RegistryObject<Item> COW_HIDE = registerHide("cow");
     public static final RegistryObject<Item> DONKEY_HIDE = registerHide("donkey");
@@ -57,6 +59,7 @@ public class SMItems {
     //public static final TieredAnvilItemHolder STONE_ANVILS = new TieredAnvilItemHolder(ITEMS, SMBlocks.STONE_ANVILS);
     public static final TieredAnvilItemHolder COPPER_ANVILS = new TieredAnvilItemHolder(ITEMS, SMBlocks.COPPER_ANVILS);
     public static final TieredAnvilItemHolder BRONZE_ANVILS = new TieredAnvilItemHolder(ITEMS, SMBlocks.BRONZE_ANVILS);
+    public static final TieredAnvilItemHolder IRON_ANVILS = new TieredAnvilItemHolder(ITEMS, SMBlocks.IRON_ANVILS);
     public static final TieredAnvilItemHolder STEEL_ANVILS = new TieredAnvilItemHolder(ITEMS, SMBlocks.STEEL_ANVILS);
     //public static final TieredAnvilItemHolder DIAMOND_ANVILS = new TieredAnvilItemHolder(ITEMS, SMBlocks.DIAMOND_ANVILS);
     //public static final TieredAnvilItemHolder NETHERITE_ANVILS = new TieredAnvilItemHolder(ITEMS, SMBlocks.NETHERITE_ANVILS);
@@ -82,6 +85,10 @@ public class SMItems {
     // GOLD
     public static final RegistryObject<Item> GOLD_SCRAP =
             ITEMS.register("gold_scrap", SMItems::buildMaterial);
+
+    // STONE
+    public static final RegistryObject<Item> STONE_SHEARS =
+            ITEMS.register("stone_shears", () -> buildTieredShears(Tiers.STONE));
 
     // COPPER
     public static final RegistryObject<Item> COPPER_NUGGET =
@@ -176,7 +183,10 @@ public class SMItems {
             ITEMS.register("iron_bloom", SMItems::buildMaterial);
 
     public static final RegistryObject<Item> IRON_SLAG =
-            ITEMS.register("iron_slag", SMItems::buildMaterial);
+            ITEMS.register("iron_slag", SMItems::buildSlag);
+
+    public static final RegistryObject<Item> IRON_SHEARS =
+            ITEMS.register("iron_shears", () -> buildTieredShears(Tiers.IRON));
 
     // PIG IRON
 
@@ -282,6 +292,10 @@ public class SMItems {
 
     private static Item buildMaterial(){
         return new Item((new Item.Properties()).tab(CreativeModeTab.TAB_MATERIALS));
+    }
+
+    private static Item buildSlag(){
+        return new SlagItem((new Item.Properties()).tab(CreativeModeTab.TAB_MATERIALS));
     }
 
     private static BlockItem buildBuildingBlock(Block block) {

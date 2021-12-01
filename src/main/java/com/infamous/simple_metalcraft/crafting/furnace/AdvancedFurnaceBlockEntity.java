@@ -25,6 +25,7 @@ public abstract class AdvancedFurnaceBlockEntity extends AbstractFurnaceBlockEnt
     public static final int LIT_DURATION_ID = 1;
     public static final int COOKING_PROGRESS_ID = 2;
     public static final int COOKING_TOTAL_TIME_ID = 3;
+    public static final int DEFAULT_COOK_TIME = 200;
     private final boolean batchSmelt;
     private final RecipeType<? extends SMCookingRecipe> customRecipeType;
 
@@ -321,7 +322,7 @@ public abstract class AdvancedFurnaceBlockEntity extends AbstractFurnaceBlockEnt
     }
 
     protected static int getTotalCookTime(Level level, RecipeType<? extends SMCookingRecipe> recipeType, Container container) {
-        return level.getRecipeManager().getRecipeFor(recipeType, container, level).map(AbstractCookingRecipe::getCookingTime).orElse(200);
+        return level.getRecipeManager().getRecipeFor(recipeType, container, level).map(AbstractCookingRecipe::getCookingTime).orElse(DEFAULT_COOK_TIME);
     }
 
     protected abstract int getFirstInputSlot();

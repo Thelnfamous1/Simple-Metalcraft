@@ -1,0 +1,10 @@
+{
+  "replace": false,
+  "values": [
+    "simple_metalcraft:stone_shears",
+    "simple_metalcraft:copper_shears",
+    "simple_metalcraft:bronze_shears",
+    "simple_metalcraft:iron_shears",
+    "simple_metalcraft:steel_shears"
+  ]
+}

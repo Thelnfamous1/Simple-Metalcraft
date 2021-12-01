@@ -17,6 +17,7 @@ public class SMClientModEvents {
             MenuScreens.register(SMMenuTypes.BLOOMERY.get(), BloomeryScreen::new);
             MenuScreens.register(SMMenuTypes.BLAST_FURNACE.get(), SMBlastFurnaceScreen::new);
             MenuScreens.register(SMMenuTypes.CEMENTATION_FURNACE.get(), CementationFurnaceScreen::new);
+            MenuScreens.register(SMMenuTypes.ANVIL.get(), SMAnvilScreen::new);
         });
     }
 

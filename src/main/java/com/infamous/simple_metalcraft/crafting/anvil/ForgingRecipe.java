@@ -1,12 +1,14 @@
 package com.infamous.simple_metalcraft.crafting.anvil;
 
-import com.infamous.simple_metalcraft.SimpleMetalcraft;
 import com.infamous.simple_metalcraft.registry.SMRecipes;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.Container;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.crafting.*;
+import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.item.crafting.Recipe;
+import net.minecraft.world.item.crafting.RecipeSerializer;
+import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 
@@ -14,7 +16,6 @@ import java.util.Optional;
 import java.util.stream.Stream;
 
 public class ForgingRecipe implements Recipe<Container> {
-    public static final String FORGING_COST_LOCALIZATION = "container." + SimpleMetalcraft.MOD_ID + ".forging.cost";
     protected final Ingredient ingredient;
     protected final Ingredient catalyst;
     protected final ItemStack result;
@@ -29,8 +30,8 @@ public class ForgingRecipe implements Recipe<Container> {
         this.experienceCost = experienceCost;
     }
 
-    public static Optional<ForgingRecipe> getRecipeFor(ItemStack left, ItemStack right, Level level) {
-        return level.getRecipeManager().getRecipeFor(SMRecipes.Types.FORGING, new SimpleContainer(left, right), level);
+    public static Optional<ForgingRecipe> getRecipeFor(ItemStack ingredient, ItemStack catalyst, Level level) {
+        return level.getRecipeManager().getRecipeFor(SMRecipes.Types.FORGING, new SimpleContainer(ingredient, catalyst), level);
     }
 
     public int getExperienceCost() {

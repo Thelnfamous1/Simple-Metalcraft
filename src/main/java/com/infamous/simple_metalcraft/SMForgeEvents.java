@@ -3,6 +3,7 @@ package com.infamous.simple_metalcraft;
 import com.infamous.simple_metalcraft.capability.EquipmentCapability;
 import com.infamous.simple_metalcraft.capability.EquipmentCapabilityProvider;
 import com.infamous.simple_metalcraft.crafting.anvil.ForgingRecipe;
+import com.infamous.simple_metalcraft.crafting.anvil.SMAnvilMenu;
 import com.infamous.simple_metalcraft.crafting.anvil.TieredAnvilBlock;
 import com.infamous.simple_metalcraft.registry.SMItems;
 import com.infamous.simple_metalcraft.util.ArmoringHelper;
@@ -19,7 +20,6 @@ import net.minecraft.world.entity.npc.VillagerProfession;
 import net.minecraft.world.entity.npc.VillagerTrades;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
-import net.minecraft.world.inventory.AnvilMenu;
 import net.minecraft.world.inventory.ContainerLevelAccess;
 import net.minecraft.world.item.*;
 import net.minecraft.world.item.trading.MerchantOffer;
@@ -57,16 +57,16 @@ public class SMForgeEvents {
     @SubscribeEvent(priority = EventPriority.HIGHEST)
     public static void onAnvilUpdate(AnvilUpdateEvent event){
         if(event.isCanceled()) return;
-        ItemStack left = event.getLeft();
-        ItemStack right = event.getRight();
-        if(right.getCount() < left.getCount()) return; // need at least as many catalysts as ingredients
+        ItemStack ingredient = event.getLeft();
+        ItemStack catalyst = event.getRight();
+        if(catalyst.getCount() < ingredient.getCount()) return; // need at least as many catalysts as ingredients
 
         Level level = event.getPlayer().level;
-        Optional<ForgingRecipe> forgingRecipe = ForgingRecipe.getRecipeFor(left, right, level);
+        Optional<ForgingRecipe> forgingRecipe = ForgingRecipe.getRecipeFor(ingredient, catalyst, level);
 
         forgingRecipe.ifPresent(fr -> {
-            ItemStack result = fr.assemble(new SimpleContainer(left, right));
-            int leftCount = left.getCount();
+            ItemStack result = fr.assemble(new SimpleContainer(ingredient, catalyst));
+            int leftCount = ingredient.getCount();
             result.setCount(result.getCount() * leftCount); // grow the result count based on how many inputs used
             event.setOutput(result);
             event.setCost(leftCount * fr.getExperienceCost()); // experience level cost
@@ -78,8 +78,8 @@ public class SMForgeEvents {
     public static void onAnvilRepair(AnvilRepairEvent event){
         Player player = event.getPlayer();
         AbstractContainerMenu menu = player.containerMenu;
-        if(menu instanceof AnvilMenu anvilMenu){
-            ContainerLevelAccess access = anvilMenu.access;
+        if(menu instanceof SMAnvilMenu anvilMenu){
+            ContainerLevelAccess access = anvilMenu.getAccess();
             access.execute((level, blockPos) -> {
                 if(level.getBlockState(blockPos).getBlock() instanceof TieredAnvilBlock tieredAnvil){
                     event.setBreakChance(tieredAnvil.getAnvilTier().getBreakChance());
@@ -108,12 +108,12 @@ public class SMForgeEvents {
         LazyOptional<EquipmentCapability> equipmentCap = EquipmentCapabilityProvider.get(mob);
         equipmentCap.ifPresent(ec -> {
             if(!ec.getWasEquipped()){
-                ArmoringHelper.clearSpawnEquipment(mob);
-                //SimpleMetalcraft.LOGGER.info("Handling equipment for mob {}", mob);
-                DifficultyInstance difficultyAt = level.getCurrentDifficultyAt(spawnPos);
-                boolean equipped = ArmoringHelper.populateDefaultEquipmentSlots(mob, difficultyAt, true);
-                if(equipped){
-                    ArmoringHelper.populateDefaultEquipmentEnchantments(mob, difficultyAt);
+                if(ArmoringHelper.clearSpawnEquipment(mob)){
+                    DifficultyInstance difficultyAt = level.getCurrentDifficultyAt(spawnPos);
+                    boolean equipped = ArmoringHelper.populateDefaultEquipmentSlots(mob, difficultyAt);
+                    if(equipped){
+                        ArmoringHelper.populateDefaultEquipmentEnchantments(mob, difficultyAt);
+                    }
                 }
                 ec.setWasEquipped(true);
             }
@@ -131,8 +131,8 @@ public class SMForgeEvents {
         if(category != Biome.BiomeCategory.THEEND
                 && category != Biome.BiomeCategory.NETHER){
             SimpleMetalcraft.LOGGER.info("Adding tin ore to biome: " + biomeName);
-            undergroundOreFeatures.add(() -> SMModEvents.PLACED_ORE_TIN_SMALL);
-            undergroundOreFeatures.add(() -> SMModEvents.PLACED_ORE_TIN_LARGE);
+            undergroundOreFeatures.add(() -> SMModEvents.PLACED_ORE_TIN);
+            undergroundOreFeatures.add(() -> SMModEvents.PLACED_ORE_TIN_LOWER);
         }
     }
 
@@ -185,7 +185,7 @@ public class SMForgeEvents {
                             }
                         } catch (NullPointerException ignored){
                             // If ItemListing#getOffer fails, just make a note of it in the log.
-                            SimpleMetalcraft.LOGGER.info("Failed to modify level {} trade for {}", levelIndex, profession);
+                            SimpleMetalcraft.LOGGER.info("Failed to modify level {} trade at index {} for {}", levelIndex, tradeIndex, profession);
                         }
                     }
                 }
