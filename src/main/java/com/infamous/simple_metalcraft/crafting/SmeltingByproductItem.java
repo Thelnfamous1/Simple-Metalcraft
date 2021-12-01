@@ -2,9 +2,9 @@ package com.infamous.simple_metalcraft.crafting;
 
 import net.minecraft.world.item.BoneMealItem;
 
-public class SlagItem extends BoneMealItem {
+public class SmeltingByproductItem extends BoneMealItem {
 
-    public SlagItem(Properties properties) {
+    public SmeltingByproductItem(Properties properties) {
         super(properties);
     }
 }

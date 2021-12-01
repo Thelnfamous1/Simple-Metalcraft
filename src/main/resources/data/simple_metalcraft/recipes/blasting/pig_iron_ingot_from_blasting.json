@@ -11,7 +11,7 @@
           "tag": "minecraft:iron_ores"
         }
       ],
-      "count": 4
+      "count": 2
     },
     {
       "item": "minecraft:charcoal",
@@ -25,7 +25,7 @@
   "results": [
     {
       "item":"simple_metalcraft:pig_iron_ingot",
-      "count": 2
+      "count": 1
     },
     {
       "item":"simple_metalcraft:iron_slag",

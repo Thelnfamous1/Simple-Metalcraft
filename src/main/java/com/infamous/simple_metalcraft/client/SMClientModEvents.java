@@ -14,6 +14,7 @@ public class SMClientModEvents {
     @SubscribeEvent
     public static void onClientSetup(FMLClientSetupEvent event){
         event.enqueueWork(() -> {
+            MenuScreens.register(SMMenuTypes.SMELTER.get(), SmelterScreen::new);
             MenuScreens.register(SMMenuTypes.BLOOMERY.get(), BloomeryScreen::new);
             MenuScreens.register(SMMenuTypes.BLAST_FURNACE.get(), SMBlastFurnaceScreen::new);
             MenuScreens.register(SMMenuTypes.CEMENTATION_FURNACE.get(), CementationFurnaceScreen::new);

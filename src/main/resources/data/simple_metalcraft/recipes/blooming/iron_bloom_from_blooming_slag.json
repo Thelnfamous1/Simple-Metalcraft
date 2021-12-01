@@ -4,7 +4,7 @@
   "ingredients": [
     {
       "item": "simple_metalcraft:iron_slag",
-      "count": 9
+      "count": 4
     },
     {
       "item": "minecraft:charcoal",
@@ -18,7 +18,7 @@
     },
     {
       "item": "simple_metalcraft:dross",
-      "count": 8
+      "count": 3
     }
   ],
   "experience": 0.7,

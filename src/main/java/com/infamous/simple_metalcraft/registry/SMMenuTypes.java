@@ -5,6 +5,7 @@ import com.infamous.simple_metalcraft.crafting.anvil.SMAnvilMenu;
 import com.infamous.simple_metalcraft.crafting.furnace.blasting.SMBlastFurnaceMenu;
 import com.infamous.simple_metalcraft.crafting.furnace.blooming.BloomeryMenu;
 import com.infamous.simple_metalcraft.crafting.furnace.cementation.CementationFurnaceMenu;
+import com.infamous.simple_metalcraft.crafting.furnace.smelter.SmelterMenu;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -13,6 +14,10 @@ import net.minecraftforge.registries.RegistryObject;
 public class SMMenuTypes {
 
     public static DeferredRegister<MenuType<?>> MENU_TYPES = DeferredRegister.create(ForgeRegistries.CONTAINERS, SimpleMetalcraft.MOD_ID);
+
+    public static RegistryObject<MenuType<SmelterMenu>> SMELTER = MENU_TYPES.register(
+            "smelter",
+            () -> new MenuType<>(SmelterMenu::new));
 
     public static RegistryObject<MenuType<BloomeryMenu>> BLOOMERY = MENU_TYPES.register(
             "bloomery",

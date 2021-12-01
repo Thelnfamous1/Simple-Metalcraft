@@ -38,11 +38,11 @@ public class SMFallingBlockEntity extends FallingBlockEntity {
                 this.level.getEntities(this, this.getBoundingBox(), predicate).forEach((e) -> e.hurt(fallDamageSource, fallDamage));
                 boolean isAnvil = this.blockState.is(BlockTags.ANVIL);
                 if (isAnvil && fallDamage > 0.0F && this.random.nextFloat() < 0.05F + (float) fallenDistance * 0.05F) {
-                    BlockState blockstate = TieredAnvilBlock.tieredDamage(this.blockState);
-                    if (blockstate == null) {
+                    BlockState damagedAnvil = TieredAnvilBlock.tieredDamage(this.blockState);
+                    if (damagedAnvil == null) {
                         this.cancelDrop = true;
                     } else {
-                        this.blockState = blockstate;
+                        this.blockState = damagedAnvil;
                     }
                 }
 

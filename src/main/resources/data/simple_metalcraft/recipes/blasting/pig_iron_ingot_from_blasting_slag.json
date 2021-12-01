@@ -4,14 +4,14 @@
   "ingredients": [
     {
       "item": "simple_metalcraft:iron_slag",
-      "count": 9
-    },
-    {
-      "tag": "simple_metalcraft:flux_stones",
-      "count": 1
+      "count": 4
     },
     {
       "item": "minecraft:charcoal",
+      "count": 1
+    },
+    {
+      "tag": "simple_metalcraft:flux_stones",
       "count": 1
     }
   ],
@@ -22,7 +22,7 @@
     },
     {
       "item":"simple_metalcraft:dross",
-      "count": 8
+      "count": 4
     }
   ],
   "experience": 0.7,

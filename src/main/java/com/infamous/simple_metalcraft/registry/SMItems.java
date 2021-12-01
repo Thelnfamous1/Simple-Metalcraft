@@ -1,6 +1,6 @@
 package com.infamous.simple_metalcraft.registry;
 
-import com.infamous.simple_metalcraft.crafting.SlagItem;
+import com.infamous.simple_metalcraft.crafting.SmeltingByproductItem;
 import com.infamous.simple_metalcraft.crafting.TieredShearsItem;
 import com.infamous.simple_metalcraft.util.SMArmorMaterials;
 import com.infamous.simple_metalcraft.util.SMTiers;
@@ -23,7 +23,7 @@ public class SMItems {
 
     public static final RegistryObject<Item> BOW_DRILL = ITEMS.register("bow_drill", () -> new BowDrillItem((new Item.Properties()).durability(16).tab(CreativeModeTab.TAB_TOOLS)));
     public static final RegistryObject<Item> CHERT = ITEMS.register("chert", SMItems::buildMaterial);
-    public static final RegistryObject<Item> DROSS = ITEMS.register("dross", SMItems::buildSlag);
+    public static final RegistryObject<Item> DROSS = ITEMS.register("dross", SMItems::buildSmeltingByproduct);
 
     public static final RegistryObject<Item> COW_HIDE = registerHide("cow");
     public static final RegistryObject<Item> DONKEY_HIDE = registerHide("donkey");
@@ -39,6 +39,10 @@ public class SMItems {
     public static final RegistryObject<Item> WOLF_HIDE = registerHide("wolf");
 
     // METALWORKING BLOCKS
+
+    public static final RegistryObject<Item> SMELTER =
+            ITEMS.register("smelter",
+                    () -> buildDecorationBlock(SMBlocks.SMELTER.get()));
 
     public static final RegistryObject<Item> BLOOMERY =
             ITEMS.register("bloomery",
@@ -183,7 +187,7 @@ public class SMItems {
             ITEMS.register("iron_bloom", SMItems::buildMaterial);
 
     public static final RegistryObject<Item> IRON_SLAG =
-            ITEMS.register("iron_slag", SMItems::buildSlag);
+            ITEMS.register("iron_slag", SMItems::buildSmeltingByproduct);
 
     public static final RegistryObject<Item> IRON_SHEARS =
             ITEMS.register("iron_shears", () -> buildTieredShears(Tiers.IRON));
@@ -294,8 +298,8 @@ public class SMItems {
         return new Item((new Item.Properties()).tab(CreativeModeTab.TAB_MATERIALS));
     }
 
-    private static Item buildSlag(){
-        return new SlagItem((new Item.Properties()).tab(CreativeModeTab.TAB_MATERIALS));
+    private static Item buildSmeltingByproduct(){
+        return new SmeltingByproductItem((new Item.Properties()).tab(CreativeModeTab.TAB_MATERIALS));
     }
 
     private static BlockItem buildBuildingBlock(Block block) {

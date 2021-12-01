@@ -1,4 +1,5 @@
 {
+  "container.simple_metalcraft.smelter" : "Smelter",
   "container.simple_metalcraft.forging" : "Forging",
   "container.simple_metalcraft.forging.cost" : "Forging Cost: %1$s",
   "container.simple_metalcraft.repair.cost" : "Repair Cost: %1$s",
@@ -34,6 +35,8 @@
   "container.simple_metalcraft.bloomery" : "Bloomery",
   "container.simple_metalcraft.cementation_furnace" : "Cementation Furnace",
 
+  "block.simple_metalcraft.smelter" : "Smelter",
+  "item.simple_metalcraft.smelter" : "Smelter",
   "block.simple_metalcraft.bloomery" : "Bloomery",
   "item.simple_metalcraft.bloomery" : "Bloomery",
   "block.simple_metalcraft.blast_furnace" : "Blast Furnace",
@@ -47,12 +50,12 @@
   "block.simple_metalcraft.deepslate_tin_ore" : "Deepslate Tin Ore",
   "block.simple_metalcraft.nether_pig_iron_ore" : "Nether Pig Iron Ore",
 
-  "block.simple_metalcraft.bronze_block": "Bronze Block",
-  "item.simple_metalcraft.bronze_block": "Bronze Block",
+  "block.simple_metalcraft.bronze_block": "Block of Bronze",
+  "item.simple_metalcraft.bronze_block": "Block of Bronze",
   "block.simple_metalcraft.cut_bronze": "Cut Bronze",
   "item.simple_metalcraft.cut_bronze": "Cut Bronze",
-  "block.simple_metalcraft.steel_block": "Steel Block",
-  "item.simple_metalcraft.steel_block": "Steel Block",
+  "block.simple_metalcraft.steel_block": "Block of Steel",
+  "item.simple_metalcraft.steel_block": "Block of Steel",
 
   "item.simple_metalcraft.bow_drill" : "Bow Drill",
   "item.simple_metalcraft.chert" : "Chert",

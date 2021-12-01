@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    " # ",
+    "#F#",
+    " # "
+  ],
+  "key": {
+    "#": {
+      "item": "minecraft:copper_ingot"
+    },
+    "F": {
+      "tag": "minecraft:furnace"
+    }
+  },
+  "result": {
+    "item": "simple_metalcraft:smelter"
+  }
+}

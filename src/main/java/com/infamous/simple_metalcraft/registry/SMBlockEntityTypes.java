@@ -4,6 +4,7 @@ import com.infamous.simple_metalcraft.SimpleMetalcraft;
 import com.infamous.simple_metalcraft.crafting.furnace.blasting.SMBlastFurnaceBlockEntity;
 import com.infamous.simple_metalcraft.crafting.furnace.blooming.BloomeryBlockEntity;
 import com.infamous.simple_metalcraft.crafting.furnace.cementation.CementationFurnaceBlockEntity;
+import com.infamous.simple_metalcraft.crafting.furnace.smelter.SmelterBlockEntity;
 import com.mojang.datafixers.types.Type;
 import net.minecraft.Util;
 import net.minecraft.resources.ResourceLocation;
@@ -18,6 +19,10 @@ public class SMBlockEntityTypes {
     private SMBlockEntityTypes(){};
 
     public static final DeferredRegister<BlockEntityType<?>> BLOCK_ENTITIES = DeferredRegister.create(ForgeRegistries.BLOCK_ENTITIES, SimpleMetalcraft.MOD_ID);
+
+    public static final RegistryObject<BlockEntityType<SmelterBlockEntity>> SMELTER = BLOCK_ENTITIES.register(
+            "smelter", () -> BlockEntityType.Builder.of(SmelterBlockEntity::new, SMBlocks.SMELTER.get()).build(buildType("smelter"))
+    );
 
     public static final RegistryObject<BlockEntityType<BloomeryBlockEntity>> BLOOMERY = BLOCK_ENTITIES.register(
       "bloomery", () -> BlockEntityType.Builder.of(BloomeryBlockEntity::new, SMBlocks.BLOOMERY.get()).build(buildType("bloomery"))

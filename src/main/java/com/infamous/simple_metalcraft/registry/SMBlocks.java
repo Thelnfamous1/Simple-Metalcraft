@@ -6,6 +6,7 @@ import com.infamous.simple_metalcraft.crafting.furnace.cementation.CementationFu
 import com.infamous.simple_metalcraft.crafting.bellows.BellowsBlock;
 import com.infamous.simple_metalcraft.crafting.furnace.blooming.BloomeryBlock;
 import com.infamous.simple_metalcraft.crafting.furnace.blasting.SMBlastFurnaceBlock;
+import com.infamous.simple_metalcraft.crafting.furnace.smelter.SmelterBlock;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
@@ -37,6 +38,9 @@ public class SMBlocks {
             SMBlocks::buildMetalBlock);
     public static final RegistryObject<Block> STEEL_BLOCK = BLOCKS.register("steel_block",
             SMBlocks::buildMetalBlock);
+
+    public static final RegistryObject<Block> SMELTER = BLOCKS.register("smelter",
+            () -> new SmelterBlock(furnaceProperties()));
 
     public static final RegistryObject<Block> BLOOMERY = BLOCKS.register("bloomery",
             () -> new BloomeryBlock(furnaceProperties()));

@@ -1,9 +1,10 @@
 {
-  "parent": "minecraft:block/orientable_with_bottom",
+  "parent": "simple_metalcraft:block/orientable_with_bottom_and_back",
   "textures": {
     "top": "simple_metalcraft:block/cementation_furnace_top",
     "bottom": "simple_metalcraft:block/cementation_furnace_bottom",
     "front": "simple_metalcraft:block/cementation_furnace_front_on",
+    "back": "simple_metalcraft:block/cementation_furnace_back",
     "side": "simple_metalcraft:block/cementation_furnace_side"
   }
 }
