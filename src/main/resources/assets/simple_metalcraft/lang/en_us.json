@@ -32,12 +32,27 @@
   "item.simple_metalcraft.chipped_iron_anvil": "Chipped Iron Anvil",
   "item.simple_metalcraft.damaged_iron_anvil": "Damaged Iron Anvil",
 
+  "block.simple_metalcraft.meteoric_iron_anvil": "Meteoric Iron Anvil",
+  "block.simple_metalcraft.chipped_meteoric_iron_anvil": "Chipped Meteoric Iron Anvil",
+  "block.simple_metalcraft.damaged_meteoric_iron_anvil": "Damaged Meteoric Iron Anvil",
+  "item.simple_metalcraft.meteoric_iron_anvil": "Meteoric Iron Anvil",
+  "item.simple_metalcraft.chipped_meteoric_iron_anvil": "Chipped Meteoric Iron Anvil",
+  "item.simple_metalcraft.damaged_meteoric_iron_anvil": "Damaged Meteoric Iron Anvil",
+
   "block.simple_metalcraft.steel_anvil": "Steel Anvil",
   "block.simple_metalcraft.chipped_steel_anvil": "Chipped Steel Anvil",
   "block.simple_metalcraft.damaged_steel_anvil": "Damaged Steel Anvil",
   "item.simple_metalcraft.steel_anvil": "Steel Anvil",
   "item.simple_metalcraft.chipped_steel_anvil": "Chipped Steel Anvil",
   "item.simple_metalcraft.damaged_steel_anvil": "Damaged Steel Anvil",
+
+  "block.simple_metalcraft.diamond_anvil": "Diamond Anvil",
+  "block.simple_metalcraft.chipped_diamond_anvil": "Chipped Diamond Anvil",
+  "block.simple_metalcraft.damaged_diamond_anvil": "Damaged Diamond Anvil",
+  "item.simple_metalcraft.diamond_anvil": "Diamond Anvil",
+  "item.simple_metalcraft.chipped_diamond_anvil": "Chipped Diamond Anvil",
+  "item.simple_metalcraft.damaged_diamond_anvil": "Damaged Diamond Anvil",
+
 
   "block.simple_metalcraft.netherite_anvil": "Netherite Anvil",
   "block.simple_metalcraft.chipped_netherite_anvil": "Chipped Netherite Anvil",
@@ -62,12 +77,14 @@
 
   "block.simple_metalcraft.tin_ore" : "Tin Ore",
   "block.simple_metalcraft.deepslate_tin_ore" : "Deepslate Tin Ore",
-  "block.simple_metalcraft.nether_pig_iron_ore" : "Nether Pig Iron Ore",
+  "block.simple_metalcraft.meteoric_iron_ore" : "Meteoric Iron Ore",
 
   "block.simple_metalcraft.bronze_block": "Block of Bronze",
   "item.simple_metalcraft.bronze_block": "Block of Bronze",
   "block.simple_metalcraft.cut_bronze": "Cut Bronze",
   "item.simple_metalcraft.cut_bronze": "Cut Bronze",
+  "block.simple_metalcraft.meteoric_iron_block": "Block of Meteoric Iron",
+  "item.simple_metalcraft.meteoric_iron_block": "Block of Meteoric Iron",
   "block.simple_metalcraft.pig_iron_block": "Block of Pig Iron",
   "item.simple_metalcraft.pig_iron_block": "Block of Pig Iron",
   "block.simple_metalcraft.blister_steel_block": "Block of Blister Steel",
@@ -85,12 +102,9 @@
   "item.simple_metalcraft.tin_nugget" : "Tin Nugget",
   "item.simple_metalcraft.tin_ingot" : "Tin Ingot",
 
-  "item.simple_metalcraft.gold_scrap" : "Gold Scrap",
-
   "item.simple_metalcraft.stone_shears" : "Stone Shears",
 
   "item.simple_metalcraft.copper_nugget" : "Copper Nugget",
-  "item.simple_metalcraft.copper_scrap" : "Copper Scrap",
   "item.simple_metalcraft.copper_shears" : "Copper Shears",
   "item.simple_metalcraft.copper_sword" : "Copper Sword",
   "item.simple_metalcraft.copper_shovel" : "Copper Shovel",
@@ -103,7 +117,6 @@
   "item.simple_metalcraft.copper_boots" : "Copper Boots",
 
   "item.simple_metalcraft.bronze_nugget" : "Bronze Nugget",
-  "item.simple_metalcraft.bronze_scrap" : "Bronze Scrap",
   "item.simple_metalcraft.bronze_ingot" : "Bronze Ingot",
   "item.simple_metalcraft.bronze_shears" : "Bronze Shears",
   "item.simple_metalcraft.bronze_sword" : "Bronze Sword",
@@ -116,10 +129,24 @@
   "item.simple_metalcraft.bronze_leggings" : "Bronze Leggings",
   "item.simple_metalcraft.bronze_boots" : "Bronze Boots",
 
-  "item.simple_metalcraft.iron_scrap" : "Iron Scrap",
   "item.simple_metalcraft.iron_bloom" : "Iron Bloom",
   "item.simple_metalcraft.iron_slag" : "Iron Slag",
   "item.simple_metalcraft.iron_shears" : "Iron Shears",
+
+  "item.simple_metalcraft.meteoric_iron_ore" : "Meteoric Iron Ore",
+  "item.simple_metalcraft.meteoric_iron_nugget" : "Meteoric Iron Nugget",
+  "item.simple_metalcraft.raw_meteoric_iron" : "Raw Meteoric Iron",
+  "item.simple_metalcraft.meteoric_iron_ingot" : "Meteoric Iron Ingot",
+  "item.simple_metalcraft.meteoric_iron_shears" : "Meteoric Iron Shears",
+  "item.simple_metalcraft.meteoric_iron_sword" : "Meteoric Iron Sword",
+  "item.simple_metalcraft.meteoric_iron_shovel" : "Meteoric Iron Shovel",
+  "item.simple_metalcraft.meteoric_iron_pickaxe" : "Meteoric Iron Pickaxe",
+  "item.simple_metalcraft.meteoric_iron_axe" : "Meteoric Iron Axe",
+  "item.simple_metalcraft.meteoric_iron_hoe" : "Meteoric Iron Hoe",
+  "item.simple_metalcraft.meteoric_iron_helmet" : "Meteoric Iron Helmet",
+  "item.simple_metalcraft.meteoric_iron_chestplate" : "Meteoric Iron Chestplate",
+  "item.simple_metalcraft.meteoric_iron_leggings" : "Meteoric Iron Leggings",
+  "item.simple_metalcraft.meteoric_iron_boots" : "Meteoric Iron Boots",
 
   "item.simple_metalcraft.pig_iron_ingot" : "Pig Iron Ingot",
 
@@ -128,7 +155,6 @@
   "item.simple_metalcraft.turtle_boots" : "Turtle Boots",
 
   "item.simple_metalcraft.steel_nugget" : "Steel Nugget",
-  "item.simple_metalcraft.steel_scrap" : "Steel Scrap",
   "item.simple_metalcraft.blister_steel_ingot" : "Blister Steel Ingot",
   "item.simple_metalcraft.steel_ingot" : "Steel Ingot",
   "item.simple_metalcraft.steel_shears" : "Steel Shears",
@@ -141,6 +167,8 @@
   "item.simple_metalcraft.steel_chestplate" : "Steel Chestplate",
   "item.simple_metalcraft.steel_leggings" : "Steel Leggings",
   "item.simple_metalcraft.steel_boots" : "Steel Boots",
+
+  "item.simple_metalcraft.diamond_shears" : "Diamond Shears",
 
   "item.simple_metalcraft.netherite_shears" : "Netherite Shears"
 }

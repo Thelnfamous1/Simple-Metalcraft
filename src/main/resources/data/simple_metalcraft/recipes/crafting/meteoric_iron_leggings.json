@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "XXX",
+    "X X",
+    "X X"
+  ],
+  "key": {
+    "X": {
+      "item": "simple_metalcraft:meteoric_iron_ingot"
+    }
+  },
+  "result": {
+    "item": "simple_metalcraft:meteoric_iron_leggings"
+  }
+}

@@ -40,12 +40,18 @@ public interface AnvilTier {
                 BRONZE_ANVIL_BREAK_CHANCE
         );
 
-        // IRON ANVIL BREAK CHANCE = 0.12f
         public static final float IRON_ANVIL_BREAK_CHANCE = 0.12f;
         public static final AnvilTier IRON
                 = new Impl("iron",
                 () -> SMBlocks.IRON_ANVILS,
                 IRON_ANVIL_BREAK_CHANCE
+        );
+
+        public static final float METEORIC_IRON_ANVIL_BREAK_CHANCE = 0.09f;
+        public static final AnvilTier METEORIC_IRON
+                = new Impl("meteoric_iron",
+                () -> SMBlocks.IRON_ANVILS,
+                METEORIC_IRON_ANVIL_BREAK_CHANCE
         );
 
         public static final float STEEL_ANVIL_BREAK_CHANCE = 0.06f;
@@ -55,14 +61,13 @@ public interface AnvilTier {
                 STEEL_ANVIL_BREAK_CHANCE
         );
 
-        /*
+
         public static final float DIAMOND_ANVIL_BREAK_CHANCE = 0.03f;
         public static final AnvilTier DIAMOND
                 = new Impl("diamond",
                 () -> SMBlocks.DIAMOND_ANVILS,
                 DIAMOND_ANVIL_BREAK_CHANCE
         );
-         */
 
         public static final float NETHERITE_ANVIL_BREAK_CHANCE = 0.0f;
         public static final AnvilTier NETHERITE

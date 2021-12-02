@@ -68,7 +68,8 @@ public class SMForgeEvents {
                 int effectDuration = 0;
                 for(EquipmentSlot slot : EquipmentSlot.values()){
                     if(slot.getType() == EquipmentSlot.Type.ARMOR){
-                        effectDuration += hasTurtleArmorInSlot(player, slot) ? 10 : 0;
+                        int incrementDuration = 10 * 20; // 10 seconds
+                        effectDuration += hasTurtleArmorInSlot(player, slot) ? incrementDuration : 0;
                     }
                 }
                 if(effectDuration > 0){

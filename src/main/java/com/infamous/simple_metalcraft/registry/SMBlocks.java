@@ -32,9 +32,14 @@ public class SMBlocks {
     public static final RegistryObject<Block> DEEPSLATE_TIN_ORE = BLOCKS.register("deepslate_tin_ore",
             SMBlocks::buildDeepslateMetalOreBlock);
 
+    public static final RegistryObject<Block> METEORIC_IRON_ORE = BLOCKS.register("meteoric_iron_ore",
+            SMBlocks::buildMetalOreBlock);
+
     public static final RegistryObject<Block> BRONZE_BLOCK = BLOCKS.register("bronze_block",
             SMBlocks::buildMetalBlock);
     public static final RegistryObject<Block> CUT_BRONZE = BLOCKS.register("cut_bronze",
+            SMBlocks::buildMetalBlock);
+    public static final RegistryObject<Block> METEORIC_IRON_BLOCK = BLOCKS.register("meteoric_iron_block",
             SMBlocks::buildMetalBlock);
     public static final RegistryObject<Block> PIG_IRON_BLOCK = BLOCKS.register("pig_iron_block",
             SMBlocks::buildMetalBlock);
@@ -62,8 +67,9 @@ public class SMBlocks {
     public static final TieredAnvilBlockHolder COPPER_ANVILS = new TieredAnvilBlockHolder(BLOCKS, AnvilTier.Impl.COPPER);
     public static final TieredAnvilBlockHolder BRONZE_ANVILS = new TieredAnvilBlockHolder(BLOCKS, AnvilTier.Impl.BRONZE);
     public static final TieredAnvilBlockHolder IRON_ANVILS = new TieredAnvilBlockHolder(BLOCKS, AnvilTier.Impl.IRON);
+    public static final TieredAnvilBlockHolder METEORIC_IRON_ANVILS = new TieredAnvilBlockHolder(BLOCKS, AnvilTier.Impl.METEORIC_IRON);
     public static final TieredAnvilBlockHolder STEEL_ANVILS = new TieredAnvilBlockHolder(BLOCKS, AnvilTier.Impl.STEEL);
-    //public static final TieredAnvilBlockHolder DIAMOND_ANVILS = new TieredAnvilBlockHolder(BLOCKS, AnvilTier.Impl.DIAMOND);
+    public static final TieredAnvilBlockHolder DIAMOND_ANVILS = new TieredAnvilBlockHolder(BLOCKS, AnvilTier.Impl.DIAMOND);
     public static final TieredAnvilBlockHolder NETHERITE_ANVILS = new TieredAnvilBlockHolder(BLOCKS, AnvilTier.Impl.NETHERITE);
 
 

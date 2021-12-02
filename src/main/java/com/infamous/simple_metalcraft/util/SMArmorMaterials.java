@@ -1,6 +1,7 @@
 package com.infamous.simple_metalcraft.util;
 
 import com.infamous.simple_metalcraft.SimpleMetalcraft;
+import com.infamous.simple_metalcraft.registry.SMItems;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.entity.EquipmentSlot;
@@ -34,6 +35,10 @@ public class SMArmorMaterials implements ArmorMaterial {
         IRON("iron", 15, new int[]{2, 5, 6, 2}, 9, SoundEvents.ARMOR_EQUIP_IRON, 0.0F, 0.0F, () -> Ingredient.of(Items.IRON_INGOT))
      */
 
+    public static final SMArmorMaterials METEORIC_IRON =
+            new SMArmorMaterials("meteoric_iron", 18, new int[]{2, 5, 7, 2},
+                    16, SoundEvents.ARMOR_EQUIP_IRON, 0.0F, 0.0F,
+                    () -> Ingredient.of(SMItems.METEORIC_IRON_INGOT.get()));
 
     public static final SMArmorMaterials STEEL =
             new SMArmorMaterials("steel", 21, new int[]{2, 6, 7, 3},

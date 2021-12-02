@@ -1,6 +1,8 @@
 package com.infamous.simple_metalcraft.util;
 
+import com.infamous.simple_metalcraft.registry.SMItems;
 import com.infamous.simple_metalcraft.util.SMTags;
+import net.minecraft.tags.BlockTags;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraftforge.common.ForgeTier;
 
@@ -30,6 +32,10 @@ public class SMTiers {
     /*
         IRON(2, 250, 6.0F, 2.0F, 14, () -> Ingredient.of(Items.IRON_INGOT))
      */
+
+    public static final ForgeTier METEORIC_IRON =
+            new ForgeTier(2, 469, 7.0F, 2.0F, 16,
+                    BlockTags.NEEDS_IRON_TOOL, () -> Ingredient.of(SMItems.METEORIC_IRON_INGOT.get()));
 
     // We want Steel to be between Iron and Diamond
     public static final ForgeTier STEEL =

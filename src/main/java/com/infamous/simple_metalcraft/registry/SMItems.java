@@ -51,9 +51,11 @@ public class SMItems {
     public static final TieredAnvilItemHolder COPPER_ANVILS = new TieredAnvilItemHolder(ITEMS, SMBlocks.COPPER_ANVILS);
     public static final TieredAnvilItemHolder BRONZE_ANVILS = new TieredAnvilItemHolder(ITEMS, SMBlocks.BRONZE_ANVILS);
     public static final TieredAnvilItemHolder IRON_ANVILS = new TieredAnvilItemHolder(ITEMS, SMBlocks.IRON_ANVILS);
+    public static final TieredAnvilItemHolder METEORIC_IRON_ANVILS = new TieredAnvilItemHolder(ITEMS, SMBlocks.METEORIC_IRON_ANVILS);
     public static final TieredAnvilItemHolder STEEL_ANVILS = new TieredAnvilItemHolder(ITEMS, SMBlocks.STEEL_ANVILS);
-    //public static final TieredAnvilItemHolder DIAMOND_ANVILS = new TieredAnvilItemHolder(ITEMS, SMBlocks.DIAMOND_ANVILS);
+    public static final TieredAnvilItemHolder DIAMOND_ANVILS = new TieredAnvilItemHolder(ITEMS, SMBlocks.DIAMOND_ANVILS);
     public static final TieredAnvilItemHolder NETHERITE_ANVILS = new TieredAnvilItemHolder(ITEMS, SMBlocks.NETHERITE_ANVILS);
+
     // TIN
 
     public static final RegistryObject<Item> TIN_ORE =
@@ -73,10 +75,6 @@ public class SMItems {
     public static final RegistryObject<Item> TIN_INGOT =
             ITEMS.register("tin_ingot", SMItems::buildMaterial);
 
-    // GOLD
-    public static final RegistryObject<Item> GOLD_SCRAP =
-            ITEMS.register("gold_scrap", SMItems::buildMaterial);
-
     // STONE
     public static final RegistryObject<Item> STONE_SHEARS =
             ITEMS.register("stone_shears", () -> buildTieredShears(Tiers.STONE));
@@ -84,9 +82,6 @@ public class SMItems {
     // COPPER
     public static final RegistryObject<Item> COPPER_NUGGET =
             ITEMS.register("copper_nugget", SMItems::buildMaterial);
-
-    public static final RegistryObject<Item> COPPER_SCRAP =
-            ITEMS.register("copper_scrap", SMItems::buildMaterial);
 
     public static final RegistryObject<Item> COPPER_SHEARS =
             ITEMS.register("copper_shears", () -> buildTieredShears(SMTiers.COPPER));
@@ -129,9 +124,6 @@ public class SMItems {
     public static final RegistryObject<Item> BRONZE_NUGGET =
             ITEMS.register("bronze_nugget", SMItems::buildMaterial);
 
-    public static final RegistryObject<Item> BRONZE_SCRAP =
-            ITEMS.register("bronze_scrap", SMItems::buildMaterial);
-
     public static final RegistryObject<Item> BRONZE_INGOT =
             ITEMS.register("bronze_ingot", SMItems::buildMaterial);
 
@@ -167,9 +159,6 @@ public class SMItems {
 
     // IRON
 
-    public static final RegistryObject<Item> IRON_SCRAP =
-            ITEMS.register("iron_scrap", SMItems::buildMaterial);
-
     public static final RegistryObject<Item> IRON_BLOOM =
             ITEMS.register("iron_bloom", SMItems::buildMaterial);
 
@@ -178,6 +167,53 @@ public class SMItems {
 
     public static final RegistryObject<Item> IRON_SHEARS =
             ITEMS.register("iron_shears", () -> buildTieredShears(Tiers.IRON));
+
+    // METEORIC IRON
+
+    public static final RegistryObject<Item> METEORIC_IRON_BLOCK = ITEMS.register("meteoric_iron_block",
+            () -> buildBuildingBlock(SMBlocks.METEORIC_IRON_BLOCK.get()));
+
+    public static final RegistryObject<Item> METEORIC_IRON_ORE = ITEMS.register("meteoric_iron_ore",
+            () -> buildBuildingBlock(SMBlocks.METEORIC_IRON_ORE.get()));
+
+    public static final RegistryObject<Item> RAW_METEORIC_IRON =
+            ITEMS.register("raw_meteoric_iron", SMItems::buildMaterial);
+
+    public static final RegistryObject<Item> METEORIC_IRON_NUGGET =
+            ITEMS.register("meteoric_iron_nugget", SMItems::buildMaterial);
+
+    public static final RegistryObject<Item> METEORIC_IRON_INGOT =
+            ITEMS.register("meteoric_iron_ingot", SMItems::buildMaterial);
+
+    public static final RegistryObject<Item> METEORIC_IRON_SHEARS =
+            ITEMS.register("meteoric_iron_shears", () -> buildTieredShears(SMTiers.METEORIC_IRON));
+
+    public static final RegistryObject<Item> METEORIC_IRON_SWORD =
+            ITEMS.register("meteoric_iron_sword", () -> buildSword(SMTiers.METEORIC_IRON, 3, -2.4F));
+
+    public static final RegistryObject<Item> METEORIC_IRON_SHOVEL =
+            ITEMS.register("meteoric_iron_shovel", () -> buildShovel(SMTiers.METEORIC_IRON, 1.5F, -3.0F));
+
+    public static final RegistryObject<Item> METEORIC_IRON_PICKAXE =
+            ITEMS.register("meteoric_iron_pickaxe", () -> buildPickaxe(SMTiers.METEORIC_IRON, 1, -2.8F));
+
+    public static final RegistryObject<Item> METEORIC_IRON_AXE =
+            ITEMS.register("meteoric_iron_axe", () -> buildAxe(SMTiers.METEORIC_IRON, 6.0F, -3.1F));
+
+    public static final RegistryObject<Item> METEORIC_IRON_HOE =
+            ITEMS.register("meteoric_iron_hoe", () -> buildHoe(SMTiers.METEORIC_IRON, 0, -1.0F));
+
+    public static final RegistryObject<Item> METEORIC_IRON_HELMET =
+            ITEMS.register("meteoric_iron_helmet", () -> buildHelmet(SMArmorMaterials.METEORIC_IRON));
+
+    public static final RegistryObject<Item> METEORIC_IRON_CHESTPLATE =
+            ITEMS.register("meteoric_iron_chestplate", () -> buildChestplate(SMArmorMaterials.METEORIC_IRON));
+
+    public static final RegistryObject<Item> METEORIC_IRON_LEGGINGS =
+            ITEMS.register("meteoric_iron_leggings", () -> buildLeggings(SMArmorMaterials.METEORIC_IRON));
+
+    public static final RegistryObject<Item> METEORIC_IRON_BOOTS =
+            ITEMS.register("meteoric_iron_boots", () -> buildBoots(SMArmorMaterials.METEORIC_IRON));
 
     // PIG IRON
 
@@ -214,9 +250,6 @@ public class SMItems {
     public static final RegistryObject<Item> STEEL_NUGGET =
             ITEMS.register("steel_nugget", SMItems::buildMaterial);
 
-    public static final RegistryObject<Item> STEEL_SCRAP =
-            ITEMS.register("steel_scrap", SMItems::buildMaterial);
-
     public static final RegistryObject<Item> STEEL_INGOT =
             ITEMS.register("steel_ingot", SMItems::buildMaterial);
 
@@ -233,7 +266,7 @@ public class SMItems {
             ITEMS.register("steel_pickaxe", () -> buildPickaxe(SMTiers.STEEL, 1, -2.8F));
 
     public static final RegistryObject<Item> STEEL_AXE =
-            ITEMS.register("steel_axe", () -> buildAxe(SMTiers.STEEL, 6.0F, -3.0F));
+            ITEMS.register("steel_axe", () -> buildAxe(SMTiers.STEEL, 5.0F, -3.0F));
 
     public static final RegistryObject<Item> STEEL_HOE =
             ITEMS.register("steel_hoe", () -> buildHoe(SMTiers.STEEL, 0, 0.0F));
@@ -249,6 +282,12 @@ public class SMItems {
 
     public static final RegistryObject<Item> STEEL_BOOTS =
             ITEMS.register("steel_boots", () -> buildBoots(SMArmorMaterials.STEEL));
+
+    // DIAMOND
+
+    public static final RegistryObject<Item> DIAMOND_SHEARS =
+            ITEMS.register("diamond_shears", () -> buildTieredShears(Tiers.DIAMOND));
+
 
     // NETHERITE
 

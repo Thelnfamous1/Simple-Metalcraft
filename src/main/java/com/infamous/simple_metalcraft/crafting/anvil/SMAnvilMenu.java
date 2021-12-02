@@ -23,6 +23,8 @@ public class SMAnvilMenu extends AnvilMenu {
     public static final int MAX_COST = 40;
     public static final int ANVIL_DESTROY_EVENT_ID = 1029;
     public static final int ANVIL_USE_EVENT_ID = 1030;
+    public static final int REPAIR_ITEM_COUNT_COST_THRESHOLD = 0;
+    public static final int DEFAULT_COST = 0;
     private final MenuType<?> customMenuType;
 
     public SMAnvilMenu(int containerId, Inventory inventory) {
@@ -52,7 +54,7 @@ public class SMAnvilMenu extends AnvilMenu {
         float breakChance = ForgeHooks.onAnvilRepair(player, stack, SMAnvilMenu.this.inputSlots.getItem(INGREDIENT_SLOT), SMAnvilMenu.this.inputSlots.getItem(CATALYST_SLOT));
 
         this.inputSlots.setItem(INGREDIENT_SLOT, ItemStack.EMPTY);
-        if (this.repairItemCountCost > 0) {
+        if (this.repairItemCountCost > REPAIR_ITEM_COUNT_COST_THRESHOLD) {
             ItemStack catalyst = this.inputSlots.getItem(CATALYST_SLOT);
             if (!catalyst.isEmpty() && catalyst.getCount() > this.repairItemCountCost) {
                 catalyst.shrink(this.repairItemCountCost);
@@ -64,7 +66,7 @@ public class SMAnvilMenu extends AnvilMenu {
             this.inputSlots.setItem(CATALYST_SLOT, ItemStack.EMPTY);
         }
 
-        this.setMaximumCost(0);
+        this.setMaximumCost(DEFAULT_COST);
         this.access.execute((level, blockPos) -> {
             BlockState blockstate = level.getBlockState(blockPos);
             if (!player.getAbilities().instabuild && blockstate.is(BlockTags.ANVIL) && player.getRandom().nextFloat() < breakChance) {
