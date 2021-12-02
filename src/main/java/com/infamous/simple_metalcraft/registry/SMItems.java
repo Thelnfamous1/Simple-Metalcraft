@@ -25,19 +25,6 @@ public class SMItems {
     public static final RegistryObject<Item> CHERT = ITEMS.register("chert", SMItems::buildMaterial);
     public static final RegistryObject<Item> DROSS = ITEMS.register("dross", SMItems::buildSmeltingByproduct);
 
-    public static final RegistryObject<Item> COW_HIDE = registerHide("cow");
-    public static final RegistryObject<Item> DONKEY_HIDE = registerHide("donkey");
-    public static final RegistryObject<Item> FOX_HIDE = registerHide("fox");
-    public static final RegistryObject<Item> GOAT_HIDE = registerHide("goat");
-    public static final RegistryObject<Item> HORSE_HIDE = registerHide("horse");
-    public static final RegistryObject<Item> LLAMA_HIDE = registerHide("llama");
-    public static final RegistryObject<Item> MOOSHROOM_HIDE = registerHide("mooshroom");
-    public static final RegistryObject<Item> MULE_HIDE = registerHide("mule");
-    public static final RegistryObject<Item> PIG_HIDE = registerHide("pig");
-    public static final RegistryObject<Item> POLAR_BEAR_HIDE = registerHide("polar_bear");
-    public static final RegistryObject<Item> SHEEP_HIDE = registerHide("sheep");
-    public static final RegistryObject<Item> WOLF_HIDE = registerHide("wolf");
-
     // METALWORKING BLOCKS
 
     public static final RegistryObject<Item> SMELTER =
@@ -60,13 +47,13 @@ public class SMItems {
             ITEMS.register("bellows",
                     () -> buildRedstoneBlock(SMBlocks.BELLOWS.get()));
 
-    //public static final TieredAnvilItemHolder STONE_ANVILS = new TieredAnvilItemHolder(ITEMS, SMBlocks.STONE_ANVILS);
+    public static final TieredAnvilItemHolder STONE_ANVILS = new TieredAnvilItemHolder(ITEMS, SMBlocks.STONE_ANVILS);
     public static final TieredAnvilItemHolder COPPER_ANVILS = new TieredAnvilItemHolder(ITEMS, SMBlocks.COPPER_ANVILS);
     public static final TieredAnvilItemHolder BRONZE_ANVILS = new TieredAnvilItemHolder(ITEMS, SMBlocks.BRONZE_ANVILS);
     public static final TieredAnvilItemHolder IRON_ANVILS = new TieredAnvilItemHolder(ITEMS, SMBlocks.IRON_ANVILS);
     public static final TieredAnvilItemHolder STEEL_ANVILS = new TieredAnvilItemHolder(ITEMS, SMBlocks.STEEL_ANVILS);
     //public static final TieredAnvilItemHolder DIAMOND_ANVILS = new TieredAnvilItemHolder(ITEMS, SMBlocks.DIAMOND_ANVILS);
-    //public static final TieredAnvilItemHolder NETHERITE_ANVILS = new TieredAnvilItemHolder(ITEMS, SMBlocks.NETHERITE_ANVILS);
+    public static final TieredAnvilItemHolder NETHERITE_ANVILS = new TieredAnvilItemHolder(ITEMS, SMBlocks.NETHERITE_ANVILS);
     // TIN
 
     public static final RegistryObject<Item> TIN_ORE =
@@ -194,10 +181,33 @@ public class SMItems {
 
     // PIG IRON
 
+    public static final RegistryObject<Item> PIG_IRON_BLOCK = ITEMS.register("pig_iron_block",
+            () -> buildBuildingBlock(SMBlocks.PIG_IRON_BLOCK.get()));
+
     public static final RegistryObject<Item> PIG_IRON_INGOT =
             ITEMS.register("pig_iron_ingot", SMItems::buildMaterial);
 
+    // TURTLE
+
+    public static final RegistryObject<Item> TURTLE_CHESTPLATE =
+            ITEMS.register("turtle_chestplate", () -> buildChestplate(ArmorMaterials.TURTLE));
+
+    public static final RegistryObject<Item> TURTLE_LEGGINGS =
+            ITEMS.register("turtle_leggings", () -> buildLeggings(ArmorMaterials.TURTLE));
+
+    public static final RegistryObject<Item> TURTLE_BOOTS =
+            ITEMS.register("turtle_boots", () -> buildBoots(ArmorMaterials.TURTLE));
+
+    // BLISTER STEEL
+
+    public static final RegistryObject<Item> BLISTER_STEEL_BLOCK = ITEMS.register("blister_steel_block",
+            () -> buildBuildingBlock(SMBlocks.BLISTER_STEEL_BLOCK.get()));
+
+    public static final RegistryObject<Item> BLISTER_STEEL_INGOT =
+            ITEMS.register("blister_steel_ingot", SMItems::buildMaterial);
+
     // STEEL
+
     public static final RegistryObject<Item> STEEL_BLOCK = ITEMS.register("steel_block",
             () -> buildBuildingBlock(SMBlocks.STEEL_BLOCK.get()));
 
@@ -206,9 +216,6 @@ public class SMItems {
 
     public static final RegistryObject<Item> STEEL_SCRAP =
             ITEMS.register("steel_scrap", SMItems::buildMaterial);
-
-    public static final RegistryObject<Item> BLISTER_STEEL_INGOT =
-            ITEMS.register("blister_steel_ingot", SMItems::buildMaterial);
 
     public static final RegistryObject<Item> STEEL_INGOT =
             ITEMS.register("steel_ingot", SMItems::buildMaterial);
@@ -242,6 +249,11 @@ public class SMItems {
 
     public static final RegistryObject<Item> STEEL_BOOTS =
             ITEMS.register("steel_boots", () -> buildBoots(SMArmorMaterials.STEEL));
+
+    // NETHERITE
+
+    public static final RegistryObject<Item> NETHERITE_SHEARS =
+            ITEMS.register("netherite_shears", () -> buildTieredShears(Tiers.NETHERITE));
 
     /*
         public static final Item IRON_SWORD = registerItem("iron_sword", new SwordItem(Tiers.IRON, 3, -2.4F, (new Item.Properties()).tab(CreativeModeTab.TAB_COMBAT)));
@@ -312,10 +324,6 @@ public class SMItems {
 
     private static BlockItem buildRedstoneBlock(Block block) {
         return new BlockItem(block, (new Item.Properties()).tab(CreativeModeTab.TAB_REDSTONE));
-    }
-
-    private static RegistryObject<Item> registerHide(String animalName) {
-        return ITEMS.register(animalName + "_hide", SMItems::buildMaterial);
     }
 
     private static Item buildTieredShears(Tier tier) {

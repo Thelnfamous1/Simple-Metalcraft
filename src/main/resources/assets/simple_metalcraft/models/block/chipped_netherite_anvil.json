@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/template_anvil",
+  "textures": {
+    "top": "simple_metalcraft:block/chipped_netherite_anvil_top",
+    "particle": "simple_metalcraft:block/netherite_anvil",
+    "body": "simple_metalcraft:block/netherite_anvil"
+  }
+}

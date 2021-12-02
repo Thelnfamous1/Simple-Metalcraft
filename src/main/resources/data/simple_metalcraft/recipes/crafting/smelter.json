@@ -10,7 +10,7 @@
       "item": "minecraft:copper_ingot"
     },
     "F": {
-      "tag": "minecraft:furnace"
+      "item": "minecraft:furnace"
     }
   },
   "result": {

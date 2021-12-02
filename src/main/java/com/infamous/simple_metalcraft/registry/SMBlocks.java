@@ -36,6 +36,10 @@ public class SMBlocks {
             SMBlocks::buildMetalBlock);
     public static final RegistryObject<Block> CUT_BRONZE = BLOCKS.register("cut_bronze",
             SMBlocks::buildMetalBlock);
+    public static final RegistryObject<Block> PIG_IRON_BLOCK = BLOCKS.register("pig_iron_block",
+            SMBlocks::buildMetalBlock);
+    public static final RegistryObject<Block> BLISTER_STEEL_BLOCK = BLOCKS.register("blister_steel_block",
+            SMBlocks::buildMetalBlock);
     public static final RegistryObject<Block> STEEL_BLOCK = BLOCKS.register("steel_block",
             SMBlocks::buildMetalBlock);
 
@@ -54,13 +58,13 @@ public class SMBlocks {
     public static final RegistryObject<Block> BELLOWS = BLOCKS.register("bellows",
             () -> new BellowsBlock(BlockBehaviour.Properties.of(Material.WOOD).strength(0.5F).sound(SoundType.WOOD).noOcclusion()));
 
-    //public static final TieredAnvilBlockHolder STONE_ANVILS = new TieredAnvilBlockHolder(BLOCKS, AnvilTier.Impl.STONE);
+    public static final TieredAnvilBlockHolder STONE_ANVILS = new TieredAnvilBlockHolder(BLOCKS, AnvilTier.Impl.STONE);
     public static final TieredAnvilBlockHolder COPPER_ANVILS = new TieredAnvilBlockHolder(BLOCKS, AnvilTier.Impl.COPPER);
     public static final TieredAnvilBlockHolder BRONZE_ANVILS = new TieredAnvilBlockHolder(BLOCKS, AnvilTier.Impl.BRONZE);
     public static final TieredAnvilBlockHolder IRON_ANVILS = new TieredAnvilBlockHolder(BLOCKS, AnvilTier.Impl.IRON);
     public static final TieredAnvilBlockHolder STEEL_ANVILS = new TieredAnvilBlockHolder(BLOCKS, AnvilTier.Impl.STEEL);
     //public static final TieredAnvilBlockHolder DIAMOND_ANVILS = new TieredAnvilBlockHolder(BLOCKS, AnvilTier.Impl.DIAMOND);
-    //public static final TieredAnvilBlockHolder NETHERITE_ANVILS = new TieredAnvilBlockHolder(BLOCKS, AnvilTier.Impl.NETHERITE);
+    public static final TieredAnvilBlockHolder NETHERITE_ANVILS = new TieredAnvilBlockHolder(BLOCKS, AnvilTier.Impl.NETHERITE);
 
 
     private static BlockBehaviour.Properties furnaceProperties(){

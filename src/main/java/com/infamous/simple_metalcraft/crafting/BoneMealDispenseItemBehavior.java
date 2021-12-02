@@ -11,14 +11,16 @@ import net.minecraft.world.level.block.DispenserBlock;
 
 public class BoneMealDispenseItemBehavior extends OptionalDispenseItemBehavior {
 
+    public static final int BONEMEAL_USE_EVENT_ID = 1505;
+
     protected ItemStack execute(BlockSource blockSource, ItemStack stack) {
         this.setSuccess(true);
         Level level = blockSource.getLevel();
-        BlockPos blockpos = blockSource.getPos().relative(blockSource.getBlockState().getValue(DispenserBlock.FACING));
-        if (!BoneMealItem.growCrop(stack, level, blockpos) && !BoneMealItem.growWaterPlant(stack, level, blockpos, (Direction)null)) {
+        BlockPos facingPos = blockSource.getPos().relative(blockSource.getBlockState().getValue(DispenserBlock.FACING));
+        if (!BoneMealItem.growCrop(stack, level, facingPos) && !BoneMealItem.growWaterPlant(stack, level, facingPos, (Direction)null)) {
             this.setSuccess(false);
         } else if (!level.isClientSide) {
-            level.levelEvent(1505, blockpos, 0);
+            level.levelEvent(BONEMEAL_USE_EVENT_ID, facingPos, 0);
         }
 
         return stack;

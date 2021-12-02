@@ -17,7 +17,7 @@ apply plugin: 'maven-publish'
 apply plugin: 'org.spongepowered.mixin'
 
 mixin {
-    //add sourceSets.main, "${mod_id}.refmap.json"
+    add sourceSets.main, "${mod_id}.refmap.json"
 }
 
 version = "${mod_version}"
@@ -49,7 +49,7 @@ minecraft {
     runs {
         client {
 
-            //arg "-mixin.config=${mod_id}.mixins.json"
+            arg "-mixin.config=${mod_id}.mixins.json"
             workingDirectory project.file('run')
             property 'mixin.debug.export', 'true'
 
@@ -74,7 +74,7 @@ minecraft {
 
         server {
 
-            //arg "-mixin.config=${mod_id}.mixins.json"
+            arg "-mixin.config=${mod_id}.mixins.json"
             workingDirectory project.file('run')
 
             // Recommended logging data for a userdev environment
@@ -131,9 +131,12 @@ repositories {
     // ForgeGradle automatically adds the Forge maven and Maven Central for you
 
     // If you have mod jar dependencies in ./libs, you can declare them as a repository like so:
-    // flatDir {
-    //     dir 'libs'
-    // }
+    maven {
+        url "https://www.cursemaven.com"
+    }
+    flatDir {
+         dir 'libs'
+     }
     maven {
         // location of the maven that hosts JEI files
         name = "Progwml6 maven"
@@ -158,10 +161,13 @@ dependencies {
     // runtimeOnly fg.deobf("mezz.jei:jei-${mc_version}:${jei_version}") // Adds the full JEI mod as a runtime dependency
 
     // implementation fg.deobf("com.tterrag.registrate:Registrate:MC${mc_version}-${registrate_version}") // Adds registrate as a dependency
-    annotationProcessor 'org.spongepowered:mixin:0.8.4:processor'
+    annotationProcessor 'org.spongepowered:mixin:0.8.5:processor'
 
     // Examples using mod jars from ./libs
     // implementation fg.deobf("blank:coolmod-${mc_version}:${coolmod_version}")
+    //runtimeOnly fg.deobf("curse.maven:fullturtlearmor-507470:3543010")
+    runtimeOnly fg.deobf("curse.maven:inventoryhud-357540:3543118")
+    runtimeOnly fg.deobf("curse.maven:chunkanimator-236484:3544421")
 
     // For more info...
     // http://www.gradle.org/docs/current/userguide/artifact_dependencies_tutorial.html

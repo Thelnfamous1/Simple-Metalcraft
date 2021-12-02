@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "###",
+    "###",
+    "###"
+  ],
+  "key": {
+    "#": {
+      "item": "simple_metalcraft:blister_steel_ingot"
+    }
+  },
+  "result": {
+    "item": "simple_metalcraft:blister_steel_block"
+  }
+}

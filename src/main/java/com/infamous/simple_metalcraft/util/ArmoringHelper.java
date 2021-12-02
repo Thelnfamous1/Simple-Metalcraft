@@ -226,7 +226,7 @@ public class ArmoringHelper {
                 }
             }
             if(!equippedItems.isEmpty()){
-                SimpleMetalcraft.LOGGER.info("Equipped {} at {} with the following items: {}", mob.getType(), mob.position(), Arrays.toString(equippedItems.toArray()));
+                SimpleMetalcraft.LOGGER.info("Equipped {} at {} with the following items: {}", mob.getType().toShortString(), mob.position(), Arrays.toString(equippedItems.toArray()));
             }
             return true;
         }

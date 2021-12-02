@@ -4,6 +4,13 @@
   "container.simple_metalcraft.forging.cost" : "Forging Cost: %1$s",
   "container.simple_metalcraft.repair.cost" : "Repair Cost: %1$s",
 
+  "block.simple_metalcraft.stone_anvil": "Stone Anvil",
+  "block.simple_metalcraft.chipped_stone_anvil": "Chipped Stone Anvil",
+  "block.simple_metalcraft.damaged_stone_anvil": "Damaged Stone Anvil",
+  "item.simple_metalcraft.stone_anvil": "Stone Anvil",
+  "item.simple_metalcraft.chipped_stone_anvil": "Chipped Stone Anvil",
+  "item.simple_metalcraft.damaged_stone_anvil": "Damaged Stone Anvil",
+
   "block.simple_metalcraft.copper_anvil": "Copper Anvil",
   "block.simple_metalcraft.chipped_copper_anvil": "Chipped Copper Anvil",
   "block.simple_metalcraft.damaged_copper_anvil": "Damaged Copper Anvil",
@@ -32,6 +39,13 @@
   "item.simple_metalcraft.chipped_steel_anvil": "Chipped Steel Anvil",
   "item.simple_metalcraft.damaged_steel_anvil": "Damaged Steel Anvil",
 
+  "block.simple_metalcraft.netherite_anvil": "Netherite Anvil",
+  "block.simple_metalcraft.chipped_netherite_anvil": "Chipped Netherite Anvil",
+  "block.simple_metalcraft.damaged_netherite_anvil": "Damaged Netherite Anvil",
+  "item.simple_metalcraft.netherite_anvil": "Netherite Anvil",
+  "item.simple_metalcraft.chipped_netherite_anvil": "Chipped Netherite Anvil",
+  "item.simple_metalcraft.damaged_netherite_anvil": "Damaged Netherite Anvil",
+
   "container.simple_metalcraft.bloomery" : "Bloomery",
   "container.simple_metalcraft.cementation_furnace" : "Cementation Furnace",
 
@@ -54,25 +68,16 @@
   "item.simple_metalcraft.bronze_block": "Block of Bronze",
   "block.simple_metalcraft.cut_bronze": "Cut Bronze",
   "item.simple_metalcraft.cut_bronze": "Cut Bronze",
+  "block.simple_metalcraft.pig_iron_block": "Block of Pig Iron",
+  "item.simple_metalcraft.pig_iron_block": "Block of Pig Iron",
+  "block.simple_metalcraft.blister_steel_block": "Block of Blister Steel",
+  "item.simple_metalcraft.blister_steel_block": "Block of Blister Steel",
   "block.simple_metalcraft.steel_block": "Block of Steel",
   "item.simple_metalcraft.steel_block": "Block of Steel",
 
   "item.simple_metalcraft.bow_drill" : "Bow Drill",
   "item.simple_metalcraft.chert" : "Chert",
   "item.simple_metalcraft.dross" : "Dross",
-
-  "item.simple_metalcraft.cow_hide" : "Cow Hide",
-  "item.simple_metalcraft.donkey_hide" : "Donkey Hide",
-  "item.simple_metalcraft.fox_hide" : "Fox Hide",
-  "item.simple_metalcraft.goat_hide" : "Goat Hide",
-  "item.simple_metalcraft.horse_hide" : "Horse Hide",
-  "item.simple_metalcraft.llama_hide" : "Llama Hide",
-  "item.simple_metalcraft.mooshroom_hide" : "Mooshroom Hide",
-  "item.simple_metalcraft.mule_hide" : "Mule Hide",
-  "item.simple_metalcraft.pig_hide" : "Pig Hide",
-  "item.simple_metalcraft.polar_bear_hide" : "Polar Bear Hide",
-  "item.simple_metalcraft.sheep_hide" : "Sheep Hide",
-  "item.simple_metalcraft.wolf_hide" : "Wolf Hide",
 
   "item.simple_metalcraft.tin_ore" : "Tin Ore",
   "item.simple_metalcraft.deepslate_tin_ore": "Deepslate Tin Ore",
@@ -118,6 +123,10 @@
 
   "item.simple_metalcraft.pig_iron_ingot" : "Pig Iron Ingot",
 
+  "item.simple_metalcraft.turtle_chestplate" : "Turtle Chestplate",
+  "item.simple_metalcraft.turtle_leggings" : "Turtle Leggings",
+  "item.simple_metalcraft.turtle_boots" : "Turtle Boots",
+
   "item.simple_metalcraft.steel_nugget" : "Steel Nugget",
   "item.simple_metalcraft.steel_scrap" : "Steel Scrap",
   "item.simple_metalcraft.blister_steel_ingot" : "Blister Steel Ingot",
@@ -131,5 +140,7 @@
   "item.simple_metalcraft.steel_helmet" : "Steel Helmet",
   "item.simple_metalcraft.steel_chestplate" : "Steel Chestplate",
   "item.simple_metalcraft.steel_leggings" : "Steel Leggings",
-  "item.simple_metalcraft.steel_boots" : "Steel Boots"
+  "item.simple_metalcraft.steel_boots" : "Steel Boots",
+
+  "item.simple_metalcraft.netherite_shears" : "Netherite Shears"
 }

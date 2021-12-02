@@ -19,14 +19,12 @@ public interface AnvilTier {
 
     class Impl implements AnvilTier{
 
-        /*
         public static final float STONE_ANVIL_BREAK_CHANCE = 0.3f;
         public static final AnvilTier STONE
                 = new Impl("stone",
                 () -> SMBlocks.STONE_ANVILS,
                 STONE_ANVIL_BREAK_CHANCE
         );
-         */
 
         public static final float COPPER_ANVIL_BREAK_CHANCE = 0.24f;
         public static final AnvilTier COPPER
@@ -43,7 +41,7 @@ public interface AnvilTier {
         );
 
         // IRON ANVIL BREAK CHANCE = 0.12f
-        public static final float IRON_ANVIL_BREAK_CHANCE = 0.06f;
+        public static final float IRON_ANVIL_BREAK_CHANCE = 0.12f;
         public static final AnvilTier IRON
                 = new Impl("iron",
                 () -> SMBlocks.IRON_ANVILS,
@@ -64,6 +62,7 @@ public interface AnvilTier {
                 () -> SMBlocks.DIAMOND_ANVILS,
                 DIAMOND_ANVIL_BREAK_CHANCE
         );
+         */
 
         public static final float NETHERITE_ANVIL_BREAK_CHANCE = 0.0f;
         public static final AnvilTier NETHERITE
@@ -71,7 +70,6 @@ public interface AnvilTier {
                 () -> SMBlocks.NETHERITE_ANVILS,
                 NETHERITE_ANVIL_BREAK_CHANCE
         );
-         */
 
         private final String name;
         private final Supplier<TieredAnvilBlockHolder> tabhSupplier;

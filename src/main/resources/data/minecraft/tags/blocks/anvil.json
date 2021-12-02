@@ -1,6 +1,9 @@
 {
   "replace": false,
   "values": [
+    "simple_metalcraft:stone_anvil",
+    "simple_metalcraft:chipped_stone_anvil",
+    "simple_metalcraft:damaged_stone_anvil",
     "simple_metalcraft:copper_anvil",
     "simple_metalcraft:chipped_copper_anvil",
     "simple_metalcraft:damaged_copper_anvil",
@@ -12,6 +15,9 @@
     "simple_metalcraft:damaged_iron_anvil",
     "simple_metalcraft:steel_anvil",
     "simple_metalcraft:chipped_steel_anvil",
-    "simple_metalcraft:damaged_steel_anvil"
+    "simple_metalcraft:damaged_steel_anvil",
+    "simple_metalcraft:netherite_anvil",
+    "simple_metalcraft:chipped_netherite_anvil",
+    "simple_metalcraft:damaged_netherite_anvil"
   ]
 }

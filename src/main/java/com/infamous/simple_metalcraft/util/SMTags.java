@@ -19,6 +19,7 @@ public class SMTags {
     public static final Tags.IOptionalNamedTag<Item> INGOTS_COPPER = tagItemForge("ingots/copper");
     public static final Tags.IOptionalNamedTag<Item> INGOTS_BRONZE = tagItemForge("ingots/bronze");
     public static final Tags.IOptionalNamedTag<Item> INGOTS_STEEL = tagItemForge("ingots/steel");
+    public static final Tags.IOptionalNamedTag<Item> WATER_BREATHING_ARMOR = tagItem("water_breathing_armor");
 
     public static final Tags.IOptionalNamedTag<EntityType<?>> EQUIP_ARMOR = tagEntityType("equip_armor");
     public static final Tags.IOptionalNamedTag<EntityType<?>> EQUIP_WEAPON = tagEntityType("equip_weapon");

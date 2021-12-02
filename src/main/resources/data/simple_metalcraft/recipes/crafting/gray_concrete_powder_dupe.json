@@ -1,0 +1,37 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "group": "concrete_powder",
+  "ingredients": [
+    {
+      "item": "minecraft:gray_concrete_powder"
+    },
+    {
+      "tag": "simple_metalcraft:smelting_byproducts"
+    },
+    {
+      "tag": "simple_metalcraft:smelting_byproducts"
+    },
+    {
+      "tag": "simple_metalcraft:smelting_byproducts"
+    },
+    {
+      "tag": "simple_metalcraft:smelting_byproducts"
+    },
+    {
+      "tag": "simple_metalcraft:smelting_byproducts"
+    },
+    {
+      "tag": "simple_metalcraft:smelting_byproducts"
+    },
+    {
+      "tag": "simple_metalcraft:smelting_byproducts"
+    },
+    {
+      "tag": "simple_metalcraft:smelting_byproducts"
+    }
+  ],
+  "result": {
+    "item": "minecraft:gray_concrete_powder",
+    "count": 2
+  }
+}
