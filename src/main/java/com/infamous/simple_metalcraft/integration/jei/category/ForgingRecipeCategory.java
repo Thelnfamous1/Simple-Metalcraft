@@ -1,4 +1,4 @@
-package com.infamous.simple_metalcraft.integration.jei;
+package com.infamous.simple_metalcraft.integration.jei.category;
 
 import com.infamous.simple_metalcraft.SimpleMetalcraft;
 import com.infamous.simple_metalcraft.client.SMAnvilScreen;
@@ -24,9 +24,8 @@ import net.minecraft.world.level.block.Blocks;
 import java.util.Arrays;
 
 /**
- * Majority of this copied directly from JEI source code - it's not a part of the API, and I see no need to reinvent
- * a perfectly working wheel
- * @author mezz
+ * Majority of this copied directly from JEI source code, with modifications for this implementation
+ * @author mezz and Thelnfamous1
  */
 public class ForgingRecipeCategory implements IRecipeCategory<ForgingRecipe> {
 

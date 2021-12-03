@@ -5,6 +5,10 @@ import com.infamous.simple_metalcraft.crafting.BoneMealDispenseItemBehavior;
 import com.infamous.simple_metalcraft.registry.SMBlocks;
 import com.infamous.simple_metalcraft.registry.SMItems;
 import com.infamous.simple_metalcraft.registry.SMRecipes;
+import com.infamous.simple_metalcraft.registry.SMStructures;
+import com.infamous.simple_metalcraft.worldgen.MeteoriteConfiguration;
+import com.infamous.simple_metalcraft.worldgen.MeteoriteFeature;
+import com.infamous.simple_metalcraft.worldgen.MeteoritePiece;
 import net.minecraft.core.Registry;
 import net.minecraft.core.dispenser.ShearsDispenseItemBehavior;
 import net.minecraft.data.BuiltinRegistries;
@@ -15,8 +19,7 @@ import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.block.DispenserBlock;
 import net.minecraft.world.level.levelgen.VerticalAnchor;
-import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
-import net.minecraft.world.level.levelgen.feature.Feature;
+import net.minecraft.world.level.levelgen.feature.*;
 import net.minecraft.world.level.levelgen.feature.configurations.FeatureConfiguration;
 import net.minecraft.world.level.levelgen.feature.configurations.OreConfiguration;
 import net.minecraft.world.level.levelgen.placement.*;
@@ -24,8 +27,10 @@ import net.minecraftforge.common.capabilities.RegisterCapabilitiesEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
+import java.util.Locale;
 
 @Mod.EventBusSubscriber(modid = SimpleMetalcraft.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class SMModEvents {
@@ -46,6 +51,17 @@ public class SMModEvents {
     public static PlacedFeature PLACED_ORE_TIN;
     public static PlacedFeature PLACED_ORE_TIN_LOWER;
 
+    public static StructurePieceType METEORITE;
+
+    public static ConfiguredStructureFeature<MeteoriteConfiguration, ? extends StructureFeature<MeteoriteConfiguration>> METEORITE_STANDARD = registerStructureFeature("meteorite", SMStructures.METEORITE.get().configured(new MeteoriteConfiguration(MeteoriteFeature.Type.STANDARD)));
+    public static ConfiguredStructureFeature<MeteoriteConfiguration, ? extends StructureFeature<MeteoriteConfiguration>> METEORITE_DESERT = registerStructureFeature("meteorite_desert", SMStructures.METEORITE.get().configured(new MeteoriteConfiguration(MeteoriteFeature.Type.DESERT)));
+    public static ConfiguredStructureFeature<MeteoriteConfiguration, ? extends StructureFeature<MeteoriteConfiguration>> METEORITE_JUNGLE = registerStructureFeature("meteorite_jungle", SMStructures.METEORITE.get().configured(new MeteoriteConfiguration(MeteoriteFeature.Type.JUNGLE)));
+    public static ConfiguredStructureFeature<MeteoriteConfiguration, ? extends StructureFeature<MeteoriteConfiguration>> METEORITE_SWAMP = registerStructureFeature("meteorite_swamp", SMStructures.METEORITE.get().configured(new MeteoriteConfiguration(MeteoriteFeature.Type.SWAMP)));
+    public static ConfiguredStructureFeature<MeteoriteConfiguration, ? extends StructureFeature<MeteoriteConfiguration>> METEORITE_MOUNTAIN = registerStructureFeature("meteorite_mountain", SMStructures.METEORITE.get().configured(new MeteoriteConfiguration(MeteoriteFeature.Type.MOUNTAIN)));
+    public static ConfiguredStructureFeature<MeteoriteConfiguration, ? extends StructureFeature<MeteoriteConfiguration>> METEORITE_OCEAN = registerStructureFeature("meteorite_ocean", SMStructures.METEORITE.get().configured(new MeteoriteConfiguration(MeteoriteFeature.Type.OCEAN)));
+    public static ConfiguredStructureFeature<MeteoriteConfiguration, ? extends StructureFeature<MeteoriteConfiguration>> METEORITE_END = registerStructureFeature("meteorite_end", SMStructures.METEORITE.get().configured(new MeteoriteConfiguration(MeteoriteFeature.Type.END)));
+
+
     @SubscribeEvent
     public static void registerCaps(RegisterCapabilitiesEvent event) {
         EquipmentCapabilityProvider.register(event);
@@ -58,8 +74,32 @@ public class SMModEvents {
                     registerRecipeTypes();
                     registerFeatures();
                     registerDispenserBehavior();
+                    registerStructurePieceTypes();
+                    registerStructureFeatures();
                 }
         );
+    }
+
+    private static void registerStructureFeatures() {
+        METEORITE_STANDARD = registerStructureFeature("meteorite", SMStructures.METEORITE.get().configured(new MeteoriteConfiguration(MeteoriteFeature.Type.STANDARD)));
+        METEORITE_DESERT = registerStructureFeature("meteorite_desert", SMStructures.METEORITE.get().configured(new MeteoriteConfiguration(MeteoriteFeature.Type.DESERT)));
+        METEORITE_JUNGLE = registerStructureFeature("meteorite_jungle", SMStructures.METEORITE.get().configured(new MeteoriteConfiguration(MeteoriteFeature.Type.JUNGLE)));
+        METEORITE_SWAMP = registerStructureFeature("meteorite_swamp", SMStructures.METEORITE.get().configured(new MeteoriteConfiguration(MeteoriteFeature.Type.SWAMP)));
+        METEORITE_MOUNTAIN = registerStructureFeature("meteorite_mountain", SMStructures.METEORITE.get().configured(new MeteoriteConfiguration(MeteoriteFeature.Type.MOUNTAIN)));
+        METEORITE_OCEAN = registerStructureFeature("meteorite_ocean", SMStructures.METEORITE.get().configured(new MeteoriteConfiguration(MeteoriteFeature.Type.OCEAN)));
+        METEORITE_END = registerStructureFeature("meteorite_end", SMStructures.METEORITE.get().configured(new MeteoriteConfiguration(MeteoriteFeature.Type.END)));
+    }
+
+    private static <FC extends FeatureConfiguration, F extends StructureFeature<FC>> ConfiguredStructureFeature<FC, F> registerStructureFeature(String name, ConfiguredStructureFeature<FC, F> structureFeature) {
+        return BuiltinRegistries.register(BuiltinRegistries.CONFIGURED_STRUCTURE_FEATURE, buildName(name), structureFeature);
+    }
+
+    private static String buildName(String name) {
+        return SimpleMetalcraft.MOD_ID + ":" + name;
+    }
+
+    private static void registerStructurePieceTypes() {
+        METEORITE = setTemplatePieceId(MeteoritePiece::new, "Meteorite");
     }
 
     private static void registerDispenserBehavior() {
@@ -119,18 +159,26 @@ public class SMModEvents {
     }
 
     private static <FC extends FeatureConfiguration> ConfiguredFeature<FC, ?> registerFeature(String name, ConfiguredFeature<FC, ?> feature) {
-        return Registry.register(BuiltinRegistries.CONFIGURED_FEATURE, SimpleMetalcraft.MOD_ID + ":" + name, feature);
+        return Registry.register(BuiltinRegistries.CONFIGURED_FEATURE, buildName(name), feature);
     }
 
     private static PlacedFeature registerPlacedFeature(String name, PlacedFeature feature) {
-        return Registry.register(BuiltinRegistries.PLACED_FEATURE, SimpleMetalcraft.MOD_ID + ":" + name, feature);
+        return Registry.register(BuiltinRegistries.PLACED_FEATURE, buildName(name), feature);
     }
 
     static <T extends Recipe<?>> RecipeType<T> registerRecipeType(final String recipeName) {
-        return Registry.register(Registry.RECIPE_TYPE, new ResourceLocation(SimpleMetalcraft.MOD_ID + ":" + recipeName), new RecipeType<T>() {
+        return Registry.register(Registry.RECIPE_TYPE, new ResourceLocation(buildName(recipeName)), new RecipeType<T>() {
             public String toString() {
                 return recipeName;
             }
         });
+    }
+
+    private static StructurePieceType setFullContextPieceId(StructurePieceType pieceType, String name) {
+        return Registry.register(Registry.STRUCTURE_PIECE, buildName(name.toLowerCase(Locale.ROOT)), pieceType);
+    }
+
+    private static StructurePieceType setTemplatePieceId(StructurePieceType.StructureTemplateType templateType, String name) {
+        return setFullContextPieceId(templateType, name);
     }
 }

@@ -25,6 +25,7 @@ public class SimpleMetalcraft
         SMRecipes.RECIPE_SERIALIZERS.register(modEventBus);
         SMMenuTypes.MENU_TYPES.register(modEventBus);
         SMBlockEntityTypes.BLOCK_ENTITIES.register(modEventBus);
+        SMStructures.STRUCTURE_FEATURES.register(modEventBus);
 
         // Register ourselves for server and other game events we are interested in
         MinecraftForge.EVENT_BUS.register(this);

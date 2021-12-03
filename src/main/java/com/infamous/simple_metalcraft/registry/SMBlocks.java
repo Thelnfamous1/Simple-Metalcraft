@@ -32,7 +32,16 @@ public class SMBlocks {
     public static final RegistryObject<Block> DEEPSLATE_TIN_ORE = BLOCKS.register("deepslate_tin_ore",
             SMBlocks::buildDeepslateMetalOreBlock);
 
+    public static final RegistryObject<Block> RAW_TIN_BLOCK = BLOCKS.register("raw_tin_block",
+            SMBlocks::buildMetalOreBlock);
+
+    public static final RegistryObject<Block> SUEVITE = BLOCKS.register("suevite",
+            SMBlocks::buildObsidianLikeBlock);
+
     public static final RegistryObject<Block> METEORIC_IRON_ORE = BLOCKS.register("meteoric_iron_ore",
+            SMBlocks::buildMetalOreBlock);
+
+    public static final RegistryObject<Block> RAW_METEORIC_IRON_BLOCK = BLOCKS.register("raw_meteoric_iron_block",
             SMBlocks::buildMetalOreBlock);
 
     public static final RegistryObject<Block> BRONZE_BLOCK = BLOCKS.register("bronze_block",
@@ -94,6 +103,10 @@ public class SMBlocks {
 
     private static Block buildMetalBlock(){
         return new Block(BlockBehaviour.Properties.of(Material.METAL, MaterialColor.METAL).requiresCorrectToolForDrops().strength(5.0F, 6.0F).sound(SoundType.METAL));
+    }
+
+    private static Block buildObsidianLikeBlock(){
+        return new Block(BlockBehaviour.Properties.of(Material.STONE, MaterialColor.COLOR_BLACK).requiresCorrectToolForDrops().strength(50.0F, 1200.0F));
     }
 
 }

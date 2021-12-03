@@ -1,4 +1,4 @@
-package com.infamous.simple_metalcraft.integration.jei;
+package com.infamous.simple_metalcraft.integration.jei.category;
 
 import com.infamous.simple_metalcraft.SimpleMetalcraft;
 import com.infamous.simple_metalcraft.crafting.furnace.cementation.CementationConstants;

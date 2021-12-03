@@ -1,6 +1,10 @@
 package com.infamous.simple_metalcraft.integration.jei;
 
 import com.infamous.simple_metalcraft.SimpleMetalcraft;
+import com.infamous.simple_metalcraft.integration.jei.category.BloomingRecipeCategory;
+import com.infamous.simple_metalcraft.integration.jei.category.CementationRecipeCategory;
+import com.infamous.simple_metalcraft.integration.jei.category.ForgingRecipeCategory;
+import com.infamous.simple_metalcraft.integration.jei.category.SMBlastingRecipeCategory;
 import com.infamous.simple_metalcraft.integration.jei.util.JEIRegistryHelper;
 import com.infamous.simple_metalcraft.registry.SMItems;
 import mezz.jei.api.IModPlugin;

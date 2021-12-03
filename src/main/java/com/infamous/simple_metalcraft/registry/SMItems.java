@@ -24,7 +24,8 @@ public class SMItems {
     public static final RegistryObject<Item> BOW_DRILL = ITEMS.register("bow_drill", () -> new BowDrillItem((new Item.Properties()).durability(16).tab(CreativeModeTab.TAB_TOOLS)));
     public static final RegistryObject<Item> CHERT = ITEMS.register("chert", SMItems::buildMaterial);
     public static final RegistryObject<Item> DROSS = ITEMS.register("dross", SMItems::buildSmeltingByproduct);
-
+    public static final RegistryObject<Item> SUEVITE = ITEMS.register("suevite",
+            () -> buildBuildingBlock(SMBlocks.SUEVITE.get()));
     // METALWORKING BLOCKS
 
     public static final RegistryObject<Item> SMELTER =
@@ -65,6 +66,10 @@ public class SMItems {
     public static final RegistryObject<Item> DEEPSLATE_TIN_ORE =
             ITEMS.register("deepslate_tin_ore",
                     () -> buildBuildingBlock(SMBlocks.DEEPSLATE_TIN_ORE.get()));
+
+    public static final RegistryObject<Item> RAW_TIN_BLOCK =
+            ITEMS.register("raw_tin_block",
+                    () -> buildBuildingBlock(SMBlocks.RAW_TIN_BLOCK.get()));
 
     public static final RegistryObject<Item> RAW_TIN =
             ITEMS.register("raw_tin", SMItems::buildMaterial);
@@ -175,6 +180,10 @@ public class SMItems {
 
     public static final RegistryObject<Item> METEORIC_IRON_ORE = ITEMS.register("meteoric_iron_ore",
             () -> buildBuildingBlock(SMBlocks.METEORIC_IRON_ORE.get()));
+
+    public static final RegistryObject<Item> RAW_METEORIC_IRON_BLOCK =
+            ITEMS.register("raw_meteoric_iron_block",
+                    () -> buildBuildingBlock(SMBlocks.RAW_METEORIC_IRON_BLOCK.get()));
 
     public static final RegistryObject<Item> RAW_METEORIC_IRON =
             ITEMS.register("raw_meteoric_iron", SMItems::buildMaterial);
