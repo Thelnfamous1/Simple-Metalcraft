@@ -13,7 +13,7 @@ public class SMStructures {
     public static final DeferredRegister<StructureFeature<?>> STRUCTURE_FEATURES = DeferredRegister.create(ForgeRegistries.STRUCTURE_FEATURES, SimpleMetalcraft.MOD_ID);
 
     public static final RegistryObject<StructureFeature<MeteoriteConfiguration>> METEORITE = STRUCTURE_FEATURES.register(
-            "Ruined_Portal",
+            "meteorite",
             () -> new MeteoriteFeature(MeteoriteConfiguration.CODEC)
     );
 }

@@ -54,8 +54,8 @@ import org.apache.logging.log4j.Logger;
 public class MeteoritePiece extends TemplateStructurePiece {
    private static final Logger LOGGER = LogManager.getLogger();
    private static final float PROBABILITY_OF_RAW_MET_IRON_GONE = 0.3F;
-   private static final float PROBABILITY_OF_SUEVITE_INSTEAD_OF_MET_IRON_ORE = 0.07F;
-   private static final float PROBABILITY_OF_SUEVITE_INSTEAD_OF_LAVA = 0.2F;
+   private static final float PROBABILITY_OF_DIAMOND_INSTEAD_OF_SUEVITE = 0.07F;
+   private static final float PROBABILITY_OF_OLIVINE_INSTEAD_OF_MET_IRON_ORE = 0.2F;
    private static final float DEFAULT_MOSSINESS = 0.2F;
    private final MeteoritePiece.VerticalPlacement verticalPlacement;
    private final MeteoritePiece.Properties properties;
@@ -98,9 +98,9 @@ public class MeteoritePiece extends TemplateStructurePiece {
       BlockIgnoreProcessor blockignoreprocessor = properties.airPocket ? BlockIgnoreProcessor.STRUCTURE_BLOCK : BlockIgnoreProcessor.STRUCTURE_AND_AIR;
       List<ProcessorRule> processorRules = Lists.newArrayList();
       processorRules.add(getBlockReplaceRule(SMBlocks.RAW_METEORIC_IRON_BLOCK.get(), PROBABILITY_OF_RAW_MET_IRON_GONE, Blocks.AIR));
-      processorRules.add(getLavaProcessorRule(verticalPlacement, properties));
-      if (!properties.cold) {
-         processorRules.add(getBlockReplaceRule(SMBlocks.METEORIC_IRON_ORE.get(), PROBABILITY_OF_SUEVITE_INSTEAD_OF_MET_IRON_ORE, SMBlocks.SUEVITE.get()));
+      processorRules.add(getBlockReplaceRule(SMBlocks.METEORIC_IRON_ORE.get(), PROBABILITY_OF_OLIVINE_INSTEAD_OF_MET_IRON_ORE, Blocks.EMERALD_ORE));
+      if (properties.diamond) {
+         processorRules.add(getBlockReplaceRule(SMBlocks.SUEVITE.get(), PROBABILITY_OF_DIAMOND_INSTEAD_OF_SUEVITE, Blocks.DIAMOND_ORE));
       }
 
       StructurePlaceSettings structureplacesettings = (new StructurePlaceSettings())
@@ -112,19 +112,8 @@ public class MeteoritePiece extends TemplateStructurePiece {
               .addProcessor(new BlockAgeProcessor(properties.mossiness))
               .addProcessor(new ProtectedBlockProcessor(BlockTags.FEATURES_CANNOT_REPLACE.getName()))
               .addProcessor(new LavaSubmergedBlockProcessor());
-      if (properties.replaceWithBlackstone) {
-         structureplacesettings.addProcessor(BlackstoneReplaceProcessor.INSTANCE);
-      }
 
       return structureplacesettings;
-   }
-
-   private static ProcessorRule getLavaProcessorRule(MeteoritePiece.VerticalPlacement verticalPlacement, MeteoritePiece.Properties properties) {
-      if (verticalPlacement == MeteoritePiece.VerticalPlacement.ON_OCEAN_FLOOR) {
-         return getBlockReplaceRule(Blocks.LAVA, SMBlocks.SUEVITE.get());
-      } else {
-         return properties.cold ? getBlockReplaceRule(Blocks.LAVA, SMBlocks.METEORIC_IRON_ORE.get()) : getBlockReplaceRule(Blocks.LAVA, PROBABILITY_OF_SUEVITE_INSTEAD_OF_LAVA, SMBlocks.SUEVITE.get());
-      }
    }
 
    @Override
@@ -133,8 +122,8 @@ public class MeteoritePiece extends TemplateStructurePiece {
       if (boundingBox.isInside(boundingbox.getCenter())) {
          boundingBox.encapsulate(boundingbox);
          super.postProcess(worldGenLevel, featureManager, chunkGenerator, random, boundingBox, chunkPos, blockPos);
-         this.spreadMetIronOre(random, worldGenLevel);
-         this.addMetIronOreDripColumnsBelowMeteorite(random, worldGenLevel);
+         this.spreadSuevite(random, worldGenLevel);
+         this.addSueviteDripColumnsBelowMeteorite(random, worldGenLevel);
          if (this.properties.vines || this.properties.overgrown) {
             BlockPos.betweenClosedStream(this.getBoundingBox()).forEach((bp) -> {
                if (this.properties.vines) {
@@ -177,32 +166,32 @@ public class MeteoritePiece extends TemplateStructurePiece {
 
    }
 
-   private void addMetIronOreDripColumnsBelowMeteorite(Random random, LevelAccessor levelAccessor) {
+   private void addSueviteDripColumnsBelowMeteorite(Random random, LevelAccessor levelAccessor) {
       for(int i = this.boundingBox.minX() + 1; i < this.boundingBox.maxX(); ++i) {
          for(int j = this.boundingBox.minZ() + 1; j < this.boundingBox.maxZ(); ++j) {
             BlockPos blockpos = new BlockPos(i, this.boundingBox.minY(), j);
-            if (levelAccessor.getBlockState(blockpos).is(SMBlocks.METEORIC_IRON_ORE.get())) {
-               this.addMetIronOreDripColumn(random, levelAccessor, blockpos.below());
+            if (levelAccessor.getBlockState(blockpos).is(SMBlocks.SUEVITE.get())) {
+               this.addSueviteDripColumn(random, levelAccessor, blockpos.below());
             }
          }
       }
 
    }
 
-   private void addMetIronOreDripColumn(Random random, LevelAccessor levelAccessor, BlockPos blockPos) {
+   private void addSueviteDripColumn(Random random, LevelAccessor levelAccessor, BlockPos blockPos) {
       BlockPos.MutableBlockPos blockpos$mutableblockpos = blockPos.mutable();
-      this.placeMetIronOreOrSuevite(random, levelAccessor, blockpos$mutableblockpos);
+      this.placeSueviteOrDiamond(random, levelAccessor, blockpos$mutableblockpos);
       int i = 8;
 
       while(i > 0 && random.nextFloat() < 0.5F) {
          blockpos$mutableblockpos.move(Direction.DOWN);
          --i;
-         this.placeMetIronOreOrSuevite(random, levelAccessor, blockpos$mutableblockpos);
+         this.placeSueviteOrDiamond(random, levelAccessor, blockpos$mutableblockpos);
       }
 
    }
 
-   private void spreadMetIronOre(Random random, LevelAccessor levelAccessor) {
+   private void spreadSuevite(Random random, LevelAccessor levelAccessor) {
       boolean onGround = this.verticalPlacement == MeteoritePiece.VerticalPlacement.ON_LAND_SURFACE || this.verticalPlacement == MeteoritePiece.VerticalPlacement.ON_OCEAN_FLOOR;
       BlockPos center = this.boundingBox.getCenter();
       int centerX = center.getX();
@@ -224,13 +213,13 @@ public class MeteoritePiece extends TemplateStructurePiece {
                   int surfaceY = getSurfaceY(levelAccessor, currX, currZ, this.verticalPlacement);
                   int adjustedSurfaceY = onGround ? surfaceY : Math.min(this.boundingBox.minY(), surfaceY);
                   blockpos$mutableblockpos.set(currX, adjustedSurfaceY, currZ);
-                  if (Math.abs(adjustedSurfaceY - this.boundingBox.minY()) <= 3 && this.canBlockBeReplacedByMetIronOrSuevite(levelAccessor, blockpos$mutableblockpos)) {
-                     this.placeMetIronOreOrSuevite(random, levelAccessor, blockpos$mutableblockpos);
+                  if (Math.abs(adjustedSurfaceY - this.boundingBox.minY()) <= 3 && this.canBlockBeReplacedBySueviteOrDiamond(levelAccessor, blockpos$mutableblockpos)) {
+                     this.placeSueviteOrDiamond(random, levelAccessor, blockpos$mutableblockpos);
                      if (this.properties.overgrown) {
                         this.maybeAddLeavesAbove(random, levelAccessor, blockpos$mutableblockpos);
                      }
 
-                     this.addMetIronOreDripColumn(random, levelAccessor, blockpos$mutableblockpos.below());
+                     this.addSueviteDripColumn(random, levelAccessor, blockpos$mutableblockpos.below());
                   }
                }
             }
@@ -239,19 +228,19 @@ public class MeteoritePiece extends TemplateStructurePiece {
 
    }
 
-   private boolean canBlockBeReplacedByMetIronOrSuevite(LevelAccessor levelAccessor, BlockPos blockPos) {
+   private boolean canBlockBeReplacedBySueviteOrDiamond(LevelAccessor levelAccessor, BlockPos blockPos) {
       BlockState blockstate = levelAccessor.getBlockState(blockPos);
       return !blockstate.is(Blocks.AIR)
               && !blockstate.is(Blocks.OBSIDIAN)
               && !blockstate.is(BlockTags.FEATURES_CANNOT_REPLACE)
-              && (this.verticalPlacement == MeteoritePiece.VerticalPlacement.IN_END || !blockstate.is(Blocks.LAVA));
+              && !blockstate.is(Blocks.LAVA);
    }
 
-   private void placeMetIronOreOrSuevite(Random random, LevelAccessor levelAccessor, BlockPos blockPos) {
-      if (!this.properties.cold && random.nextFloat() < PROBABILITY_OF_SUEVITE_INSTEAD_OF_MET_IRON_ORE) {
-         levelAccessor.setBlock(blockPos, SMBlocks.SUEVITE.get().defaultBlockState(), 3);
+   private void placeSueviteOrDiamond(Random random, LevelAccessor levelAccessor, BlockPos blockPos) {
+      if (this.properties.diamond && random.nextFloat() < PROBABILITY_OF_DIAMOND_INSTEAD_OF_SUEVITE) {
+         levelAccessor.setBlock(blockPos, Blocks.DIAMOND_ORE.defaultBlockState(), 3);
       } else {
-         levelAccessor.setBlock(blockPos, SMBlocks.METEORIC_IRON_ORE.get().defaultBlockState(), 3);
+         levelAccessor.setBlock(blockPos, SMBlocks.SUEVITE.get().defaultBlockState(), 3);
       }
 
    }
@@ -275,30 +264,27 @@ public class MeteoritePiece extends TemplateStructurePiece {
    public static class Properties {
       public static final Codec<MeteoritePiece.Properties> CODEC = RecordCodecBuilder
               .create((propertiesInstance) -> propertiesInstance
-                      .group(Codec.BOOL.fieldOf("cold").forGetter((p) -> p.cold),
+                      .group(Codec.BOOL.fieldOf("diamond").forGetter((p) -> p.diamond),
                               Codec.FLOAT.fieldOf("mossiness").forGetter((mp$p) -> mp$p.mossiness),
                               Codec.BOOL.fieldOf("air_pocket").forGetter((mp$p) -> mp$p.airPocket),
                               Codec.BOOL.fieldOf("overgrown").forGetter((mp$p) -> mp$p.overgrown),
-                              Codec.BOOL.fieldOf("vines").forGetter((mp$p) -> mp$p.vines),
-                              Codec.BOOL.fieldOf("replace_with_blackstone").forGetter((mp$p) -> mp$p.replaceWithBlackstone))
+                              Codec.BOOL.fieldOf("vines").forGetter((mp$p) -> mp$p.vines))
                       .apply(propertiesInstance, Properties::new));
-      public boolean cold;
+      public boolean diamond;
       public float mossiness = DEFAULT_MOSSINESS;
       public boolean airPocket;
       public boolean overgrown;
       public boolean vines;
-      public boolean replaceWithBlackstone;
 
       public Properties() {
       }
 
-      public Properties(boolean cold, float mossiness, boolean airPocket, boolean overgrown, boolean vines, boolean replaceWithBlackstone) {
-         this.cold = cold;
+      public Properties(boolean diamond, float mossiness, boolean airPocket, boolean overgrown, boolean vines) {
+         this.diamond = diamond;
          this.mossiness = mossiness;
          this.airPocket = airPocket;
          this.overgrown = overgrown;
          this.vines = vines;
-         this.replaceWithBlackstone = replaceWithBlackstone;
       }
    }
 

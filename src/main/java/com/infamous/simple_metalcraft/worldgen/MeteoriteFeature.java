@@ -14,9 +14,9 @@ import net.minecraft.core.QuartPos;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.util.StringRepresentable;
+import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.LevelHeightAccessor;
 import net.minecraft.world.level.NoiseColumn;
-import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.Mirror;
 import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.block.state.BlockState;
@@ -95,7 +95,6 @@ public class MeteoriteFeature extends StructureFeature<MeteoriteConfiguration> {
          meteoritePiece$verticalPlacement = MeteoritePiece.VerticalPlacement.IN_END;
          meteoritePiece$properties.airPocket = worldgenRandom.nextFloat() < PROBABILITY_OF_AIR_POCKET;
          meteoritePiece$properties.mossiness = 0.0F;
-         meteoritePiece$properties.replaceWithBlackstone = true;
       } else {
          boolean isUnderground = worldgenRandom.nextFloat() < PROBABILITY_OF_UNDERGROUND;
          meteoritePiece$verticalPlacement = isUnderground ? MeteoritePiece.VerticalPlacement.UNDERGROUND : MeteoritePiece.VerticalPlacement.ON_LAND_SURFACE;
@@ -117,19 +116,40 @@ public class MeteoriteFeature extends StructureFeature<MeteoriteConfiguration> {
       BoundingBox boundingBox = structureTemplate.getBoundingBox(worldPos, rotation, templateCenterPos, mirror);
       BlockPos boundingBoxCenter = boundingBox.getCenter();
       int baseHeight = pieceGeneratorSupplier$context.chunkGenerator().getBaseHeight(boundingBoxCenter.getX(), boundingBoxCenter.getZ(), MeteoritePiece.getHeightMapType(meteoritePiece$verticalPlacement), pieceGeneratorSupplier$context.heightAccessor()) - 1;
-      int suitableY = findSuitableY(worldgenRandom, pieceGeneratorSupplier$context.chunkGenerator(), meteoritePiece$verticalPlacement, meteoritePiece$properties.airPocket, baseHeight, boundingBox.getYSpan(), boundingBox, pieceGeneratorSupplier$context.heightAccessor());
+      int suitableY =
+              meteoritePiece$verticalPlacement == MeteoritePiece.VerticalPlacement.IN_END ?
+                      getYPositionInEnd(rotation, pieceGeneratorSupplier$context.chunkPos(), pieceGeneratorSupplier$context.chunkGenerator(), pieceGeneratorSupplier$context.heightAccessor()) :
+                      findSuitableY(worldgenRandom, pieceGeneratorSupplier$context.chunkGenerator(), meteoritePiece$verticalPlacement, meteoritePiece$properties.airPocket, baseHeight, boundingBox.getYSpan(), boundingBox, pieceGeneratorSupplier$context.heightAccessor());
       BlockPos targetPos = new BlockPos(worldPos.getX(), suitableY, worldPos.getZ());
       return !pieceGeneratorSupplier$context.validBiome().test(pieceGeneratorSupplier$context.chunkGenerator().getNoiseBiome(QuartPos.fromBlock(targetPos.getX()), QuartPos.fromBlock(targetPos.getY()), QuartPos.fromBlock(targetPos.getZ()))) ? Optional.empty() : Optional.of((spb, mcc) -> {
-         if (meteoriteConfiguration.meteoriteType == MeteoriteFeature.Type.MOUNTAIN || meteoriteConfiguration.meteoriteType == MeteoriteFeature.Type.OCEAN || meteoriteConfiguration.meteoriteType == MeteoriteFeature.Type.STANDARD) {
-            meteoritePiece$properties.cold = isCold(targetPos, pieceGeneratorSupplier$context.chunkGenerator().getNoiseBiome(QuartPos.fromBlock(targetPos.getX()), QuartPos.fromBlock(targetPos.getY()), QuartPos.fromBlock(targetPos.getZ())));
+         if (worldgenRandom.nextFloat() < 0.07F || meteoriteConfiguration.meteoriteType == MeteoriteFeature.Type.END) {
+            meteoritePiece$properties.diamond = true;
          }
 
          spb.addPiece(new MeteoritePiece(mcc.structureManager(), targetPos, meteoritePiece$verticalPlacement, meteoritePiece$properties, meteoriteLocation, structureTemplate, rotation, mirror, templateCenterPos));
       });
    }
 
-   private static boolean isCold(BlockPos blockPos, Biome biome) {
-      return biome.coldEnoughToSnow(blockPos);
+   private static int getYPositionInEnd(Rotation rotation, ChunkPos chunkPos, ChunkGenerator chunkGenerator, LevelHeightAccessor levelHeightAccessor) {
+      int xOffset = 5;
+      int zOffset = 5;
+      if (rotation == Rotation.CLOCKWISE_90) {
+         xOffset = -5;
+      } else if (rotation == Rotation.CLOCKWISE_180) {
+         xOffset = -5;
+         zOffset = -5;
+      } else if (rotation == Rotation.COUNTERCLOCKWISE_90) {
+         zOffset = -5;
+      }
+
+      int blockOffset = 7;
+      int blockX = chunkPos.getBlockX(blockOffset);
+      int blockZ = chunkPos.getBlockZ(blockOffset);
+      int y0 = chunkGenerator.getFirstOccupiedHeight(blockX, blockZ, Heightmap.Types.WORLD_SURFACE_WG, levelHeightAccessor);
+      int y1 = chunkGenerator.getFirstOccupiedHeight(blockX, blockZ + zOffset, Heightmap.Types.WORLD_SURFACE_WG, levelHeightAccessor);
+      int y2 = chunkGenerator.getFirstOccupiedHeight(blockX + xOffset, blockZ, Heightmap.Types.WORLD_SURFACE_WG, levelHeightAccessor);
+      int y3 = chunkGenerator.getFirstOccupiedHeight(blockX + xOffset, blockZ + zOffset, Heightmap.Types.WORLD_SURFACE_WG, levelHeightAccessor);
+      return Math.min(Math.min(y0, y1), Math.min(y2, y3));
    }
 
    private static int findSuitableY(Random random, ChunkGenerator chunkGenerator, MeteoritePiece.VerticalPlacement meteoritePiece$verticalPlacement, boolean hasAirPocket, int baseHeight, int ySpan, BoundingBox boundingBox, LevelHeightAccessor levelHeightProcessor) {
