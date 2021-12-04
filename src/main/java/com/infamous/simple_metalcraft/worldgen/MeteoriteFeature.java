@@ -1,20 +1,14 @@
 package com.infamous.simple_metalcraft.worldgen;
 
 import com.google.common.collect.ImmutableList;
+import com.infamous.simple_metalcraft.SimpleMetalcraft;
 import com.mojang.serialization.Codec;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.Random;
-import java.util.stream.Collectors;
 import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.QuartPos;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.util.StringRepresentable;
-import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.LevelHeightAccessor;
 import net.minecraft.world.level.NoiseColumn;
 import net.minecraft.world.level.block.Mirror;
@@ -29,6 +23,10 @@ import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.pieces.PieceGenerator;
 import net.minecraft.world.level.levelgen.structure.pieces.PieceGeneratorSupplier;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate;
+import org.jetbrains.annotations.NotNull;
+
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class MeteoriteFeature extends StructureFeature<MeteoriteConfiguration> {
    private static final String[] STRUCTURE_LOCATION_METEORITES =
@@ -50,6 +48,7 @@ public class MeteoriteFeature extends StructureFeature<MeteoriteConfiguration> {
                    "meteorite/giant_meteorite_2",
                    "meteorite/giant_meteorite_3"
             };
+   private static final float PROBABILITY_OF_DIAMOND = 0.05F;
    private static final float PROBABILITY_OF_GIANT_METEORITE = 0.05F;
    private static final float PROBABILITY_OF_AIR_POCKET = 0.5F;
    private static final float PROBABILITY_OF_UNDERGROUND = 0.5F;
@@ -62,52 +61,15 @@ public class MeteoriteFeature extends StructureFeature<MeteoriteConfiguration> {
       super(codec, MeteoriteFeature::pieceGeneratorSupplier);
    }
 
+   @NotNull
    private static Optional<PieceGenerator<MeteoriteConfiguration>> pieceGeneratorSupplier(PieceGeneratorSupplier.Context<MeteoriteConfiguration> pieceGeneratorSupplier$context) {
       MeteoritePiece.Properties meteoritePiece$properties = new MeteoritePiece.Properties();
       MeteoriteConfiguration meteoriteConfiguration = pieceGeneratorSupplier$context.config();
       WorldgenRandom worldgenRandom = new WorldgenRandom(new LegacyRandomSource(0L));
       worldgenRandom.setLargeFeatureSeed(pieceGeneratorSupplier$context.seed(), pieceGeneratorSupplier$context.chunkPos().x, pieceGeneratorSupplier$context.chunkPos().z);
-      MeteoritePiece.VerticalPlacement meteoritePiece$verticalPlacement;
-      if (meteoriteConfiguration.meteoriteType == MeteoriteFeature.Type.DESERT) {
-         meteoritePiece$verticalPlacement = MeteoritePiece.VerticalPlacement.PARTLY_BURIED;
-         meteoritePiece$properties.airPocket = false;
-         meteoritePiece$properties.mossiness = 0.0F;
-      } else if (meteoriteConfiguration.meteoriteType == MeteoriteFeature.Type.JUNGLE) {
-         meteoritePiece$verticalPlacement = MeteoritePiece.VerticalPlacement.ON_LAND_SURFACE;
-         meteoritePiece$properties.airPocket = worldgenRandom.nextFloat() < PROBABILITY_OF_AIR_POCKET;
-         meteoritePiece$properties.mossiness = JUNGLE_MOSSINESS;
-         meteoritePiece$properties.overgrown = true;
-         meteoritePiece$properties.vines = true;
-      } else if (meteoriteConfiguration.meteoriteType == MeteoriteFeature.Type.SWAMP) {
-         meteoritePiece$verticalPlacement = MeteoritePiece.VerticalPlacement.ON_OCEAN_FLOOR;
-         meteoritePiece$properties.airPocket = false;
-         meteoritePiece$properties.mossiness = SWAMP_MOSSINESS;
-         meteoritePiece$properties.vines = true;
-      } else if (meteoriteConfiguration.meteoriteType == MeteoriteFeature.Type.MOUNTAIN) {
-         boolean flag = worldgenRandom.nextFloat() < 0.5F;
-         meteoritePiece$verticalPlacement = flag ? MeteoritePiece.VerticalPlacement.IN_MOUNTAIN : MeteoritePiece.VerticalPlacement.ON_LAND_SURFACE;
-         meteoritePiece$properties.airPocket = flag || worldgenRandom.nextFloat() < PROBABILITY_OF_AIR_POCKET;
-      } else if (meteoriteConfiguration.meteoriteType == MeteoriteFeature.Type.OCEAN) {
-         meteoritePiece$verticalPlacement = MeteoritePiece.VerticalPlacement.ON_OCEAN_FLOOR;
-         meteoritePiece$properties.airPocket = false;
-         meteoritePiece$properties.mossiness = UNDERWATER_MOSSINESS;
-      } else if (meteoriteConfiguration.meteoriteType == MeteoriteFeature.Type.END) {
-         meteoritePiece$verticalPlacement = MeteoritePiece.VerticalPlacement.IN_END;
-         meteoritePiece$properties.airPocket = worldgenRandom.nextFloat() < PROBABILITY_OF_AIR_POCKET;
-         meteoritePiece$properties.mossiness = 0.0F;
-      } else {
-         boolean isUnderground = worldgenRandom.nextFloat() < PROBABILITY_OF_UNDERGROUND;
-         meteoritePiece$verticalPlacement = isUnderground ? MeteoritePiece.VerticalPlacement.UNDERGROUND : MeteoritePiece.VerticalPlacement.ON_LAND_SURFACE;
-         meteoritePiece$properties.airPocket = isUnderground || worldgenRandom.nextFloat() < PROBABILITY_OF_AIR_POCKET;
-      }
+      MeteoritePiece.VerticalPlacement meteoritePiece$verticalPlacement = getVerticalPlacement(meteoritePiece$properties, meteoriteConfiguration, worldgenRandom);
 
-      ResourceLocation meteoriteLocation;
-      if (worldgenRandom.nextFloat() < PROBABILITY_OF_GIANT_METEORITE) {
-         meteoriteLocation = new ResourceLocation(STRUCTURE_LOCATION_GIANT_METEORITES[worldgenRandom.nextInt(STRUCTURE_LOCATION_GIANT_METEORITES.length)]);
-      } else {
-         meteoriteLocation = new ResourceLocation(STRUCTURE_LOCATION_METEORITES[worldgenRandom.nextInt(STRUCTURE_LOCATION_METEORITES.length)]);
-      }
-
+      ResourceLocation meteoriteLocation = getMeteoriteLocation(worldgenRandom);
       StructureTemplate structureTemplate = pieceGeneratorSupplier$context.structureManager().getOrCreate(meteoriteLocation);
       Rotation rotation = Util.getRandom(Rotation.values(), worldgenRandom);
       Mirror mirror = worldgenRandom.nextFloat() < 0.5F ? Mirror.NONE : Mirror.FRONT_BACK;
@@ -116,63 +78,97 @@ public class MeteoriteFeature extends StructureFeature<MeteoriteConfiguration> {
       BoundingBox boundingBox = structureTemplate.getBoundingBox(worldPos, rotation, templateCenterPos, mirror);
       BlockPos boundingBoxCenter = boundingBox.getCenter();
       int baseHeight = pieceGeneratorSupplier$context.chunkGenerator().getBaseHeight(boundingBoxCenter.getX(), boundingBoxCenter.getZ(), MeteoritePiece.getHeightMapType(meteoritePiece$verticalPlacement), pieceGeneratorSupplier$context.heightAccessor()) - 1;
-      int suitableY =
-              meteoritePiece$verticalPlacement == MeteoritePiece.VerticalPlacement.IN_END ?
-                      getYPositionInEnd(rotation, pieceGeneratorSupplier$context.chunkPos(), pieceGeneratorSupplier$context.chunkGenerator(), pieceGeneratorSupplier$context.heightAccessor()) :
-                      findSuitableY(worldgenRandom, pieceGeneratorSupplier$context.chunkGenerator(), meteoritePiece$verticalPlacement, meteoritePiece$properties.airPocket, baseHeight, boundingBox.getYSpan(), boundingBox, pieceGeneratorSupplier$context.heightAccessor());
+      int suitableY = findSuitableY(worldgenRandom, pieceGeneratorSupplier$context.chunkGenerator(), meteoritePiece$verticalPlacement, meteoritePiece$properties.airPocket, baseHeight, boundingBox.getYSpan(), boundingBox, pieceGeneratorSupplier$context.heightAccessor());
       BlockPos targetPos = new BlockPos(worldPos.getX(), suitableY, worldPos.getZ());
-      return !pieceGeneratorSupplier$context.validBiome().test(pieceGeneratorSupplier$context.chunkGenerator().getNoiseBiome(QuartPos.fromBlock(targetPos.getX()), QuartPos.fromBlock(targetPos.getY()), QuartPos.fromBlock(targetPos.getZ()))) ? Optional.empty() : Optional.of((spb, mcc) -> {
-         if (worldgenRandom.nextFloat() < 0.07F || meteoriteConfiguration.meteoriteType == MeteoriteFeature.Type.END) {
-            meteoritePiece$properties.diamond = true;
-         }
-
-         spb.addPiece(new MeteoritePiece(mcc.structureManager(), targetPos, meteoritePiece$verticalPlacement, meteoritePiece$properties, meteoriteLocation, structureTemplate, rotation, mirror, templateCenterPos));
-      });
+      return !pieceGeneratorSupplier$context
+                      .validBiome()
+                      .test(pieceGeneratorSupplier$context.chunkGenerator().getNoiseBiome(
+                              QuartPos.fromBlock(targetPos.getX()),
+                              QuartPos.fromBlock(targetPos.getY()),
+                              QuartPos.fromBlock(targetPos.getZ()))) ?
+                      Optional.empty() :
+                      Optional.of((spb, mcc) -> {
+                            meteoritePiece$properties.diamond = worldgenRandom.nextFloat() < PROBABILITY_OF_DIAMOND;
+                            spb.addPiece(new MeteoritePiece(mcc.structureManager(), targetPos, meteoritePiece$verticalPlacement, meteoritePiece$properties, meteoriteLocation, structureTemplate, rotation, mirror, templateCenterPos));
+                      });
    }
 
-   private static int getYPositionInEnd(Rotation rotation, ChunkPos chunkPos, ChunkGenerator chunkGenerator, LevelHeightAccessor levelHeightAccessor) {
-      int xOffset = 5;
-      int zOffset = 5;
-      if (rotation == Rotation.CLOCKWISE_90) {
-         xOffset = -5;
-      } else if (rotation == Rotation.CLOCKWISE_180) {
-         xOffset = -5;
-         zOffset = -5;
-      } else if (rotation == Rotation.COUNTERCLOCKWISE_90) {
-         zOffset = -5;
+   private static MeteoritePiece.VerticalPlacement getVerticalPlacement(MeteoritePiece.Properties meteoritePiece$properties, MeteoriteConfiguration meteoriteConfiguration, WorldgenRandom worldgenRandom) {
+      MeteoritePiece.VerticalPlacement meteoritePiece$verticalPlacement;
+      switch (meteoriteConfiguration.meteoriteType) {
+         case DESERT -> {
+            meteoritePiece$verticalPlacement = MeteoritePiece.VerticalPlacement.PARTLY_BURIED;
+            meteoritePiece$properties.airPocket = false;
+            meteoritePiece$properties.mossiness = 0.0F;
+         }
+         case JUNGLE -> {
+            meteoritePiece$verticalPlacement = MeteoritePiece.VerticalPlacement.ON_LAND_SURFACE;
+            meteoritePiece$properties.airPocket = worldgenRandom.nextFloat() < PROBABILITY_OF_AIR_POCKET;
+            meteoritePiece$properties.mossiness = JUNGLE_MOSSINESS;
+            meteoritePiece$properties.overgrown = true;
+            meteoritePiece$properties.vines = true;
+         }
+         case SWAMP -> {
+            meteoritePiece$verticalPlacement = MeteoritePiece.VerticalPlacement.ON_OCEAN_FLOOR;
+            meteoritePiece$properties.airPocket = false;
+            meteoritePiece$properties.mossiness = SWAMP_MOSSINESS;
+            meteoritePiece$properties.vines = true;
+         }
+         case MOUNTAIN -> {
+            boolean flag = worldgenRandom.nextFloat() < 0.5F;
+            meteoritePiece$verticalPlacement = flag ? MeteoritePiece.VerticalPlacement.IN_MOUNTAIN : MeteoritePiece.VerticalPlacement.ON_LAND_SURFACE;
+            meteoritePiece$properties.airPocket = flag || worldgenRandom.nextFloat() < PROBABILITY_OF_AIR_POCKET;
+         }
+         case OCEAN -> {
+            meteoritePiece$verticalPlacement = MeteoritePiece.VerticalPlacement.ON_OCEAN_FLOOR;
+            meteoritePiece$properties.airPocket = false;
+            meteoritePiece$properties.mossiness = UNDERWATER_MOSSINESS;
+         }
+         case END -> {
+            meteoritePiece$verticalPlacement = MeteoritePiece.VerticalPlacement.IN_END;
+            meteoritePiece$properties.airPocket = worldgenRandom.nextFloat() < PROBABILITY_OF_AIR_POCKET;
+            meteoritePiece$properties.mossiness = 0.0F;
+         }
+         default -> {
+            boolean isUnderground = worldgenRandom.nextFloat() < PROBABILITY_OF_UNDERGROUND;
+            meteoritePiece$verticalPlacement = isUnderground ? MeteoritePiece.VerticalPlacement.UNDERGROUND : MeteoritePiece.VerticalPlacement.ON_LAND_SURFACE;
+            meteoritePiece$properties.airPocket = isUnderground || worldgenRandom.nextFloat() < PROBABILITY_OF_AIR_POCKET;
+         }
       }
+      return meteoritePiece$verticalPlacement;
+   }
 
-      int blockOffset = 7;
-      int blockX = chunkPos.getBlockX(blockOffset);
-      int blockZ = chunkPos.getBlockZ(blockOffset);
-      int y0 = chunkGenerator.getFirstOccupiedHeight(blockX, blockZ, Heightmap.Types.WORLD_SURFACE_WG, levelHeightAccessor);
-      int y1 = chunkGenerator.getFirstOccupiedHeight(blockX, blockZ + zOffset, Heightmap.Types.WORLD_SURFACE_WG, levelHeightAccessor);
-      int y2 = chunkGenerator.getFirstOccupiedHeight(blockX + xOffset, blockZ, Heightmap.Types.WORLD_SURFACE_WG, levelHeightAccessor);
-      int y3 = chunkGenerator.getFirstOccupiedHeight(blockX + xOffset, blockZ + zOffset, Heightmap.Types.WORLD_SURFACE_WG, levelHeightAccessor);
-      return Math.min(Math.min(y0, y1), Math.min(y2, y3));
+   private static ResourceLocation getMeteoriteLocation(WorldgenRandom worldgenRandom) {
+      ResourceLocation meteoriteLocation;
+      if (worldgenRandom.nextFloat() < PROBABILITY_OF_GIANT_METEORITE) {
+         meteoriteLocation = new ResourceLocation(SimpleMetalcraft.MOD_ID, STRUCTURE_LOCATION_GIANT_METEORITES[worldgenRandom.nextInt(STRUCTURE_LOCATION_GIANT_METEORITES.length)]);
+      } else {
+         meteoriteLocation = new ResourceLocation(SimpleMetalcraft.MOD_ID,  STRUCTURE_LOCATION_METEORITES[worldgenRandom.nextInt(STRUCTURE_LOCATION_METEORITES.length)]);
+      }
+      return meteoriteLocation;
    }
 
    private static int findSuitableY(Random random, ChunkGenerator chunkGenerator, MeteoritePiece.VerticalPlacement meteoritePiece$verticalPlacement, boolean hasAirPocket, int baseHeight, int ySpan, BoundingBox boundingBox, LevelHeightAccessor levelHeightProcessor) {
       int minSuitableY = levelHeightProcessor.getMinBuildHeight() + MIN_Y_INDEX;
-      int startY;
-      if (meteoritePiece$verticalPlacement == MeteoritePiece.VerticalPlacement.IN_END) {
+      int maxSuitableY;
+      if (isEndPlacement(meteoritePiece$verticalPlacement)) {
          if (hasAirPocket) {
-            startY = Mth.randomBetweenInclusive(random, 32, 100);
+            maxSuitableY = Mth.randomBetweenInclusive(random, 32, 100);
          } else if (random.nextFloat() < 0.5F) {
-            startY = Mth.randomBetweenInclusive(random, 27, 29);
+            maxSuitableY = Mth.randomBetweenInclusive(random, 27, 29);
          } else {
-            startY = Mth.randomBetweenInclusive(random, 29, 100);
+            maxSuitableY = Mth.randomBetweenInclusive(random, 29, 100);
          }
       } else if (meteoritePiece$verticalPlacement == MeteoritePiece.VerticalPlacement.IN_MOUNTAIN) {
          int k = baseHeight - ySpan;
-         startY = getRandomWithinInterval(random, 70, k);
+         maxSuitableY = getRandomWithinInterval(random, 70, k);
       } else if (meteoritePiece$verticalPlacement == MeteoritePiece.VerticalPlacement.UNDERGROUND) {
          int j1 = baseHeight - ySpan;
-         startY = getRandomWithinInterval(random, minSuitableY, j1);
+         maxSuitableY = getRandomWithinInterval(random, minSuitableY, j1);
       } else if (meteoritePiece$verticalPlacement == MeteoritePiece.VerticalPlacement.PARTLY_BURIED) {
-         startY = baseHeight - ySpan + Mth.randomBetweenInclusive(random, 2, 8);
+         maxSuitableY = baseHeight - ySpan + Mth.randomBetweenInclusive(random, 2, 8);
       } else {
-         startY = baseHeight;
+         maxSuitableY = baseHeight;
       }
 
       List<BlockPos> boundPositions = ImmutableList.of(new BlockPos(boundingBox.minX(), 0, boundingBox.minZ()), new BlockPos(boundingBox.maxX(), 0, boundingBox.minZ()), new BlockPos(boundingBox.minX(), 0, boundingBox.maxZ()), new BlockPos(boundingBox.maxX(), 0, boundingBox.maxZ()));
@@ -180,14 +176,14 @@ public class MeteoriteFeature extends StructureFeature<MeteoriteConfiguration> {
       Heightmap.Types heightmap$types = meteoritePiece$verticalPlacement == MeteoritePiece.VerticalPlacement.ON_OCEAN_FLOOR ? Heightmap.Types.OCEAN_FLOOR_WG : Heightmap.Types.WORLD_SURFACE_WG;
 
       int suitableY;
-      for(suitableY = startY; suitableY > minSuitableY; --suitableY) {
-         int i1 = 0;
+      for(suitableY = maxSuitableY; suitableY > minSuitableY; --suitableY) {
+         int opaqueCount = 0;
 
          for(NoiseColumn noisecolumn : boundNoiseColumns) {
             BlockState blockstate = noisecolumn.getBlock(suitableY);
             if (heightmap$types.isOpaque().test(blockstate)) {
-               ++i1;
-               if (i1 == 3) {
+               ++opaqueCount;
+               if (opaqueCount == 3) {
                   return suitableY;
                }
             }
@@ -197,11 +193,15 @@ public class MeteoriteFeature extends StructureFeature<MeteoriteConfiguration> {
       return suitableY;
    }
 
+   private static boolean isEndPlacement(MeteoritePiece.VerticalPlacement meteoritePiece$verticalPlacement) {
+      return meteoritePiece$verticalPlacement == MeteoritePiece.VerticalPlacement.IN_END;
+   }
+
    private static int getRandomWithinInterval(Random random, int minInclusive, int maxInclusive) {
       return minInclusive < maxInclusive ? Mth.randomBetweenInclusive(random, minInclusive, maxInclusive) : maxInclusive;
    }
 
-   public static enum Type implements StringRepresentable {
+   public enum Type implements StringRepresentable {
       STANDARD("standard"),
       DESERT("desert"),
       JUNGLE("jungle"),
@@ -218,7 +218,7 @@ public class MeteoriteFeature extends StructureFeature<MeteoriteConfiguration> {
                       .collect(Collectors.toMap(MeteoriteFeature.Type::getName, (type) -> type));
       private final String name;
 
-      private Type(String name) {
+      Type(String name) {
          this.name = name;
       }
 

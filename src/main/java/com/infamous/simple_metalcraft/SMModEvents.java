@@ -6,9 +6,11 @@ import com.infamous.simple_metalcraft.registry.SMBlocks;
 import com.infamous.simple_metalcraft.registry.SMItems;
 import com.infamous.simple_metalcraft.registry.SMRecipes;
 import com.infamous.simple_metalcraft.registry.SMStructures;
+import com.infamous.simple_metalcraft.worldgen.EndstoneReplaceProcessor;
 import com.infamous.simple_metalcraft.worldgen.MeteoriteConfiguration;
 import com.infamous.simple_metalcraft.worldgen.MeteoriteFeature;
 import com.infamous.simple_metalcraft.worldgen.MeteoritePiece;
+import com.mojang.serialization.Codec;
 import net.minecraft.core.Registry;
 import net.minecraft.core.dispenser.ShearsDispenseItemBehavior;
 import net.minecraft.data.BuiltinRegistries;
@@ -23,11 +25,13 @@ import net.minecraft.world.level.levelgen.feature.*;
 import net.minecraft.world.level.levelgen.feature.configurations.FeatureConfiguration;
 import net.minecraft.world.level.levelgen.feature.configurations.OreConfiguration;
 import net.minecraft.world.level.levelgen.placement.*;
+import net.minecraft.world.level.levelgen.structure.templatesystem.BlackstoneReplaceProcessor;
+import net.minecraft.world.level.levelgen.structure.templatesystem.StructureProcessor;
+import net.minecraft.world.level.levelgen.structure.templatesystem.StructureProcessorType;
 import net.minecraftforge.common.capabilities.RegisterCapabilitiesEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 import java.util.Locale;
@@ -62,6 +66,8 @@ public class SMModEvents {
     public static ConfiguredStructureFeature<MeteoriteConfiguration, ? extends StructureFeature<MeteoriteConfiguration>> METEORITE_END = registerStructureFeature("meteorite_end", SMStructures.METEORITE.get().configured(new MeteoriteConfiguration(MeteoriteFeature.Type.END)));
 
 
+    public static StructureProcessorType<EndstoneReplaceProcessor> ENDSTONE_REPLACE;
+
     @SubscribeEvent
     public static void registerCaps(RegisterCapabilitiesEvent event) {
         EquipmentCapabilityProvider.register(event);
@@ -72,12 +78,17 @@ public class SMModEvents {
         event.enqueueWork(
                 () -> {
                     registerRecipeTypes();
-                    registerFeatures();
+                    registerOreFeatures();
                     registerDispenserBehavior();
                     registerStructurePieceTypes();
                     registerStructureFeatures();
+                    registerStructureProcessors();
                 }
         );
+    }
+
+    private static void registerStructureProcessors(){
+        ENDSTONE_REPLACE = register("endstone_replace", EndstoneReplaceProcessor.CODEC);
     }
 
     private static void registerStructureFeatures() {
@@ -121,7 +132,7 @@ public class SMModEvents {
         Feature.ORE.configured(new OreConfiguration(ORE_COPPER_TARGET_LIST, 20)));
      */
 
-    private static void registerFeatures() {
+    private static void registerOreFeatures() {
         List<OreConfiguration.TargetBlockState> tinOreTargets = List.of(
                 OreConfiguration
                         .target(OreFeatures.STONE_ORE_REPLACEABLES, SMBlocks.TIN_ORE.get().defaultBlockState()),
@@ -180,5 +191,9 @@ public class SMModEvents {
 
     private static StructurePieceType setTemplatePieceId(StructurePieceType.StructureTemplateType templateType, String name) {
         return setFullContextPieceId(templateType, name);
+    }
+
+    static <P extends StructureProcessor> StructureProcessorType<P> register(String name, Codec<P> codec) {
+        return Registry.register(Registry.STRUCTURE_PROCESSOR, buildName(name), () -> codec);
     }
 }
