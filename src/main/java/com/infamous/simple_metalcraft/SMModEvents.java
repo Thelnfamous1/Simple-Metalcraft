@@ -1,7 +1,10 @@
 package com.infamous.simple_metalcraft;
 
+import com.google.common.collect.ImmutableMap;
 import com.infamous.simple_metalcraft.capability.EquipmentCapabilityProvider;
 import com.infamous.simple_metalcraft.crafting.BoneMealDispenseItemBehavior;
+import com.infamous.simple_metalcraft.mixin.StructureFeatureAccessor;
+import com.infamous.simple_metalcraft.mixin.StructureSettingsAccessor;
 import com.infamous.simple_metalcraft.registry.SMBlocks;
 import com.infamous.simple_metalcraft.registry.SMItems;
 import com.infamous.simple_metalcraft.registry.SMRecipes;
@@ -20,21 +23,26 @@ import net.minecraft.util.valueproviders.UniformInt;
 import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.block.DispenserBlock;
+import net.minecraft.world.level.levelgen.GenerationStep;
+import net.minecraft.world.level.levelgen.StructureSettings;
 import net.minecraft.world.level.levelgen.VerticalAnchor;
 import net.minecraft.world.level.levelgen.feature.*;
 import net.minecraft.world.level.levelgen.feature.configurations.FeatureConfiguration;
 import net.minecraft.world.level.levelgen.feature.configurations.OreConfiguration;
+import net.minecraft.world.level.levelgen.feature.configurations.StructureFeatureConfiguration;
 import net.minecraft.world.level.levelgen.placement.*;
-import net.minecraft.world.level.levelgen.structure.templatesystem.BlackstoneReplaceProcessor;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureProcessor;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureProcessorType;
 import net.minecraftforge.common.capabilities.RegisterCapabilitiesEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
+import org.jetbrains.annotations.NotNull;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 @Mod.EventBusSubscriber(modid = SimpleMetalcraft.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class SMModEvents {
@@ -49,6 +57,7 @@ public class SMModEvents {
     public static final int TIN_ORE_LOWER_MIN_HEIGHT = -24;
     public static final int TIN_ORE_LOWER_MAX_HEIGHT = -8;
     public static final int TIN_ORE_LORE_VEINS_PER_CHUNK = 1;
+    private static final Map<StructureFeature<?>, StructureFeatureConfiguration> SM_STRUCTURES = new HashMap<>();
 
     public static ConfiguredFeature<?, ?> ORE_TIN;
     public static ConfiguredFeature<?, ?> ORE_TIN_BURIED;
@@ -83,8 +92,22 @@ public class SMModEvents {
                     registerStructurePieceTypes();
                     registerStructureFeatures();
                     registerStructureProcessors();
+                    addStructuresToMaps();
                 }
         );
+    }
+
+    private static void addStructuresToMaps() {
+        addToStructureMaps(
+                "meteorite",
+                SMStructures.METEORITE.get(),
+                GenerationStep.Decoration.SURFACE_STRUCTURES,
+                buildStructureFeatureConfiguration(40, 0.375F, 34222645));
+    }
+
+    @NotNull
+    private static StructureFeatureConfiguration buildStructureFeatureConfiguration(int spacing, float separationFactor, int salt) {
+        return new StructureFeatureConfiguration(spacing, (int) (spacing * separationFactor), salt);
     }
 
     private static void registerStructureProcessors(){
@@ -102,15 +125,15 @@ public class SMModEvents {
     }
 
     private static <FC extends FeatureConfiguration, F extends StructureFeature<FC>> ConfiguredStructureFeature<FC, F> registerStructureFeature(String name, ConfiguredStructureFeature<FC, F> structureFeature) {
-        return BuiltinRegistries.register(BuiltinRegistries.CONFIGURED_STRUCTURE_FEATURE, buildName(name), structureFeature);
+        return BuiltinRegistries.register(BuiltinRegistries.CONFIGURED_STRUCTURE_FEATURE, withSMNamespace(name), structureFeature);
     }
 
-    private static String buildName(String name) {
-        return SimpleMetalcraft.MOD_ID + ":" + name;
+    private static String withSMNamespace(String name) {
+        return (SimpleMetalcraft.MOD_ID + ":" + name).toLowerCase(Locale.ROOT);
     }
 
     private static void registerStructurePieceTypes() {
-        METEORITE = setTemplatePieceId(MeteoritePiece::new, "Meteorite");
+        METEORITE = setTemplatePieceId(MeteoritePiece::new, "meteorite");
     }
 
     private static void registerDispenserBehavior() {
@@ -170,15 +193,15 @@ public class SMModEvents {
     }
 
     private static <FC extends FeatureConfiguration> ConfiguredFeature<FC, ?> registerFeature(String name, ConfiguredFeature<FC, ?> feature) {
-        return Registry.register(BuiltinRegistries.CONFIGURED_FEATURE, buildName(name), feature);
+        return Registry.register(BuiltinRegistries.CONFIGURED_FEATURE, withSMNamespace(name), feature);
     }
 
     private static PlacedFeature registerPlacedFeature(String name, PlacedFeature feature) {
-        return Registry.register(BuiltinRegistries.PLACED_FEATURE, buildName(name), feature);
+        return Registry.register(BuiltinRegistries.PLACED_FEATURE, withSMNamespace(name), feature);
     }
 
     static <T extends Recipe<?>> RecipeType<T> registerRecipeType(final String recipeName) {
-        return Registry.register(Registry.RECIPE_TYPE, new ResourceLocation(buildName(recipeName)), new RecipeType<T>() {
+        return Registry.register(Registry.RECIPE_TYPE, new ResourceLocation(withSMNamespace(recipeName)), new RecipeType<T>() {
             public String toString() {
                 return recipeName;
             }
@@ -186,7 +209,7 @@ public class SMModEvents {
     }
 
     private static StructurePieceType setFullContextPieceId(StructurePieceType pieceType, String name) {
-        return Registry.register(Registry.STRUCTURE_PIECE, buildName(name.toLowerCase(Locale.ROOT)), pieceType);
+        return Registry.register(Registry.STRUCTURE_PIECE, withSMNamespace(name.toLowerCase(Locale.ROOT)), pieceType);
     }
 
     private static StructurePieceType setTemplatePieceId(StructurePieceType.StructureTemplateType templateType, String name) {
@@ -194,6 +217,21 @@ public class SMModEvents {
     }
 
     static <P extends StructureProcessor> StructureProcessorType<P> register(String name, Codec<P> codec) {
-        return Registry.register(Registry.STRUCTURE_PROCESSOR, buildName(name), () -> codec);
+        return Registry.register(Registry.STRUCTURE_PROCESSOR, withSMNamespace(name), () -> codec);
+    }
+
+    // From TelepathicGrunt's RepurposedStructures
+    public static <F extends StructureFeature<?>> void addToStructureMaps(String name, F structure, GenerationStep.Decoration stage, StructureFeatureConfiguration structureFeatureConfiguration) {
+        StructureFeature.STRUCTURES_REGISTRY
+                .put(withSMNamespace(name), structure);
+        StructureFeatureAccessor.getSTEP()
+                .put(structure, stage);
+        ImmutableMap<StructureFeature<?>, StructureFeatureConfiguration> rebuiltDefaults =
+                ImmutableMap.<StructureFeature<?>, StructureFeatureConfiguration>builder()
+                        .putAll(StructureSettings.DEFAULTS)
+                        .put(structure, structureFeatureConfiguration)
+                        .build();
+        StructureSettingsAccessor.setDEFAULTS(rebuiltDefaults);
+        SM_STRUCTURES.put(structure, structureFeatureConfiguration);
     }
 }
