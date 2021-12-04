@@ -53,7 +53,6 @@
   "item.simple_metalcraft.chipped_diamond_anvil": "Chipped Diamond Anvil",
   "item.simple_metalcraft.damaged_diamond_anvil": "Damaged Diamond Anvil",
 
-
   "block.simple_metalcraft.netherite_anvil": "Netherite Anvil",
   "block.simple_metalcraft.chipped_netherite_anvil": "Chipped Netherite Anvil",
   "block.simple_metalcraft.damaged_netherite_anvil": "Damaged Netherite Anvil",
@@ -75,6 +74,9 @@
   "block.simple_metalcraft.bellows" : "Bellows",
   "item.simple_metalcraft.bellows" : "Bellows",
 
+  "block.simple_metalcraft.suevite" : "Suevite",
+  "item.simple_metalcraft.suevite" : "Suevite",
+
   "block.simple_metalcraft.tin_ore" : "Tin Ore",
   "block.simple_metalcraft.deepslate_tin_ore" : "Deepslate Tin Ore",
   "block.simple_metalcraft.meteoric_iron_ore" : "Meteoric Iron Ore",
@@ -91,6 +93,8 @@
   "item.simple_metalcraft.blister_steel_block": "Block of Blister Steel",
   "block.simple_metalcraft.steel_block": "Block of Steel",
   "item.simple_metalcraft.steel_block": "Block of Steel",
+  "block.simple_metalcraft.raw_meteoric_iron_block" : "Block of Raw Meteoric Iron",
+  "item.simple_metalcraft.raw_meteoric_iron_block" : "Block of Raw Meteoric Iron",
 
   "item.simple_metalcraft.bow_drill" : "Bow Drill",
   "item.simple_metalcraft.chert" : "Chert",

@@ -1,7 +1,6 @@
 package com.infamous.simple_metalcraft.worldgen;
 
 import com.google.common.collect.Maps;
-import com.infamous.simple_metalcraft.SMModEvents;
 import com.mojang.serialization.Codec;
 import java.util.Map;
 import net.minecraft.Util;
@@ -74,7 +73,7 @@ public class EndstoneReplaceProcessor extends StructureProcessor {
    }
 
    protected StructureProcessorType<?> getType() {
-      return SMModEvents.ENDSTONE_REPLACE;
+      return StructureRegistration.ENDSTONE_REPLACE;
    }
 
    static {

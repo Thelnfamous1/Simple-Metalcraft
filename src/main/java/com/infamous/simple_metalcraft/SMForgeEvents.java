@@ -1,18 +1,29 @@
 package com.infamous.simple_metalcraft;
 
+import com.google.common.collect.HashMultimap;
+import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.ImmutableMultimap;
 import com.infamous.simple_metalcraft.capability.EquipmentCapability;
 import com.infamous.simple_metalcraft.capability.EquipmentCapabilityProvider;
 import com.infamous.simple_metalcraft.crafting.anvil.ForgingRecipe;
 import com.infamous.simple_metalcraft.crafting.anvil.SMAnvilMenu;
 import com.infamous.simple_metalcraft.crafting.anvil.TieredAnvilBlock;
-import com.infamous.simple_metalcraft.registry.SMItems;
+import com.infamous.simple_metalcraft.mixin.ChunkGeneratorAccessor;
+import com.infamous.simple_metalcraft.mixin.StructureSettingsAccessor;
+import com.infamous.simple_metalcraft.registry.SMStructures;
 import com.infamous.simple_metalcraft.util.ArmoringHelper;
 import com.infamous.simple_metalcraft.util.SMTags;
 import com.infamous.simple_metalcraft.util.VillagerTradesHelper;
+import com.infamous.simple_metalcraft.worldgen.OreRegistration;
+import com.infamous.simple_metalcraft.worldgen.StructureRegistration;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Registry;
+import net.minecraft.data.BuiltinRegistries;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.TickTask;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.SimpleContainer;
@@ -30,7 +41,13 @@ import net.minecraft.world.item.*;
 import net.minecraft.world.item.trading.MerchantOffer;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.biome.Biome;
+import net.minecraft.world.level.chunk.ChunkGenerator;
+import net.minecraft.world.level.levelgen.FlatLevelSource;
 import net.minecraft.world.level.levelgen.GenerationStep;
+import net.minecraft.world.level.levelgen.StructureSettings;
+import net.minecraft.world.level.levelgen.feature.ConfiguredStructureFeature;
+import net.minecraft.world.level.levelgen.feature.StructureFeature;
+import net.minecraft.world.level.levelgen.feature.configurations.StructureFeatureConfiguration;
 import net.minecraft.world.level.levelgen.placement.PlacedFeature;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.common.world.BiomeGenerationSettingsBuilder;
@@ -41,13 +58,12 @@ import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.player.AnvilRepairEvent;
 import net.minecraftforge.event.village.VillagerTradesEvent;
 import net.minecraftforge.event.world.BiomeLoadingEvent;
+import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
-import java.util.List;
-import java.util.Optional;
-import java.util.Random;
+import java.util.*;
 import java.util.function.Supplier;
 
 @Mod.EventBusSubscriber(modid = SimpleMetalcraft.MOD_ID, bus = Mod.EventBusSubscriber.Bus.FORGE)
@@ -55,13 +71,112 @@ public class SMForgeEvents {
 
     public static final Random RANDOM = new Random();
 
+    // Notes in this method originate from TelepathicGrunt's Structure Tutorial Mod
     @SubscribeEvent
-    public static void onAttachEntityCapabilities(AttachCapabilitiesEvent<Entity> event) {
+    public static void addDimensionalSpacing(final WorldEvent.Load event) {
+        if(event.getWorld() instanceof ServerLevel serverLevel){
+            ChunkGenerator chunkGenerator = serverLevel.getChunkSource().getGenerator();
+            StructureSettings worldStructureConfig = chunkGenerator.getSettings();
+
+            //////////// BIOME BASED STRUCTURE SPAWNING ////////////
+            /*
+             * NOTE: BiomeModifications from Fabric API does not work in 1.18 currently.
+             * Instead, we will use the below to add our structure to overworld biomes.
+             * Remember, this is temporary until Fabric API finds a better solution for adding structures to biomes.
+             */
+
+            // Create a mutable map we will use for easier adding to biomes
+            HashMap<StructureFeature<?>, HashMultimap<ConfiguredStructureFeature<?, ?>, ResourceKey<Biome>>> customStructToMultiMap = new HashMap<>();
+
+            // Add the registrykey of all biomes that this Configured Structure can spawn in.
+            for(Map.Entry<ResourceKey<Biome>, Biome> biomeEntry : serverLevel.registryAccess().ownedRegistryOrThrow(Registry.BIOME_REGISTRY).entrySet()) {
+                Biome.BiomeCategory biomeCategory = biomeEntry.getValue().getBiomeCategory();
+                // From Infamous: Here, we are mimicking how vanilla ruined portals are associated with biomes in a more general sense so that there's mod compat
+                switch (biomeCategory){
+                    case DESERT -> associateBiomeToConfiguredStructure(customStructToMultiMap, StructureRegistration.METEORITE_DESERT, biomeEntry.getKey());
+                    case JUNGLE -> associateBiomeToConfiguredStructure(customStructToMultiMap, StructureRegistration.METEORITE_JUNGLE, biomeEntry.getKey());
+                    case OCEAN -> associateBiomeToConfiguredStructure(customStructToMultiMap, StructureRegistration.METEORITE_OCEAN, biomeEntry.getKey());
+                    case MOUNTAIN, EXTREME_HILLS, MESA -> associateBiomeToConfiguredStructure(customStructToMultiMap, StructureRegistration.METEORITE_MOUNTAIN, biomeEntry.getKey());
+                    case THEEND -> associateBiomeToConfiguredStructure(customStructToMultiMap, StructureRegistration.METEORITE_END, biomeEntry.getKey());
+                    case NETHER, NONE -> {} // We don't want meteorites spawning in the Nether or the Void
+                    default -> associateBiomeToConfiguredStructure(customStructToMultiMap, StructureRegistration.METEORITE_STANDARD, biomeEntry.getKey());
+                }
+            }
+
+            // Grab the map that holds what ConfigureStructures a structure has and what biomes it can spawn in.
+            ImmutableMap.Builder<StructureFeature<?>, ImmutableMultimap<ConfiguredStructureFeature<?, ?>, ResourceKey<Biome>>> tempStructureToMultiMap = ImmutableMap.builder();
+            ((StructureSettingsAccessor)worldStructureConfig).simple_metalcraft_getConfiguredStructures().entrySet().forEach(tempStructureToMultiMap::put);
+
+            // Add our structures to the structure map/multimap and set the world to use this combined map/multimap.
+            customStructToMultiMap.forEach((key, value) -> tempStructureToMultiMap.put(key, ImmutableMultimap.copyOf(value)));
+
+            ((StructureSettingsAccessor)worldStructureConfig).simple_metalcraft_setConfiguredStructures(tempStructureToMultiMap.build());
+
+            //////////// DIMENSION BASED STRUCTURE SPAWNING (OPTIONAL) ////////////
+            /*
+             * Skip Terraforged's chunk generator as they are a special case of a mod locking down their chunkgenerator.
+             * They will handle your structure spacing for your if you add to BuiltinRegistries.NOISE_GENERATOR_SETTINGS in your structure's registration.
+             */
+            ResourceLocation chunkGeneratorResource = Registry.CHUNK_GENERATOR.getKey(((ChunkGeneratorAccessor)chunkGenerator).simple_metalcraft_getCodec());
+            if(chunkGeneratorResource != null && chunkGeneratorResource.getNamespace().equals("terraforged")) return;
+
+            /*
+             * Prevent spawning our structure in Vanilla's superflat world as
+             * people seem to want their superflat worlds free of modded structures.
+             * Also that vanilla superflat is really tricky and buggy to work with in my experience.
+             */
+            if(chunkGenerator instanceof FlatLevelSource &&
+                    serverLevel.dimension().equals(Level.OVERWORLD)){
+                return;
+            }
+
+            /*
+             * putIfAbsent so people can override the spacing with dimension datapacks themselves if they wish to customize spacing more precisely per dimension.
+             *
+             * NOTE: if you add per-dimension spacing configs, you can't use putIfAbsent as BuiltinRegistries.NOISE_GENERATOR_SETTINGS in FMLCommonSetupEvent
+             * already added your default structure spacing to some dimensions. You would need to override the spacing with .put(...)
+             * And if you want to do dimension blacklisting, you need to remove the spacing entry entirely from the map below to prevent generation safely.
+             */
+            Map<StructureFeature<?>, StructureFeatureConfiguration> tempMap = new HashMap<>(worldStructureConfig.structureConfig());
+            tempMap.putIfAbsent(SMStructures.METEORITE.get(), StructureSettings.DEFAULTS.get(SMStructures.METEORITE.get()));
+            ((StructureSettingsAccessor)worldStructureConfig).simple_metalcraft_setStructureConfig(tempMap);
+        }
+    }
+
+    // Notes in this method originate from TelepathicGrunt's Structure Tutorial Mod
+    /**
+     * Helper method that handles setting up the map to multimap relationship to help prevent issues.
+     */
+    private static void associateBiomeToConfiguredStructure(Map<StructureFeature<?>, HashMultimap<ConfiguredStructureFeature<?, ?>, ResourceKey<Biome>>> customStructureToMultiMap, ConfiguredStructureFeature<?, ?> configuredStructureFeature, ResourceKey<Biome> biomeRegistryKey) {
+        customStructureToMultiMap.putIfAbsent(configuredStructureFeature.feature, HashMultimap.create());
+        HashMultimap<ConfiguredStructureFeature<?, ?>, ResourceKey<Biome>> configuredStructureToBiomeMultiMap = customStructureToMultiMap.get(configuredStructureFeature.feature);
+        if(configuredStructureToBiomeMultiMap.containsValue(biomeRegistryKey)) {
+            SimpleMetalcraft.LOGGER.error("""
+                    Detected 2 ConfiguredStructureFeatures that share the same base StructureFeature trying to be added to same biome. One will be prevented from spawning.
+                    This issue happens with vanilla too and is why a Snowy Village and Plains Village cannot spawn in the same biome because they both use the Village base structure.
+                    The two conflicting ConfiguredStructures are: {}, {}
+                    The biome that is attempting to be shared: {}
+                """,
+                    BuiltinRegistries.CONFIGURED_STRUCTURE_FEATURE.getId(configuredStructureFeature),
+                    BuiltinRegistries.CONFIGURED_STRUCTURE_FEATURE.getId(configuredStructureToBiomeMultiMap.entries().stream().filter(e -> e.getValue() == biomeRegistryKey).findFirst().get().getKey()),
+                    biomeRegistryKey
+            );
+        }
+        else{
+            configuredStructureToBiomeMultiMap.put(configuredStructureFeature, biomeRegistryKey);
+            SimpleMetalcraft.LOGGER.info("Associating {} to {}",
+                    BuiltinRegistries.CONFIGURED_STRUCTURE_FEATURE.getKey(configuredStructureFeature),
+                    biomeRegistryKey);
+        }
+    }
+
+    @SubscribeEvent
+    public static void onAttachEntityCapabilities(final AttachCapabilitiesEvent<Entity> event) {
         EquipmentCapabilityProvider.attach(event);
     }
 
     @SubscribeEvent
-    public static void onPlayerPostTick(TickEvent.PlayerTickEvent event){
+    public static void onPlayerPostTick(final TickEvent.PlayerTickEvent event){
         if(event.phase == TickEvent.Phase.END){
             Player player = event.player;
             if (!player.isEyeInFluid(FluidTags.WATER)) {
@@ -88,7 +203,7 @@ public class SMForgeEvents {
     }
 
     @SubscribeEvent(priority = EventPriority.HIGHEST)
-    public static void onAnvilUpdate(AnvilUpdateEvent event){
+    public static void onAnvilUpdate(final AnvilUpdateEvent event){
         if(event.isCanceled()) return;
         ItemStack ingredient = event.getLeft();
         ItemStack catalyst = event.getRight();
@@ -108,7 +223,7 @@ public class SMForgeEvents {
     }
 
     @SubscribeEvent(priority = EventPriority.HIGHEST)
-    public static void onAnvilRepair(AnvilRepairEvent event){
+    public static void onAnvilRepair(final AnvilRepairEvent event){
         Player player = event.getPlayer();
         AbstractContainerMenu menu = player.containerMenu;
         if(menu instanceof SMAnvilMenu anvilMenu){
@@ -124,7 +239,7 @@ public class SMForgeEvents {
 
 
     @SubscribeEvent(priority = EventPriority.HIGHEST)
-    public static void onEntityJoinWorld(EntityJoinWorldEvent event){
+    public static void onEntityJoinWorld(final EntityJoinWorldEvent event){
         Level level = event.getWorld();
         if(!level.isClientSide){
             Entity entity = event.getEntity();
@@ -154,7 +269,7 @@ public class SMForgeEvents {
     }
 
     @SubscribeEvent(priority = EventPriority.HIGH)
-    public static void onBiomeLoading(BiomeLoadingEvent event){
+    public static void onBiomeLoading(final BiomeLoadingEvent event){
         BiomeGenerationSettingsBuilder builder = event.getGeneration();
         List<Supplier<PlacedFeature>> undergroundOreFeatures =
                 builder.getFeatures(GenerationStep.Decoration.UNDERGROUND_ORES);
@@ -164,19 +279,19 @@ public class SMForgeEvents {
         if(category != Biome.BiomeCategory.THEEND
                 && category != Biome.BiomeCategory.NETHER){
             SimpleMetalcraft.LOGGER.info("Adding tin ore to biome: " + biomeName);
-            undergroundOreFeatures.add(() -> SMModEvents.PLACED_ORE_TIN);
-            undergroundOreFeatures.add(() -> SMModEvents.PLACED_ORE_TIN_LOWER);
+            undergroundOreFeatures.add(() -> OreRegistration.PLACED_ORE_TIN);
+            undergroundOreFeatures.add(() -> OreRegistration.PLACED_ORE_TIN_LOWER);
         }
     }
 
     @SubscribeEvent(priority = EventPriority.HIGHEST)
-    public static void onVillagerTrades(VillagerTradesEvent event){
+    public static void onVillagerTrades(final VillagerTradesEvent event){
         VillagerProfession profession = event.getType();
 
         if(profession != VillagerProfession.ARMORER
                 && profession != VillagerProfession.WEAPONSMITH
                 && profession != VillagerProfession.TOOLSMITH)
-            return;
+            return; // We don't care about non-blacksmith professions
 
         Int2ObjectMap<List<VillagerTrades.ItemListing>> trades = event.getTrades();
         if (trades != null && !trades.isEmpty()) {
@@ -202,7 +317,7 @@ public class SMForgeEvents {
                             MerchantOffer merchantOffer = trade.getOffer(null, RANDOM);
                             if (merchantOffer != null) {
                                 ItemStack tradeResult = merchantOffer.getResult();
-                                Optional<VillagerTrades.ItemListing> optionalReplacementTrade = buildReplacementTrade(tradeResult, profession);
+                                Optional<VillagerTrades.ItemListing> optionalReplacementTrade = VillagerTradesHelper.buildReplacementTrade(tradeResult, profession);
                                 if(optionalReplacementTrade.isPresent()){
 
                                     SimpleMetalcraft.LOGGER.info("Replacing level {} trade for {}: {} -> {}",
@@ -218,179 +333,11 @@ public class SMForgeEvents {
                             }
                         } catch (NullPointerException ignored){
                             // If ItemListing#getOffer fails, just make a note of it in the log.
-                            SimpleMetalcraft.LOGGER.info("Failed to modify level {} trade at index {} for {}", levelIndex, tradeIndex, profession);
+                            SimpleMetalcraft.LOGGER.info("Failed to modify {} at index {} at level {} for {}", trade, tradeIndex, levelIndex, profession);
                         }
                     }
                 }
             }
         }
     }
-
-        /*
-            p_35633_.put(VillagerProfession.ARMORER, toIntMap(
-                ImmutableMap.of(
-                1, new VillagerTrades.ItemListing[]{
-                    new VillagerTrades.EmeraldForItems(Items.COAL, 15, 16, 2),
-                    new VillagerTrades.ItemsForEmeralds(new ItemStack(Items.IRON_LEGGINGS), 7, 1, 12, 1, 0.2F),
-                    new VillagerTrades.ItemsForEmeralds(new ItemStack(Items.IRON_BOOTS), 4, 1, 12, 1, 0.2F),
-                    new VillagerTrades.ItemsForEmeralds(new ItemStack(Items.IRON_HELMET), 5, 1, 12, 1, 0.2F),
-                    new VillagerTrades.ItemsForEmeralds(new ItemStack(Items.IRON_CHESTPLATE), 9, 1, 12, 1, 0.2F)
-                    },
-                2, new VillagerTrades.ItemListing[]{
-                    new VillagerTrades.EmeraldForItems(Items.IRON_INGOT, 4, 12, 10),
-                    new VillagerTrades.ItemsForEmeralds(new ItemStack(Items.BELL), 36, 1, 12, 5, 0.2F),
-                    new VillagerTrades.ItemsForEmeralds(new ItemStack(Items.CHAINMAIL_BOOTS), 1, 1, 12, 5, 0.2F),
-                    new VillagerTrades.ItemsForEmeralds(new ItemStack(Items.CHAINMAIL_LEGGINGS), 3, 1, 12, 5, 0.2F)
-                    },
-                3, new VillagerTrades.ItemListing[]{
-                    new VillagerTrades.EmeraldForItems(Items.LAVA_BUCKET, 1, 12, 20),
-                    new VillagerTrades.EmeraldForItems(Items.DIAMOND, 1, 12, 20),
-                    new VillagerTrades.ItemsForEmeralds(new ItemStack(Items.CHAINMAIL_HELMET), 1, 1, 12, 10, 0.2F),
-                    new VillagerTrades.ItemsForEmeralds(new ItemStack(Items.CHAINMAIL_CHESTPLATE), 4, 1, 12, 10, 0.2F),
-                    new VillagerTrades.ItemsForEmeralds(new ItemStack(Items.SHIELD), 5, 1, 12, 10, 0.2F)
-                    },
-                4, new VillagerTrades.ItemListing[]{
-                    new VillagerTrades.EnchantedItemForEmeralds(Items.DIAMOND_LEGGINGS, 14, 3, 15, 0.2F),
-                    new VillagerTrades.EnchantedItemForEmeralds(Items.DIAMOND_BOOTS, 8, 3, 15, 0.2F)
-                    },
-                5, new VillagerTrades.ItemListing[]{
-                    new VillagerTrades.EnchantedItemForEmeralds(Items.DIAMOND_HELMET, 8, 3, 30, 0.2F),
-                    new VillagerTrades.EnchantedItemForEmeralds(Items.DIAMOND_CHESTPLATE, 16, 3, 30, 0.2F)
-                    }))
-                );
-            p_35633_.put(VillagerProfession.WEAPONSMITH, toIntMap(
-                ImmutableMap.of(
-                1, new VillagerTrades.ItemListing[]{
-                    new VillagerTrades.EmeraldForItems(Items.COAL, 15, 16, 2),
-                    new VillagerTrades.ItemsForEmeralds(new ItemStack(Items.IRON_AXE), 3, 1, 12, 1, 0.2F),
-                    new VillagerTrades.EnchantedItemForEmeralds(Items.IRON_SWORD, 2, 3, 1)
-                    },
-                2, new VillagerTrades.ItemListing[]{
-                    new VillagerTrades.EmeraldForItems(Items.IRON_INGOT, 4, 12, 10),
-                    new VillagerTrades.ItemsForEmeralds(new ItemStack(Items.BELL), 36, 1, 12, 5, 0.2F)
-                    },
-                3, new VillagerTrades.ItemListing[]{
-                    new VillagerTrades.EmeraldForItems(Items.FLINT, 24, 12, 20)
-                    },
-                4, new VillagerTrades.ItemListing[]{
-                    new VillagerTrades.EmeraldForItems(Items.DIAMOND, 1, 12, 30),
-                    new VillagerTrades.EnchantedItemForEmeralds(Items.DIAMOND_AXE, 12, 3, 15, 0.2F)
-                    },
-                5, new VillagerTrades.ItemListing[]{
-                    new VillagerTrades.EnchantedItemForEmeralds(Items.DIAMOND_SWORD, 8, 3, 30, 0.2F)
-                    }))
-                );
-            p_35633_.put(VillagerProfession.TOOLSMITH, toIntMap(
-                ImmutableMap.of(
-                1, new VillagerTrades.ItemListing[]{
-                    new VillagerTrades.EmeraldForItems(Items.COAL, 15, 16, 2),
-                    new VillagerTrades.ItemsForEmeralds(new ItemStack(Items.STONE_AXE), 1, 1, 12, 1, 0.2F),
-                    new VillagerTrades.ItemsForEmeralds(new ItemStack(Items.STONE_SHOVEL), 1, 1, 12, 1, 0.2F),
-                    new VillagerTrades.ItemsForEmeralds(new ItemStack(Items.STONE_PICKAXE), 1, 1, 12, 1, 0.2F),
-                    new VillagerTrades.ItemsForEmeralds(new ItemStack(Items.STONE_HOE), 1, 1, 12, 1, 0.2F)
-                    },
-                2, new VillagerTrades.ItemListing[]{
-                    new VillagerTrades.EmeraldForItems(Items.IRON_INGOT, 4, 12, 10),
-                    new VillagerTrades.ItemsForEmeralds(new ItemStack(Items.BELL), 36, 1, 12, 5, 0.2F)
-                    },
-                3, new VillagerTrades.ItemListing[]{
-                    new VillagerTrades.EmeraldForItems(Items.FLINT, 30, 12, 20),
-                    new VillagerTrades.EnchantedItemForEmeralds(Items.IRON_AXE, 1, 3, 10, 0.2F),
-                    new VillagerTrades.EnchantedItemForEmeralds(Items.IRON_SHOVEL, 2, 3, 10, 0.2F),
-                    new VillagerTrades.EnchantedItemForEmeralds(Items.IRON_PICKAXE, 3, 3, 10, 0.2F),
-                    new VillagerTrades.ItemsForEmeralds(new ItemStack(Items.DIAMOND_HOE), 4, 1, 3, 10, 0.2F)
-                    },
-                4, new VillagerTrades.ItemListing[]{
-                    new VillagerTrades.EmeraldForItems(Items.DIAMOND, 1, 12, 30),
-                    new VillagerTrades.EnchantedItemForEmeralds(Items.DIAMOND_AXE, 12, 3, 15, 0.2F),
-                    new VillagerTrades.EnchantedItemForEmeralds(Items.DIAMOND_SHOVEL, 5, 3, 15, 0.2F)
-                    },
-                5, new VillagerTrades.ItemListing[]{
-                    new VillagerTrades.EnchantedItemForEmeralds(Items.DIAMOND_PICKAXE, 13, 3, 30, 0.2F)
-                    }))
-                );
-         */
-
-    private static Optional<VillagerTrades.ItemListing> buildReplacementTrade(ItemStack tradeResult, VillagerProfession profession) {
-        Optional<VillagerTrades.ItemListing> replacementTrade = Optional.empty();
-
-        if(tradeResult.is(Items.DIAMOND)){
-            if(profession == VillagerProfession.ARMORER){
-                replacementTrade = Optional.of(new VillagerTradesHelper.EmeraldForItems(SMItems.STEEL_INGOT.get(), 1, 12, 20));
-            } else if(profession == VillagerProfession.WEAPONSMITH){
-                replacementTrade = Optional.of(new VillagerTradesHelper.EmeraldForItems(SMItems.STEEL_INGOT.get(), 1, 12, 30));
-            } else if(profession == VillagerProfession.TOOLSMITH){
-                replacementTrade = Optional.of(new VillagerTradesHelper.EmeraldForItems(SMItems.STEEL_INGOT.get(), 1, 12, 30));
-
-            }
-        }
-
-        else if(tradeResult.is(Items.IRON_BOOTS)){
-            replacementTrade = Optional.of(new VillagerTradesHelper.ItemsForEmeralds(new ItemStack(Items.CHAINMAIL_BOOTS), 1, 1, 12, 1, 0.2F));
-        }
-        else if(tradeResult.is(Items.IRON_CHESTPLATE)){
-            replacementTrade = Optional.of(new VillagerTradesHelper.ItemsForEmeralds(new ItemStack(Items.CHAINMAIL_CHESTPLATE), 4, 1, 12, 1, 0.2F));
-        }
-        else if(tradeResult.is(Items.IRON_HELMET)){
-            replacementTrade = Optional.of(new VillagerTradesHelper.ItemsForEmeralds(new ItemStack(Items.CHAINMAIL_HELMET), 1, 1, 12, 1, 0.2F));
-        }
-        else if(tradeResult.is(Items.IRON_LEGGINGS)){
-            replacementTrade = Optional.of(new VillagerTradesHelper.ItemsForEmeralds(new ItemStack(Items.CHAINMAIL_BOOTS), 3, 1, 12, 1, 0.2F));
-        }
-
-        else if(tradeResult.is(Items.CHAINMAIL_BOOTS)){
-            replacementTrade = Optional.of(new VillagerTradesHelper.ItemsForEmeralds(new ItemStack(Items.IRON_BOOTS), 4, 1, 12, 5, 0.2F));
-        }
-        else if(tradeResult.is(Items.CHAINMAIL_CHESTPLATE)){
-            replacementTrade = Optional.of(new VillagerTradesHelper.ItemsForEmeralds(new ItemStack(Items.IRON_CHESTPLATE), 9, 1, 12, 10, 0.2F));
-        }
-        else if(tradeResult.is(Items.CHAINMAIL_HELMET)){
-            replacementTrade = Optional.of(new VillagerTradesHelper.ItemsForEmeralds(new ItemStack(Items.IRON_HELMET), 5, 1, 12, 10, 0.2F));
-        }
-        else if(tradeResult.is(Items.CHAINMAIL_LEGGINGS)){
-            replacementTrade = Optional.of(new VillagerTradesHelper.ItemsForEmeralds(new ItemStack(Items.IRON_BOOTS), 7, 1, 12, 5, 0.2F));
-        }
-
-        else if(tradeResult.is(Items.DIAMOND_AXE)){
-            replacementTrade = Optional.of(new VillagerTradesHelper.EnchantedItemForEmeralds(SMItems.STEEL_AXE.get(), 12, 3, 15, 0.2F));
-        } else if(tradeResult.is(Items.DIAMOND_BOOTS)){
-            replacementTrade = Optional.of(new VillagerTradesHelper.EnchantedItemForEmeralds(SMItems.STEEL_BOOTS.get(), 8, 3, 15, 0.2F));
-        }
-        else if(tradeResult.is(Items.DIAMOND_CHESTPLATE)){
-            replacementTrade = Optional.of(new VillagerTradesHelper.EnchantedItemForEmeralds(SMItems.STEEL_CHESTPLATE.get(), 16, 3, 30, 0.2F));
-        }
-        else if(tradeResult.is(Items.DIAMOND_HELMET)){
-            replacementTrade = Optional.of(new VillagerTradesHelper.EnchantedItemForEmeralds(SMItems.STEEL_HELMET.get(), 8, 3, 30, 0.2F));
-        }
-        else if(tradeResult.is(Items.DIAMOND_HOE)){
-            replacementTrade = Optional.of(new VillagerTradesHelper.ItemsForEmeralds(new ItemStack(SMItems.STEEL_HOE.get()), 4, 1, 3, 10, 0.2F));
-        }
-        else if(tradeResult.is(Items.DIAMOND_LEGGINGS)){
-            replacementTrade = Optional.of(new VillagerTradesHelper.EnchantedItemForEmeralds(SMItems.STEEL_LEGGINGS.get(), 14, 3, 15, 0.2F));
-        }
-        else if(tradeResult.is(Items.DIAMOND_PICKAXE)){
-            replacementTrade = Optional.of(new VillagerTradesHelper.EnchantedItemForEmeralds(SMItems.STEEL_PICKAXE.get(), 13, 3, 30, 0.2F));
-        }
-        else if(tradeResult.is(Items.DIAMOND_SHOVEL)){
-            replacementTrade = Optional.of(new VillagerTradesHelper.EnchantedItemForEmeralds(SMItems.STEEL_SHOVEL.get(), 5, 3, 15, 0.2F));
-        }
-        else if(tradeResult.is(Items.DIAMOND_SWORD)){
-            replacementTrade = Optional.of(new VillagerTradesHelper.EnchantedItemForEmeralds(SMItems.STEEL_SWORD.get(), 8, 3, 30, 0.2F));
-        }
-        else if(tradeResult.is(Items.STONE_AXE)){
-            replacementTrade = Optional.of(new VillagerTradesHelper.ItemsForEmeralds(new ItemStack(SMItems.COPPER_AXE.get()), 1, 1, 12, 1, 0.2F));
-        }
-        else if(tradeResult.is(Items.STONE_HOE)){
-            replacementTrade = Optional.of(new VillagerTradesHelper.ItemsForEmeralds(new ItemStack(SMItems.COPPER_HOE.get()), 1, 1, 12, 1, 0.2F));
-        }
-        else if (tradeResult.is(Items.STONE_PICKAXE)) {
-            replacementTrade = Optional.of(new VillagerTradesHelper.ItemsForEmeralds(new ItemStack(SMItems.COPPER_PICKAXE.get()), 1, 1, 12, 1, 0.2F));
-        }
-        else if(tradeResult.is(Items.STONE_SHOVEL)){
-            replacementTrade = Optional.of(new VillagerTradesHelper.ItemsForEmeralds(new ItemStack(SMItems.COPPER_SHOVEL.get()), 1, 1, 12, 1, 0.2F));
-        }
-
-        return replacementTrade;
-    }
-
 }

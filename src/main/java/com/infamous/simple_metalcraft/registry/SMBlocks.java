@@ -24,7 +24,6 @@ public class SMBlocks {
     private SMBlocks(){};
 
     public static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(ForgeRegistries.BLOCKS, SimpleMetalcraft.MOD_ID);
-    public static final DeferredRegister<Block> VANILLA_BLOCKS = DeferredRegister.create(ForgeRegistries.BLOCKS, "minecraft");
 
     public static final RegistryObject<Block> TIN_ORE = BLOCKS.register("tin_ore",
             SMBlocks::buildMetalOreBlock);

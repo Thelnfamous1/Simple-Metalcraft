@@ -11,8 +11,8 @@ import java.util.Map;
 @Mixin(StructureFeature.class)
 public interface StructureFeatureAccessor {
 
-    @Accessor
-    static Map<StructureFeature<?>, GenerationStep.Decoration> getSTEP() {
+    @Accessor("STEP")
+    static Map<StructureFeature<?>, GenerationStep.Decoration> simple_metalcraft_getSTEP() {
         return null;
     }
 }

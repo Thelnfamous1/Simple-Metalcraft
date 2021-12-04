@@ -7,6 +7,9 @@ import com.infamous.simple_metalcraft.crafting.furnace.SMCookingSerializer;
 import com.infamous.simple_metalcraft.crafting.furnace.blasting.SMBlastingRecipe;
 import com.infamous.simple_metalcraft.crafting.furnace.blooming.BloomingRecipe;
 import com.infamous.simple_metalcraft.crafting.furnace.cementation.CementationRecipe;
+import net.minecraft.core.Registry;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraftforge.registries.DeferredRegister;
@@ -42,6 +45,25 @@ public class SMRecipes {
         public static RecipeType<CementationRecipe> CEMENTATION;
         public static RecipeType<ForgingRecipe> FORGING;
         public static RecipeType<SMBlastingRecipe> BLASTING;
+
+        private Types(){
+            throw new IllegalStateException("Utility class");
+        }
+
+        public static void registerRecipeTypes() {
+            BLOOMING = registerRecipeType(BLOOMING_NAME);
+            CEMENTATION = registerRecipeType(CEMENTATION_NAME);
+            FORGING = registerRecipeType(FORGING_NAME);
+            BLASTING = registerRecipeType(BLASTING_NAME);
+        }
+
+        static <T extends Recipe<?>> RecipeType<T> registerRecipeType(final String recipeName) {
+            return Registry.register(Registry.RECIPE_TYPE, new ResourceLocation(SimpleMetalcraft.withNamespace(recipeName)), new RecipeType<T>() {
+                public String toString() {
+                    return recipeName;
+                }
+            });
+        }
     }
 
 }

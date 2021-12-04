@@ -8,6 +8,8 @@ import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.util.Locale;
+
 // The value here should match an entry in the META-INF/mods.toml file
 @Mod(SimpleMetalcraft.MOD_ID)
 public class SimpleMetalcraft
@@ -29,5 +31,9 @@ public class SimpleMetalcraft
 
         // Register ourselves for server and other game events we are interested in
         MinecraftForge.EVENT_BUS.register(this);
+    }
+
+    public static String withNamespace(String name) {
+        return (MOD_ID + ":" + name).toLowerCase(Locale.ROOT);
     }
 }

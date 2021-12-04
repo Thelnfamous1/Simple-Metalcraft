@@ -1,7 +1,6 @@
 package com.infamous.simple_metalcraft.worldgen;
 
 import com.google.common.collect.Lists;
-import com.infamous.simple_metalcraft.SMModEvents;
 import com.infamous.simple_metalcraft.registry.SMBlocks;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.Dynamic;
@@ -49,13 +48,13 @@ public class MeteoritePiece extends TemplateStructurePiece {
    private final MeteoritePiece.Properties properties;
 
    public MeteoritePiece(StructureManager structureManager, BlockPos blockPos, MeteoritePiece.VerticalPlacement verticalPlacement, MeteoritePiece.Properties properties, ResourceLocation resourceLocation, StructureTemplate structureTemplate, Rotation rotation, Mirror mirror, BlockPos blockPos1) {
-      super(SMModEvents.METEORITE, 0, structureManager, resourceLocation, resourceLocation.toString(), makeSettings(mirror, rotation, verticalPlacement, blockPos1, properties), blockPos);
+      super(StructureRegistration.METEORITE, 0, structureManager, resourceLocation, resourceLocation.toString(), makeSettings(mirror, rotation, verticalPlacement, blockPos1, properties), blockPos);
       this.verticalPlacement = verticalPlacement;
       this.properties = properties;
    }
 
    public MeteoritePiece(StructureManager structureManager, CompoundTag compoundTag) {
-      super(SMModEvents.METEORITE, compoundTag, structureManager, (rl) -> makeSettings(structureManager, compoundTag, rl));
+      super(StructureRegistration.METEORITE, compoundTag, structureManager, (rl) -> makeSettings(structureManager, compoundTag, rl));
       this.verticalPlacement = MeteoritePiece.VerticalPlacement.byName(compoundTag.getString("VerticalPlacement"));
       this.properties = MeteoritePiece.Properties.CODEC.parse(new Dynamic<>(NbtOps.INSTANCE, compoundTag.get("Properties"))).getOrThrow(true, LOGGER::error);
    }
