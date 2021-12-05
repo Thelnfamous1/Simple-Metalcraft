@@ -28,7 +28,6 @@ public class SMModEvents {
                     DispenserRegistration.registerDispenserBehavior();
                     StructureRegistration.registerStructurePieceTypes();
                     StructureRegistration.registerStructureFeatures();
-                    StructureRegistration.registerStructureProcessors();
                     StructureRegistration.addStructuresToMaps();
                 }
         );

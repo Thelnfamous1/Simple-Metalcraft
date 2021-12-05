@@ -41,7 +41,7 @@ import org.apache.logging.log4j.Logger;
 public class MeteoritePiece extends TemplateStructurePiece {
    private static final Logger LOGGER = LogManager.getLogger();
    private static final float PROBABILITY_OF_RAW_MET_IRON_GONE = 0.3F;
-   private static final float PROBABILITY_OF_OLIVINE_INSTEAD_OF_MET_IRON_ORE = 0.2F;
+   private static final float PROBABILITY_OF_PERIDOT_INSTEAD_OF_MET_IRON_ORE = 0.2F;
    private static final float PROBABILITY_OF_DIAMOND_INSTEAD_OF_MET_IRON_ORE = 0.02F;
    private static final float DEFAULT_MOSSINESS = 0.2F;
    private final MeteoritePiece.VerticalPlacement verticalPlacement;
@@ -85,7 +85,7 @@ public class MeteoritePiece extends TemplateStructurePiece {
       BlockIgnoreProcessor blockignoreprocessor = properties.airPocket ? BlockIgnoreProcessor.STRUCTURE_BLOCK : BlockIgnoreProcessor.STRUCTURE_AND_AIR;
       List<ProcessorRule> processorRules = Lists.newArrayList();
       processorRules.add(getBlockReplaceRule(SMBlocks.RAW_METEORIC_IRON_BLOCK.get(), PROBABILITY_OF_RAW_MET_IRON_GONE, Blocks.AIR));
-      processorRules.add(getBlockReplaceRule(SMBlocks.METEORIC_IRON_ORE.get(), PROBABILITY_OF_OLIVINE_INSTEAD_OF_MET_IRON_ORE, Blocks.EMERALD_ORE));
+      processorRules.add(getBlockReplaceRule(SMBlocks.METEORIC_IRON_ORE.get(), PROBABILITY_OF_PERIDOT_INSTEAD_OF_MET_IRON_ORE, Blocks.EMERALD_ORE));
       if (properties.diamond) {
          processorRules.add(getBlockReplaceRule(SMBlocks.METEORIC_IRON_ORE.get(), PROBABILITY_OF_DIAMOND_INSTEAD_OF_MET_IRON_ORE, Blocks.DIAMOND_ORE));
       }
@@ -98,10 +98,6 @@ public class MeteoritePiece extends TemplateStructurePiece {
               .addProcessor(new RuleProcessor(processorRules))
               .addProcessor(new BlockAgeProcessor(properties.mossiness))
               .addProcessor(new ProtectedBlockProcessor(BlockTags.FEATURES_CANNOT_REPLACE.getName()));
-
-      if (properties.replaceWithEndstone) {
-         structureplacesettings.addProcessor(EndstoneReplaceProcessor.INSTANCE);
-      }
 
       return structureplacesettings;
    }
@@ -253,26 +249,23 @@ public class MeteoritePiece extends TemplateStructurePiece {
                               Codec.FLOAT.fieldOf("mossiness").forGetter((mp$p) -> mp$p.mossiness),
                               Codec.BOOL.fieldOf("air_pocket").forGetter((mp$p) -> mp$p.airPocket),
                               Codec.BOOL.fieldOf("overgrown").forGetter((mp$p) -> mp$p.overgrown),
-                              Codec.BOOL.fieldOf("vines").forGetter((mp$p) -> mp$p.vines),
-                              Codec.BOOL.fieldOf("replaceWithEndstone").forGetter((mp$p) -> mp$p.replaceWithEndstone))
+                              Codec.BOOL.fieldOf("vines").forGetter((mp$p) -> mp$p.vines))
                       .apply(propertiesInstance, Properties::new));
       public boolean diamond;
       public float mossiness = DEFAULT_MOSSINESS;
       public boolean airPocket;
       public boolean overgrown;
       public boolean vines;
-      public boolean replaceWithEndstone;
 
       public Properties() {
       }
 
-      public Properties(boolean diamond, float mossiness, boolean airPocket, boolean overgrown, boolean vines, boolean replaceWithEndstone) {
+      public Properties(boolean diamond, float mossiness, boolean airPocket, boolean overgrown, boolean vines) {
          this.diamond = diamond;
          this.mossiness = mossiness;
          this.airPocket = airPocket;
          this.overgrown = overgrown;
          this.vines = vines;
-         this.replaceWithEndstone = replaceWithEndstone;
       }
    }
 

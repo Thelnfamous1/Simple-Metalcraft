@@ -88,7 +88,6 @@ public class MeteoriteFeature extends StructureFeature<MeteoriteConfiguration> {
                               QuartPos.fromBlock(targetPos.getZ()))) ?
                       Optional.empty() :
                       Optional.of((spb, mcc) -> {
-                            meteoritePiece$properties.diamond = worldgenRandom.nextFloat() < PROBABILITY_OF_DIAMOND;
                             spb.addPiece(new MeteoritePiece(mcc.structureManager(), targetPos, meteoritePiece$verticalPlacement, meteoritePiece$properties, meteoriteLocation, structureTemplate, rotation, mirror, templateCenterPos));
                       });
    }
@@ -128,6 +127,7 @@ public class MeteoriteFeature extends StructureFeature<MeteoriteConfiguration> {
             meteoritePiece$verticalPlacement = MeteoritePiece.VerticalPlacement.IN_END;
             meteoritePiece$properties.airPocket = worldgenRandom.nextFloat() < PROBABILITY_OF_AIR_POCKET;
             meteoritePiece$properties.mossiness = 0.0F;
+            meteoritePiece$properties.diamond = true; // Only end meteorites can generate with diamonds in them
          }
          default -> {
             boolean isUnderground = worldgenRandom.nextFloat() < PROBABILITY_OF_UNDERGROUND;
@@ -191,6 +191,10 @@ public class MeteoriteFeature extends StructureFeature<MeteoriteConfiguration> {
       }
 
       return suitableY;
+   }
+
+   private static boolean isEndType(MeteoriteFeature.Type meteoriteFeature$type) {
+      return meteoriteFeature$type == MeteoriteFeature.Type.END;
    }
 
    private static boolean isEndPlacement(MeteoritePiece.VerticalPlacement meteoritePiece$verticalPlacement) {

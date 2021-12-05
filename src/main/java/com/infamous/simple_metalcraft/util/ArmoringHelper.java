@@ -23,6 +23,7 @@ public class ArmoringHelper {
                     SMItems.COPPER_SWORD.get(),
                     SMItems.BRONZE_SWORD.get(),
                     Items.IRON_SWORD,
+                    SMItems.METEORIC_IRON_SWORD.get(),
                     SMItems.STEEL_SWORD.get(),
                     Items.DIAMOND_SWORD
             };
@@ -32,6 +33,7 @@ public class ArmoringHelper {
                     SMItems.COPPER_SHOVEL.get(),
                     SMItems.BRONZE_SHOVEL.get(),
                     Items.IRON_SHOVEL,
+                    SMItems.METEORIC_IRON_SHOVEL.get(),
                     SMItems.STEEL_SHOVEL.get(),
                     Items.DIAMOND_SHOVEL
             };
@@ -41,6 +43,7 @@ public class ArmoringHelper {
                     SMItems.COPPER_PICKAXE.get(),
                     SMItems.BRONZE_PICKAXE.get(),
                     Items.IRON_PICKAXE,
+                    SMItems.METEORIC_IRON_PICKAXE.get(),
                     SMItems.STEEL_PICKAXE.get(),
                     Items.DIAMOND_PICKAXE
             };
@@ -50,6 +53,7 @@ public class ArmoringHelper {
                     SMItems.COPPER_HOE.get(),
                     SMItems.BRONZE_HOE.get(),
                     Items.IRON_HOE,
+                    SMItems.METEORIC_IRON_HOE.get(),
                     SMItems.STEEL_HOE.get(),
                     Items.DIAMOND_HOE
             };
@@ -59,6 +63,7 @@ public class ArmoringHelper {
                     SMItems.COPPER_AXE.get(),
                     SMItems.BRONZE_AXE.get(),
                     Items.IRON_AXE,
+                    SMItems.METEORIC_IRON_AXE.get(),
                     SMItems.STEEL_AXE.get(),
                     Items.DIAMOND_AXE
             };
@@ -68,6 +73,7 @@ public class ArmoringHelper {
                     SMItems.COPPER_HELMET.get(),
                     SMItems.BRONZE_HELMET.get(),
                     Items.IRON_HELMET,
+                    SMItems.METEORIC_IRON_HELMET.get(),
                     SMItems.STEEL_HELMET.get(),
                     Items.DIAMOND_HELMET
             };
@@ -77,6 +83,7 @@ public class ArmoringHelper {
                     SMItems.COPPER_CHESTPLATE.get(),
                     SMItems.BRONZE_CHESTPLATE.get(),
                     Items.IRON_CHESTPLATE,
+                    SMItems.METEORIC_IRON_CHESTPLATE.get(),
                     SMItems.STEEL_CHESTPLATE.get(),
                     Items.DIAMOND_CHESTPLATE
             };
@@ -86,6 +93,7 @@ public class ArmoringHelper {
                     SMItems.COPPER_LEGGINGS.get(),
                     SMItems.BRONZE_LEGGINGS.get(),
                     Items.IRON_LEGGINGS,
+                    SMItems.METEORIC_IRON_LEGGINGS.get(),
                     SMItems.STEEL_LEGGINGS.get(),
                     Items.DIAMOND_LEGGINGS
             };
@@ -96,10 +104,11 @@ public class ArmoringHelper {
                     SMItems.COPPER_BOOTS.get(),
                     SMItems.BRONZE_BOOTS.get(),
                     Items.IRON_BOOTS,
+                    SMItems.METEORIC_IRON_BOOTS.get(),
                     SMItems.STEEL_BOOTS.get(),
                     Items.DIAMOND_BOOTS
             };
-    public static final double TIER_UP_CHANCE = 0.19D;
+    public static final double TIER_UP_CHANCE = 0.25D;
     public static final float EQUIP_CHANCE = 0.15F;
     public static final float HARD_MODE_FINISH_EARLY_CHANCE = 0.1F;
     public static final float DEFAULT_FINISH_EARLY_CHANCE = 0.25F;
@@ -196,7 +205,7 @@ public class ArmoringHelper {
             float finishEarlyChance = mob.level.getDifficulty() == Difficulty.HARD ? HARD_MODE_FINISH_EARLY_CHANCE : DEFAULT_FINISH_EARLY_CHANCE;
 
             int tierIndex = RANDOM.nextInt(2); // 0 or 1
-            for(int tryCount = 1; tryCount <= 4; tryCount++){ // can go up to 4 or 5
+            for(int tryCount = 1; tryCount <= 5; tryCount++){ // can go up to 5 or 6
                 if(RANDOM.nextFloat() < TIER_UP_CHANCE){
                     ++tierIndex;
                 }

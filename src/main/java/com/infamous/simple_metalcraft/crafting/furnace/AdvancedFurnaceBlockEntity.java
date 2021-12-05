@@ -50,7 +50,7 @@ public abstract class AdvancedFurnaceBlockEntity extends AbstractFurnaceBlockEnt
         }
         if (this.currentRecipe == null || !this.currentRecipe.matches(this.buildInputContainer(), this.level)) {
             SMCookingRecipe recipe = this.level.getRecipeManager()
-                    .getRecipeFor(this.getCustomRecipeType(), this, this.level)
+                    .getRecipeFor(this.getCustomRecipeType(), this.buildInputContainer(), this.level)
                     .orElse(null);
             this.failedMatches.clear(); // retains the size of the list, with ItemStack.EMPTY being placed at each index
             if (recipe == null) {

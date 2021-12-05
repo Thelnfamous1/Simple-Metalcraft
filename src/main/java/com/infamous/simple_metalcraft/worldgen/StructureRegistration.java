@@ -36,7 +36,6 @@ public class StructureRegistration {
     public static ConfiguredStructureFeature<MeteoriteConfiguration, ? extends StructureFeature<MeteoriteConfiguration>> METEORITE_MOUNTAIN;
     public static ConfiguredStructureFeature<MeteoriteConfiguration, ? extends StructureFeature<MeteoriteConfiguration>> METEORITE_OCEAN;
     public static ConfiguredStructureFeature<MeteoriteConfiguration, ? extends StructureFeature<MeteoriteConfiguration>> METEORITE_END;
-    public static StructureProcessorType<EndstoneReplaceProcessor> ENDSTONE_REPLACE;
 
     private StructureRegistration(){
         throw new IllegalStateException("Utility class");
@@ -58,10 +57,6 @@ public class StructureRegistration {
     @NotNull
     private static StructureFeatureConfiguration buildStructureFeatureConfiguration(int spacing, float separationFactor, int salt) {
         return new StructureFeatureConfiguration(spacing, (int) (spacing * separationFactor), salt);
-    }
-
-    public static void registerStructureProcessors(){
-        ENDSTONE_REPLACE = registerStructureProcessor("endstone_replace", EndstoneReplaceProcessor.CODEC);
     }
 
     public static void registerStructureFeatures() {
