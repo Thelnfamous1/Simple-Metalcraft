@@ -175,7 +175,12 @@ dependencies {
     runtimeOnly fg.deobf("curse.maven:rei_jei_internals_workaround-521393:3545881")
 
     runtimeOnly fg.deobf("curse.maven:unlitcampfire-417553:3548745")
+
     runtimeOnly fg.deobf("curse.maven:survive-367337:3548236")
+    runtimeOnly fg.deobf("curse.maven:unionlib-367806:3544866")
+
+    runtimeOnly fg.deobf("curse.maven:alexsmobs-426558:3548558")
+    runtimeOnly fg.deobf("curse.maven:citadel-331936:3548548")
 
     // For more info...
     // http://www.gradle.org/docs/current/userguide/artifact_dependencies_tutorial.html
