@@ -31,22 +31,11 @@ import java.util.stream.Collectors;
 public class MeteoriteFeature extends StructureFeature<MeteoriteConfiguration> {
    private static final String[] STRUCTURE_LOCATION_METEORITES =
            new String[]{
-                   "meteorite/meteorite_1",
-                   "meteorite/meteorite_2",
-                   "meteorite/meteorite_3",
-                   "meteorite/meteorite_4",
-                   "meteorite/meteorite_5",
-                   "meteorite/meteorite_6",
-                   "meteorite/meteorite_7",
-                   "meteorite/meteorite_8",
-                   "meteorite/meteorite_9",
-                   "meteorite/meteorite_10"
+                   "meteorite/meteorite_1"
             };
    private static final String[] STRUCTURE_LOCATION_GIANT_METEORITES =
            new String[]{
-                   "meteorite/giant_meteorite_1",
-                   "meteorite/giant_meteorite_2",
-                   "meteorite/giant_meteorite_3"
+                   "meteorite/giant_meteorite_1"
             };
    private static final float PROBABILITY_OF_DIAMOND = 0.05F;
    private static final float PROBABILITY_OF_GIANT_METEORITE = 0.05F;
