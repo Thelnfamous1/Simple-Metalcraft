@@ -71,6 +71,10 @@ public class SMItems {
             ITEMS.register("raw_tin_block",
                     () -> buildBuildingBlock(SMBlocks.RAW_TIN_BLOCK.get()));
 
+    public static final RegistryObject<Item> TIN_BLOCK =
+            ITEMS.register("tin_block",
+                    () -> buildBuildingBlock(SMBlocks.TIN_BLOCK.get()));
+
     public static final RegistryObject<Item> RAW_TIN =
             ITEMS.register("raw_tin", SMItems::buildMaterial);
 

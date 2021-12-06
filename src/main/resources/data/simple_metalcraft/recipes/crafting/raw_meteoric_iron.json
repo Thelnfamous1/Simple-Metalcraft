@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "group": "steel_ingot",
+  "ingredients": [
+    {
+      "item": "simple_metalcraft:raw_meteoric_iron_block"
+    }
+  ],
+  "result": {
+    "item": "simple_metalcraft:raw_meteoric_iron",
+    "count": 9
+  }
+}

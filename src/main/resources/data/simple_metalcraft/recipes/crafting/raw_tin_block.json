@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "###",
+    "###",
+    "###"
+  ],
+  "key": {
+    "#": {
+      "item": "simple_metalcraft:raw_tin"
+    }
+  },
+  "result": {
+    "item": "simple_metalcraft:raw_tin_block"
+  }
+}

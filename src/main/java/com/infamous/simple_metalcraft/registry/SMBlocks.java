@@ -43,6 +43,9 @@ public class SMBlocks {
     public static final RegistryObject<Block> RAW_METEORIC_IRON_BLOCK = BLOCKS.register("raw_meteoric_iron_block",
             SMBlocks::buildMetalOreBlock);
 
+    public static final RegistryObject<Block> TIN_BLOCK = BLOCKS.register("tin_block",
+            SMBlocks::buildMetalBlock);
+
     public static final RegistryObject<Block> BRONZE_BLOCK = BLOCKS.register("bronze_block",
             SMBlocks::buildMetalBlock);
     public static final RegistryObject<Block> CUT_BRONZE = BLOCKS.register("cut_bronze",

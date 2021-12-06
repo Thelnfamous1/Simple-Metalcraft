@@ -89,13 +89,21 @@ public abstract class AbstractCookingCategory<T extends AbstractCookingRecipe> e
 
 	@Override
 	public void draw(T recipe, PoseStack poseStack, double mouseX, double mouseY) {
-		this.animatedFlame.draw(poseStack, 1, 20);
+		this.drawAnimatedFlame(poseStack);
 
 		IDrawableAnimated arrow = this.getArrow(recipe);
-		arrow.draw(poseStack, 24, 18);
+		this.drawArrow(poseStack, arrow);
 
 		this.drawExperience(recipe, poseStack, 0);
 		this.drawCookTime(recipe, poseStack, 45);
+	}
+
+	protected void drawArrow(PoseStack poseStack, IDrawableAnimated arrow) {
+		arrow.draw(poseStack, 24, 18);
+	}
+
+	protected void drawAnimatedFlame(PoseStack poseStack) {
+		this.animatedFlame.draw(poseStack, 1, 20);
 	}
 
 	protected void drawExperience(T recipe, PoseStack poseStack, int y) {

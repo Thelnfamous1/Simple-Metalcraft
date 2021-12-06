@@ -1,6 +1,7 @@
 package com.infamous.simple_metalcraft.integration.jei.util;
 
 import com.infamous.simple_metalcraft.crafting.furnace.SMCookingRecipe;
+import com.mojang.blaze3d.vertex.PoseStack;
 import mezz.jei.api.constants.VanillaTypes;
 import mezz.jei.api.gui.IRecipeLayout;
 import mezz.jei.api.gui.drawable.IDrawableAnimated;
@@ -36,6 +37,16 @@ public abstract class SMCookingCategory<T extends SMCookingRecipe> extends Abstr
     }
 
     @Override
+    protected void drawArrow(PoseStack poseStack, IDrawableAnimated arrow) {
+        arrow.draw(poseStack, 24 + (this.getNumInputs() - 1) * 9, 18);
+    }
+
+    @Override
+    protected void drawAnimatedFlame(PoseStack poseStack) {
+        this.animatedFlame.draw(poseStack, 1 + (this.getNumInputs() - 1) * 9, 20);
+    }
+
+    @Override
     public void setIngredients(T recipe, IIngredients ingredients) {
         ingredients.setInputLists(
                 VanillaTypes.ITEM,
@@ -62,7 +73,7 @@ public abstract class SMCookingCategory<T extends SMCookingRecipe> extends Abstr
         }
 
         for(int i = 0; i < this.getNumOutputs(); i++){
-            int inputSlotsOffset = (9 * numInputs) - 9;
+            int inputSlotsOffset = 9 * (numInputs - 1);
             guiItemStacks.init(outputSlotStart + i, false, 60 + inputSlotsOffset + (26 * i), 18);
         }
 

@@ -81,6 +81,10 @@
   "block.simple_metalcraft.deepslate_tin_ore" : "Deepslate Tin Ore",
   "block.simple_metalcraft.meteoric_iron_ore" : "Meteoric Iron Ore",
 
+  "block.simple_metalcraft.raw_tin_block": "Block of Raw Tin",
+  "item.simple_metalcraft.raw_tin_block": "Block of Raw Tin",
+  "block.simple_metalcraft.tin_block": "Block of Tin",
+  "item.simple_metalcraft.tin_block": "Block of Tin",
   "block.simple_metalcraft.bronze_block": "Block of Bronze",
   "item.simple_metalcraft.bronze_block": "Block of Bronze",
   "block.simple_metalcraft.cut_bronze": "Cut Bronze",
