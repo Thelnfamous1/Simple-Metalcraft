@@ -3,7 +3,6 @@ package com.infamous.simple_metalcraft.registry;
 import com.infamous.simple_metalcraft.SimpleMetalcraft;
 import com.infamous.simple_metalcraft.crafting.anvil.AnvilTier;
 import com.infamous.simple_metalcraft.crafting.furnace.cementation.CementationFurnaceBlock;
-import com.infamous.simple_metalcraft.crafting.bellows.BellowsBlock;
 import com.infamous.simple_metalcraft.crafting.furnace.blooming.BloomeryBlock;
 import com.infamous.simple_metalcraft.crafting.furnace.blasting.SMBlastFurnaceBlock;
 import com.infamous.simple_metalcraft.crafting.furnace.smelter.SmelterBlock;
@@ -70,9 +69,6 @@ public class SMBlocks {
 
     public static final RegistryObject<Block> CEMENTATION_FURNACE = BLOCKS.register("cementation_furnace",
             () -> new CementationFurnaceBlock(furnaceProperties()));
-
-    public static final RegistryObject<Block> BELLOWS = BLOCKS.register("bellows",
-            () -> new BellowsBlock(BlockBehaviour.Properties.of(Material.WOOD).strength(0.5F).sound(SoundType.WOOD).noOcclusion()));
 
     public static final TieredAnvilBlockHolder STONE_ANVILS = new TieredAnvilBlockHolder(BLOCKS, AnvilTier.Impl.STONE);
     public static final TieredAnvilBlockHolder COPPER_ANVILS = new TieredAnvilBlockHolder(BLOCKS, AnvilTier.Impl.COPPER);

@@ -44,10 +44,6 @@ public class SMItems {
             ITEMS.register("cementation_furnace",
                     () -> buildDecorationBlock(SMBlocks.CEMENTATION_FURNACE.get()));
 
-    public static final RegistryObject<Item> BELLOWS =
-            ITEMS.register("bellows",
-                    () -> buildRedstoneBlock(SMBlocks.BELLOWS.get()));
-
     public static final TieredAnvilItemHolder STONE_ANVILS = new TieredAnvilItemHolder(ITEMS, SMBlocks.STONE_ANVILS);
     public static final TieredAnvilItemHolder COPPER_ANVILS = new TieredAnvilItemHolder(ITEMS, SMBlocks.COPPER_ANVILS);
     public static final TieredAnvilItemHolder BRONZE_ANVILS = new TieredAnvilItemHolder(ITEMS, SMBlocks.BRONZE_ANVILS);
