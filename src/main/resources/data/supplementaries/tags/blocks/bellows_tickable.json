@@ -1,0 +1,9 @@
+{
+  "replace": false,
+  "values": [
+    "simple_metalcraft:bloomery",
+    "simple_metalcraft:blast_furnace",
+    "simple_metalcraft:cementation_furnace",
+    "simple_metalcraft:smelter"
+  ]
+}

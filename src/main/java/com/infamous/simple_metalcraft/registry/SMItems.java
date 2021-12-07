@@ -231,18 +231,6 @@ public class SMItems {
 
     public static final RegistryObject<Item> PIG_IRON_INGOT =
             ITEMS.register("pig_iron_ingot", SMItems::buildMaterial);
-
-    // TURTLE
-
-    public static final RegistryObject<Item> TURTLE_CHESTPLATE =
-            ITEMS.register("turtle_chestplate", () -> buildChestplate(ArmorMaterials.TURTLE));
-
-    public static final RegistryObject<Item> TURTLE_LEGGINGS =
-            ITEMS.register("turtle_leggings", () -> buildLeggings(ArmorMaterials.TURTLE));
-
-    public static final RegistryObject<Item> TURTLE_BOOTS =
-            ITEMS.register("turtle_boots", () -> buildBoots(ArmorMaterials.TURTLE));
-
     // BLISTER STEEL
 
     public static final RegistryObject<Item> BLISTER_STEEL_BLOCK = ITEMS.register("blister_steel_block",

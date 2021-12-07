@@ -1,9 +1,0 @@
-{
-  "replace": false,
-  "values": [
-    "minecraft:turtle_helmet",
-    "simple_metalcraft:turtle_chestplate",
-    "simple_metalcraft:turtle_leggings",
-    "simple_metalcraft:turtle_boots"
-  ]
-}
