@@ -26,6 +26,11 @@ public class SMItems {
     public static final RegistryObject<Item> DROSS = ITEMS.register("dross", SMItems::buildSmeltingByproduct);
     public static final RegistryObject<Item> SUEVITE = ITEMS.register("suevite", () -> buildBuildingBlock(SMBlocks.SUEVITE.get()));
 
+    public static final RegistryObject<Item> PERIDOT_ORE = ITEMS.register("peridot_ore", () -> buildBuildingBlock(SMBlocks.PERIDOT_ORE.get()));
+    public static final RegistryObject<Item> DEEPSLATE_PERIDOT_ORE = ITEMS.register("deepslate_peridot_ore", () -> buildBuildingBlock(SMBlocks.DEEPSLATE_PERIDOT_ORE.get()));
+    public static final RegistryObject<Item> PERIDOT = ITEMS.register("peridot", SMItems::buildMaterial);
+    public static final RegistryObject<Item> PERIDOT_BLOCK = ITEMS.register("peridot_block", () -> buildBuildingBlock(SMBlocks.PERIDOT_BLOCK.get()));
+
     // METALWORKING BLOCKS
 
     public static final RegistryObject<Item> SMELTER =

@@ -162,7 +162,6 @@ dependencies {
 
     // Examples using mod jars from ./libs
     // implementation fg.deobf("blank:coolmod-${mc_version}:${coolmod_version}")
-    //runtimeOnly fg.deobf("curse.maven:fullturtlearmor-507470:3543010")
     runtimeOnly fg.deobf("curse.maven:inventoryhud-357540:3544781")
     runtimeOnly fg.deobf("curse.maven:chunkanimator-236484:3544421")
     runtimeOnly fg.deobf("curse.maven:xaeronbtslotids-514135:3545222")

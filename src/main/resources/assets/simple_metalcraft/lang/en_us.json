@@ -74,6 +74,12 @@
 
   "block.simple_metalcraft.suevite" : "Suevite",
   "item.simple_metalcraft.suevite" : "Suevite",
+  "block.simple_metalcraft.peridot_ore" : "Peridot Ore",
+  "item.simple_metalcraft.peridot_ore" : "Peridot Ore",
+  "block.simple_metalcraft.deepslate_peridot_ore" : "Deepslate Peridot Ore",
+  "item.simple_metalcraft.deepslate_peridot_ore" : "Deepslate Peridot Ore",
+  "block.simple_metalcraft.peridot_block" : "Block of Peridot",
+  "item.simple_metalcraft.peridot_block" : "Block of Peridot",
 
   "block.simple_metalcraft.tin_ore" : "Tin Ore",
   "block.simple_metalcraft.deepslate_tin_ore" : "Deepslate Tin Ore",

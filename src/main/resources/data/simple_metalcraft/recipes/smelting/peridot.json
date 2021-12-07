@@ -1,0 +1,10 @@
+{
+  "type": "minecraft:smelting",
+  "group": "peridot",
+  "ingredient": {
+    "tag": "simple_metalcraft:peridot_ores"
+  },
+  "result": "simple_metalcraft:peridot",
+  "experience": 0.7,
+  "cookingtime": 200
+}

@@ -33,6 +33,15 @@ public class SMBlocks {
     public static final RegistryObject<Block> RAW_TIN_BLOCK = BLOCKS.register("raw_tin_block",
             SMBlocks::buildMetalOreBlock);
 
+    public static final RegistryObject<Block> PERIDOT_ORE = BLOCKS.register("peridot_ore",
+            SMBlocks::buildMetalOreBlock);
+
+    public static final RegistryObject<Block> DEEPSLATE_PERIDOT_ORE = BLOCKS.register("deepslate_peridot_ore",
+            SMBlocks::buildMetalOreBlock);
+
+    public static final RegistryObject<Block> PERIDOT_BLOCK = BLOCKS.register("peridot_block",
+            SMBlocks::buildMetalBlock);
+
     public static final RegistryObject<Block> SUEVITE = BLOCKS.register("suevite",
             SMBlocks::buildObsidianLikeBlock);
 

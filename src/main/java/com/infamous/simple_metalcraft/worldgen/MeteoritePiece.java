@@ -85,7 +85,7 @@ public class MeteoritePiece extends TemplateStructurePiece {
       BlockIgnoreProcessor blockignoreprocessor = properties.airPocket ? BlockIgnoreProcessor.STRUCTURE_BLOCK : BlockIgnoreProcessor.STRUCTURE_AND_AIR;
       List<ProcessorRule> processorRules = Lists.newArrayList();
       processorRules.add(getBlockReplaceRule(SMBlocks.RAW_METEORIC_IRON_BLOCK.get(), PROBABILITY_OF_RAW_MET_IRON_GONE, Blocks.AIR));
-      processorRules.add(getBlockReplaceRule(SMBlocks.METEORIC_IRON_ORE.get(), PROBABILITY_OF_PERIDOT_INSTEAD_OF_MET_IRON_ORE, Blocks.EMERALD_ORE));
+      processorRules.add(getBlockReplaceRule(SMBlocks.METEORIC_IRON_ORE.get(), PROBABILITY_OF_PERIDOT_INSTEAD_OF_MET_IRON_ORE, SMBlocks.PERIDOT_ORE.get()));
       if (properties.diamond) {
          processorRules.add(getBlockReplaceRule(SMBlocks.METEORIC_IRON_ORE.get(), PROBABILITY_OF_DIAMOND_INSTEAD_OF_MET_IRON_ORE, Blocks.DIAMOND_ORE));
       }
