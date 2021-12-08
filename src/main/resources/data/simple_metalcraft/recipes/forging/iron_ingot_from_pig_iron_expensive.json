@@ -4,7 +4,7 @@
     "item": "simple_metalcraft:pig_iron_ingot"
   },
   "catalyst": {
-    "item": "minecraft:blaze_powder"
+    "tag": "simple_metalcraft:expensive_forging_catalysts"
   },
   "result": {
     "item": "minecraft:iron_ingot"

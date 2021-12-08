@@ -4,10 +4,10 @@
     "item": "simple_metalcraft:iron_bloom"
   },
   "catalyst": {
-    "tag": "minecraft:coals"
+    "tag": "simple_metalcraft:cheap_forging_catalysts"
   },
   "result": {
     "item": "minecraft:iron_ingot"
   },
-  "experienceCost": 1
+  "experienceCost": 2
 }

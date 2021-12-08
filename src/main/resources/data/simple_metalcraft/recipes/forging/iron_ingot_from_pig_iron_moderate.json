@@ -4,10 +4,10 @@
     "item": "simple_metalcraft:pig_iron_ingot"
   },
   "catalyst": {
-    "tag": "simple_metalcraft:cheap_forging_catalysts"
+    "tag": "simple_metalcraft:moderate_forging_catalysts"
   },
   "result": {
     "item": "minecraft:iron_ingot"
   },
-  "experienceCost": 2
+  "experienceCost": 1
 }
